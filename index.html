@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>우리끼리 어워즈 투표</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<style>
+/* Layout: phone-first single column sheet (max 520px) centered on the same midnight stage as the reveal screen.
+   One view at a time: who → confirm → question ×N → review → done / closed. */
+:root{
+  --bg:#0b0a1f;
+  --glow-1:rgba(124,92,255,.38);
+  --glow-2:rgba(255,79,154,.2);
+  --surface:rgba(255,255,255,.055);
+  --surface-2:rgba(255,255,255,.12);
+  --line:rgba(255,255,255,.14);
+  --fg:#f6f3ff;
+  --fg-muted:rgba(246,243,255,.62);
+  --accent:#ff4f9a;
+  --accent-2:#7c5cff;
+  --gold:#ffd166;
+  --danger:#ff7a7a;
+  --font-display:'Black Han Sans','Noto Sans KR',system-ui,sans-serif;
+  --font-body:'Noto Sans KR',system-ui,-apple-system,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-body);-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(ellipse 90% 40% at 50% -10%,var(--glow-1),transparent 62%),radial-gradient(ellipse 60% 35% at 100% 100%,var(--glow-2),transparent 60%);background-attachment:fixed;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:calc(env(safe-area-inset-top,0px) + 16px) calc(env(safe-area-inset-bottom,0px) + 24px)}
+button{font:inherit}
+button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+.app{max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.top{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--fg-muted);font-variant-numeric:tabular-nums}
+.pbar{height:6px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
+.pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent-2),var(--accent));transition:width .3s}
+
+.view{display:none;flex-direction:column;gap:12px;padding-top:8px}
+.view.is-active{display:flex}
+.eyebrow{margin:0;font-size:12px;font-weight:700;letter-spacing:.22em;color:var(--accent)}
+.h{margin:0;font-family:var(--font-display);font-weight:400;font-size:clamp(26px,7vw,34px);line-height:1.2;letter-spacing:-.01em;text-wrap:balance}
+.help{margin:0 0 6px;color:var(--fg-muted);font-size:14px;line-height:1.6}
+
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media (min-width:600px){.pgrid{grid-template-columns:repeat(4,1fr)}}
+.pcard{color:var(--fg);background:rgba(255,255,255,.04);border:2px solid var(--line);border-radius:18px;padding:10px 8px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;
+  transition:transform .15s,background .15s,border-color .15s;-webkit-tap-highlight-color:transparent}
+.pcard:active{transform:scale(.97)}
+.pcard.is-sel{border-color:var(--accent);background:rgba(255,79,154,.16);transform:scale(1.04)}
+.pavatar{width:100%;max-width:96px;aspect-ratio:1;border-radius:16px;display:grid;place-items:center;overflow:hidden;
+  font-family:var(--font-display);font-size:22px;background:hsl(var(--h) 72% 56%);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.35)}
+.pavatar img{width:100%;height:100%;object-fit:cover;display:block}
+.pname{font-size:13px;font-weight:700;text-align:center;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.bigcard{display:flex;align-items:center;gap:14px;padding:14px;border-radius:20px;background:var(--surface);border:1px solid var(--line)}
+.bigcard .pavatar{width:72px;flex:none;border-radius:50%}
+.bigcard .pname{font-size:18px;white-space:normal}
+
+.row{display:flex;gap:10px;margin-top:8px}
+.row .btn{flex:1}
+.btn{font-weight:700;padding:14px 20px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer;transition:transform .15s,opacity .15s,filter .15s;-webkit-tap-highlight-color:transparent}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:linear-gradient(135deg,var(--accent-2),var(--accent));border-color:transparent;box-shadow:0 10px 30px rgba(255,79,154,.3)}
+.btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.btn.is-busy{opacity:.7;pointer-events:none}
+
+.review{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.review li{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;background:var(--surface);border:1px solid var(--line);cursor:pointer}
+.review .rq{flex:1;min-width:0}
+.review .rn{display:block;font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--accent)}
+.review .rt{display:block;font-size:13px;color:var(--fg-muted);line-height:1.4}
+.review .rpick{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;white-space:nowrap}
+.review .rpick .pavatar{width:32px;border-radius:50%;font-size:12px}
+.err{margin:0;padding:12px 14px;border-radius:12px;background:rgba(255,122,122,.12);border:1px solid rgba(255,122,122,.4);color:var(--danger);font-size:14px;line-height:1.5}
+
+.done{text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;padding:40px 0 20px}
+.mark{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;font-size:34px;font-weight:900;color:var(--bg);background:var(--gold)}
+.mark-muted{background:var(--surface-2);color:var(--fg)}
+.preview-note{margin:8px 0 0;font-size:12px;color:var(--fg-muted);text-align:center}
+
+@media (prefers-reduced-motion:reduce){.pcard,.btn,.pbar i{transition:none}}
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="top">
+    <span id="brand">우리끼리 어워즈 투표</span>
+    <span id="prog"></span>
+  </header>
+  <div class="pbar"><i id="pfill"></i></div>
+
+  <section class="view is-active" id="v-who">
+    <p class="eyebrow">시작</p>
+    <h1 class="h">본인 이름을 골라주세요</h1>
+    <p class="help">이름당 한 번만 제출할 수 있어요.</p>
+    <div class="pgrid" id="who-grid"></div>
+  </section>
+
+  <section class="view" id="v-confirm">
+    <p class="eyebrow">확인</p>
+    <h1 class="h"><span id="confirm-name"></span> 님 맞으세요?</h1>
+    <div class="bigcard" id="confirm-card"></div>
+    <div class="row">
+      <button class="btn" id="confirm-no" type="button">아니요</button>
+      <button class="btn btn-primary" id="confirm-yes" type="button">네, 시작할게요</button>
+    </div>
+  </section>
+
+  <section class="view" id="v-q">
+    <p class="eyebrow" id="q-eyebrow">Q1</p>
+    <h1 class="h" id="q-text"></h1>
+    <p class="help">가장 어울리는 한 명을 고르세요. 본인은 목록에 없어요.</p>
+    <div class="pgrid" id="q-grid"></div>
+    <div class="row">
+      <button class="btn" id="q-prev" type="button">이전</button>
+      <button class="btn btn-primary" id="q-next" type="button" disabled>다음</button>
+    </div>
+  </section>
+
+  <section class="view" id="v-review">
+    <p class="eyebrow">마지막 확인</p>
+    <h1 class="h">이대로 제출할까요?</h1>
+    <p class="help">항목을 누르면 다시 고를 수 있어요. 제출 후에는 바꿀 수 없습니다.</p>
+    <ul class="review" id="review"></ul>
+    <p class="err" id="err" hidden></p>
+    <div class="row">
+      <button class="btn" id="r-back" type="button">이전</button>
+      <button class="btn btn-primary" id="r-submit" type="button">제출하기</button>
+    </div>
+  </section>
+
+  <section class="view" id="v-done">
+    <div class="done">
+      <span class="mark">✓</span>
+      <h1 class="h">제출 완료</h1>
+      <p class="help" id="done-msg">결과는 행사 당일 발표 때 공개됩니다.</p>
+      <p class="preview-note" id="done-note" hidden></p>
+    </div>
+  </section>
+
+  <section class="view" id="v-closed">
+    <div class="done">
+      <span class="mark mark-muted">⏰</span>
+      <h1 class="h">투표가 마감됐어요</h1>
+      <p class="help">결과는 행사 당일 발표 때 공개됩니다.</p>
+    </div>
+  </section>
+</main>
+
+<script src="config.js"></script>
+<script>
+(function(){
+  'use strict';
+  const $ = s => document.querySelector(s);
+  const CONFIG = window.AWARDS_CONFIG;
+  if (!CONFIG || !Array.isArray(CONFIG.people) || !Array.isArray(CONFIG.questions)) {
+    document.querySelector('.app').innerHTML = '<p class="err">config.js를 찾지 못했어요. index.html과 같은 폴더에 config.js가 있어야 합니다.</p>';
+    return;
+  }
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const STORE_KEY = 'awards_vote_done_v1';
+  const PEOPLE = CONFIG.people.map((p, i) => Object.assign({ hue: Math.round((i * 137.508) % 360) }, p));
+  const Q = CONFIG.questions;
+  const N = Q.length;
+  const PREVIEW = !CONFIG.endpoint;
+
+  let voter = null, qi = 0, picks = new Array(N).fill(0);
+
+  $('#brand').textContent = CONFIG.title + ' 투표';
+
+  function byId(id){ return PEOPLE.find(p => p.id === id); }
+  function avatarHTML(p, extra){
+    const inner = p.photo ? '<img src="' + esc(p.photo) + '" alt="">' : String(p.id).padStart(2, '0');
+    return '<span class="pavatar ' + (extra || '') + '" style="--h:' + p.hue + '">' + inner + '</span>';
+  }
+  function cardHTML(p, selected){
+    return '<button type="button" class="pcard' + (selected ? ' is-sel' : '') + '" data-id="' + p.id + '">' +
+      avatarHTML(p) + '<span class="pname">' + esc(p.name) + '</span></button>';
+  }
+  function show(id){ document.querySelectorAll('.view').forEach(v => v.classList.toggle('is-active', v.id === id)); window.scrollTo(0, 0); }
+  function progress(step){
+    $('#pfill').style.width = (step / N * 100) + '%';
+    $('#prog').textContent = step > 0 ? step + ' / ' + N : '';
+  }
+  function closed(){ return CONFIG.deadline && Date.now() > new Date(CONFIG.deadline).getTime(); }
+  function readDone(){ try { return JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); } catch (e) { return null; } }
+  function writeDone(v){ try { localStorage.setItem(STORE_KEY, JSON.stringify(v)); } catch (e) {} }
+
+  /* ---- 1. 본인 선택 ---- */
+  function renderWho(){
+    $('#who-grid').innerHTML = PEOPLE.map(p => cardHTML(p, false)).join('');
+    progress(0); show('v-who');
+  }
+  $('#who-grid').addEventListener('click', e => {
+    const b = e.target.closest('.pcard'); if (!b) return;
+    voter = byId(+b.dataset.id);
+    $('#confirm-name').textContent = voter.name;
+    $('#confirm-card').innerHTML = avatarHTML(voter) + '<span class="pname">' + esc(voter.name) + '</span>';
+    show('v-confirm');
+  });
+  $('#confirm-no').addEventListener('click', () => { voter = null; renderWho(); });
+  $('#confirm-yes').addEventListener('click', () => { qi = 0; picks = new Array(N).fill(0); renderQ(); });
+
+  /* ---- 2. 질문 ---- */
+  function renderQ(){
+    $('#q-eyebrow').textContent = 'Q' + (qi + 1) + ' / ' + N;
+    $('#q-text').textContent = Q[qi];
+    $('#q-grid').innerHTML = PEOPLE.filter(p => p.id !== voter.id).map(p => cardHTML(p, picks[qi] === p.id)).join('');
+    $('#q-prev').textContent = qi === 0 ? '이름 다시 고르기' : '이전';
+    $('#q-next').disabled = !picks[qi];
+    $('#q-next').textContent = qi === N - 1 ? '확인하러 가기' : '다음';
+    progress(qi); show('v-q');
+  }
+  $('#q-grid').addEventListener('click', e => {
+    const b = e.target.closest('.pcard'); if (!b) return;
+    picks[qi] = +b.dataset.id;
+    $('#q-grid').querySelectorAll('.pcard').forEach(c => c.classList.toggle('is-sel', +c.dataset.id === picks[qi]));
+    $('#q-next').disabled = false;
+  });
+  $('#q-prev').addEventListener('click', () => { if (qi === 0) { voter = null; renderWho(); } else { qi--; renderQ(); } });
+  $('#q-next').addEventListener('click', () => { if (!picks[qi]) return; if (qi < N - 1) { qi++; renderQ(); } else renderReview(); });
+
+  /* ---- 3. 확인 ---- */
+  function renderReview(){
+    $('#review').innerHTML = Q.map((q, i) => {
+      const p = byId(picks[i]);
+      return '<li data-i="' + i + '"><span class="rq"><span class="rn">Q' + (i + 1) + '</span><span class="rt">' + esc(q) + '</span></span>' +
+        '<span class="rpick">' + avatarHTML(p) + esc(p.name) + '</span></li>';
+    }).join('');
+    $('#err').hidden = true;
+    progress(N); show('v-review');
+  }
+  $('#review').addEventListener('click', e => { const li = e.target.closest('li'); if (!li) return; qi = +li.dataset.i; renderQ(); });
+  $('#r-back').addEventListener('click', () => { qi = N - 1; renderQ(); });
+
+  /* ---- 4. 제출 ---- */
+  function showErr(msg){ const el = $('#err'); el.textContent = msg; el.hidden = false; }
+  function finishDone(note){
+    $('#done-msg').textContent = voter.name + ' 님, 제출됐어요. 결과는 행사 당일 발표 때 공개됩니다.';
+    const n = $('#done-note'); n.hidden = !note; n.textContent = note || '';
+    progress(N); show('v-done');
+  }
+  $('#r-submit').addEventListener('click', async () => {
+    if (closed()) { show('v-closed'); return; }
+    if (picks.some(p => !p || p === voter.id)) { showErr('아직 고르지 않은 질문이 있어요.'); return; }
+    const btn = $('#r-submit'); btn.classList.add('is-busy'); btn.textContent = '제출 중…'; $('#err').hidden = true;
+    const payload = { voterId: voter.id, voterName: voter.name, answers: picks.slice(), submittedAt: new Date().toISOString() };
+    try {
+      if (PREVIEW) {
+        await new Promise(r => setTimeout(r, 700));
+        finishDone('미리보기 모드라 실제로 저장되지는 않았어요.');
+      } else {
+        const r = await fetch(CONFIG.endpoint, { method: 'POST', body: JSON.stringify(payload) });
+        const data = await r.json();
+        if (data.ok) { writeDone({ voterId: voter.id, voterName: voter.name, at: payload.submittedAt }); finishDone(''); }
+        else if (data.error === 'duplicate') showErr('이미 제출된 이름이에요. 본인이 제출한 적이 없다면 진행자에게 알려주세요.');
+        else if (data.error === 'closed') show('v-closed');
+        else showErr('제출하지 못했어요. 잠시 후 다시 시도해주세요. (' + (data.error || 'unknown') + ')');
+      }
+    } catch (e) {
+      showErr('네트워크 오류로 제출하지 못했어요. 연결을 확인하고 다시 시도해주세요.');
+    } finally {
+      btn.classList.remove('is-busy'); btn.textContent = '제출하기';
+    }
+  });
+
+  /* ---- 시작 ---- */
+  if (closed()) { show('v-closed'); return; }
+  const done = readDone();
+  if (done && !PREVIEW) {
+    voter = byId(done.voterId) || { name: done.voterName };
+    $('#done-msg').textContent = voter.name + ' 님은 이미 제출했어요. 결과는 행사 당일 발표 때 공개됩니다.';
+    progress(N); show('v-done');
+    return;
+  }
+  renderWho();
+})();
+</script>
+</body>
+</html>
