@@ -33,7 +33,7 @@ window.AWARDS_CONFIG = {
     { id: 13, name: '김하선', gender: '여', photo: 'photos/13.jpg' },
     { id: 14, name: '김진희', gender: '여', photo: 'photos/14.jpg' },
     { id: 15, name: '최지호', gender: '남', photo: 'photos/15.jpg' },
-    { id: 16, name: '조현진', gender: '남', photo: '' },
+    { id: 16, name: '조현진', gender: '남', photo: 'photos/16.jpg' },
     { id: 17, name: '최준희', gender: '남', photo: 'photos/17.jpg' },
     { id: 18, name: '안수빈', gender: '여', photo: 'photos/18.jpg' },
     { id: 19, name: '김우진', gender: '남', photo: 'photos/19.jpg' },
