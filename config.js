@@ -14,27 +14,30 @@ window.AWARDS_CONFIG = {
   // Code.gs의 DEADLINE에도 같은 값을 넣어야 서버에서도 막힙니다.
   deadline: '',
 
-  // 참가자 18명. 사진은 photos/ 폴더에 넣고 경로를 적습니다. 예: 'photos/01.jpg'
+  // 참가자 20명. 사진은 photos/ 폴더에 넣고 경로를 적습니다. 예: 'photos/01.jpg'
   // 비워두면 번호가 적힌 색 아바타로 표시됩니다. id는 바꾸지 마세요(시트 기록의 기준).
+  // gender는 기록용이며 화면에는 쓰지 않습니다.
   people: [
-    { id: 1,  name: '참가자 01', photo: '' },
-    { id: 2,  name: '참가자 02', photo: '' },
-    { id: 3,  name: '참가자 03', photo: '' },
-    { id: 4,  name: '참가자 04', photo: '' },
-    { id: 5,  name: '참가자 05', photo: '' },
-    { id: 6,  name: '참가자 06', photo: '' },
-    { id: 7,  name: '참가자 07', photo: '' },
-    { id: 8,  name: '참가자 08', photo: '' },
-    { id: 9,  name: '참가자 09', photo: '' },
-    { id: 10, name: '참가자 10', photo: '' },
-    { id: 11, name: '참가자 11', photo: '' },
-    { id: 12, name: '참가자 12', photo: '' },
-    { id: 13, name: '참가자 13', photo: '' },
-    { id: 14, name: '참가자 14', photo: '' },
-    { id: 15, name: '참가자 15', photo: '' },
-    { id: 16, name: '참가자 16', photo: '' },
-    { id: 17, name: '참가자 17', photo: '' },
-    { id: 18, name: '참가자 18', photo: '' }
+    { id: 1,  name: '이선용', gender: '남', photo: '' },
+    { id: 2,  name: '김신우', gender: '남', photo: '' },
+    { id: 3,  name: '길인호', gender: '남', photo: '' },
+    { id: 4,  name: '김다윤', gender: '여', photo: '' },
+    { id: 5,  name: '박인영', gender: '남', photo: '' },
+    { id: 6,  name: '양다원', gender: '여', photo: '' },
+    { id: 7,  name: '김태현', gender: '남', photo: '' },
+    { id: 8,  name: '안준혁', gender: '남', photo: '' },
+    { id: 9,  name: '김보경', gender: '여', photo: '' },
+    { id: 10, name: '양지윤', gender: '여', photo: '' },
+    { id: 11, name: '이다빈', gender: '남', photo: '' },
+    { id: 12, name: '유영우', gender: '남', photo: '' },
+    { id: 13, name: '김하선', gender: '여', photo: '' },
+    { id: 14, name: '김진희', gender: '여', photo: '' },
+    { id: 15, name: '최지호', gender: '남', photo: '' },
+    { id: 16, name: '조현진', gender: '남', photo: '' },
+    { id: 17, name: '최준희', gender: '남', photo: '' },
+    { id: 18, name: '안수빈', gender: '여', photo: '' },
+    { id: 19, name: '김우진', gender: '남', photo: '' },
+    { id: 20, name: '주형락', gender: '남', photo: '' }
   ],
 
   // 질문 목록. 순서가 시트의 Q1, Q2… 열과 그대로 대응하니 투표 시작 후에는 순서를 바꾸지 마세요.

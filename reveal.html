@@ -75,11 +75,11 @@ kbd{font-family:var(--font-body);font-weight:700;color:var(--fg);background:var(
 .q-badge{flex:none;font-family:var(--font-display);font-size:clamp(20px,2.6vw,38px);line-height:1.25;color:var(--bg);background:var(--gold);padding:2px 14px;border-radius:12px}
 .q-text{margin:0;min-width:0;font-family:var(--font-display);font-weight:400;font-size:clamp(26px,3.9vw,58px);line-height:1.15;letter-spacing:-.01em;text-wrap:balance}
 
-.grid{flex:1;min-height:0;display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:minmax(0,1fr);gap:clamp(8px,1.1vw,16px)}
+.grid{flex:1;min-height:0;display:grid;grid-template-columns:repeat(var(--cols,6),1fr);grid-auto-rows:minmax(0,1fr);gap:clamp(8px,1.1vw,16px)}
 .card{position:relative;min-height:0;min-width:0;overflow:hidden;display:grid;grid-template-columns:auto 1fr auto;grid-template-rows:auto auto;align-content:center;align-items:center;
   column-gap:clamp(8px,.9vw,14px);row-gap:clamp(6px,.9vh,12px);padding:clamp(8px,1.1vw,18px);border-radius:18px;background:var(--surface);border:1px solid var(--line);
   transition:transform .28s cubic-bezier(.2,.8,.2,1.3),background .2s,opacity .55s,box-shadow .3s,filter .55s,border-color .3s}
-.avatar{width:clamp(34px,3.6vw,68px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;overflow:hidden;font-family:var(--font-display);font-size:clamp(13px,1.4vw,24px);
+.avatar{width:clamp(34px,min(3.6vw,7vh),68px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;overflow:hidden;font-family:var(--font-display);font-size:clamp(13px,1.4vw,24px);
   background:hsl(var(--h) 72% 56%);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.35)}
 .avatar img{width:100%;height:100%;object-fit:cover;display:block}
 .name{min-width:0;font-weight:700;font-size:clamp(12px,1.15vw,19px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -401,6 +401,8 @@ kbd{font-family:var(--font-body);font-weight:700;color:var(--fg);background:var(
   /* ---------- 발표 흐름 ---------- */
   let qi = 0, phase = 'intro', counts = {}, ballots = [], timer = null, fast = false;
   const grid = $('#grid'), result = $('#result'), hint = $('#hint');
+  // 인원수에 맞춰 열 수 결정: 빈 칸이 가장 적은 열 수 (18명→6×3, 20명→5×4, 16명→4×4)
+  (function(){ let best = 6, bestEmpty = Infinity; for (const c of [7, 6, 5, 4]) { const empty = Math.ceil(PEOPLE.length / c) * c - PEOPLE.length; if (empty < bestEmpty) { bestEmpty = empty; best = c; } } grid.style.setProperty('--cols', best); })();
   function showScreen(id){ document.querySelectorAll('.screen').forEach(s => s.classList.toggle('is-active', s.id === id)); }
   function shuffle(a){ for (let i = a.length - 1; i > 0; i--) { const j = (Math.random() * (i + 1)) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; }
   function avatarHTML(p){
