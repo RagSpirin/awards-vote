@@ -43,8 +43,11 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .view{display:none;flex-direction:column;gap:12px;padding-top:8px}
 .view.is-active{display:flex}
 .eyebrow{margin:0;font-size:12px;font-weight:700;letter-spacing:.22em;color:var(--accent)}
-.h{margin:0;font-family:var(--font-display);font-weight:400;font-size:clamp(26px,7vw,34px);line-height:1.2;letter-spacing:-.01em;text-wrap:balance}
+.h,.help,.review .rt,.err,.preview-note{word-break:keep-all;overflow-wrap:anywhere;line-break:strict}
+.h{margin:0;font-family:var(--font-display);font-weight:400;font-size:clamp(26px,7vw,34px);line-height:1.3;letter-spacing:-.01em;text-wrap:balance}
 .help{margin:0 0 6px;color:var(--fg-muted);font-size:14px;line-height:1.6}
+#q-text{font-size:clamp(24px,6.2vw,32px);line-height:1.4;text-wrap:pretty}
+#q-text.is-long{font-size:clamp(20px,5.6vw,25px)}
 
 .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 @media (min-width:600px){.pgrid{grid-template-columns:repeat(4,1fr)}}
@@ -73,7 +76,7 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .review li{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;background:var(--surface);border:1px solid var(--line);cursor:pointer}
 .review .rq{flex:1;min-width:0}
 .review .rn{display:block;font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--accent)}
-.review .rt{display:block;font-size:13px;color:var(--fg-muted);line-height:1.4}
+.review .rt{display:block;font-size:13px;color:var(--fg-muted);line-height:1.55;text-wrap:pretty}
 .review .rpick{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;white-space:nowrap}
 .review .rpick .pavatar{width:32px;border-radius:50%;font-size:12px}
 .err{margin:0;padding:12px 14px;border-radius:12px;background:rgba(255,122,122,.12);border:1px solid rgba(255,122,122,.4);color:var(--danger);font-size:14px;line-height:1.5}
@@ -96,8 +99,8 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 
   <section class="view is-active" id="v-who">
     <p class="eyebrow">시작</p>
-    <h1 class="h">본인 이름을 골라주세요</h1>
-    <p class="help">이름당 한 번만 제출할 수 있어요.</p>
+    <h1 class="h">본인 이름을 골라 주세요</h1>
+    <p class="help">한 사람당 한 번만 제출할 수 있어요.</p>
     <div class="pgrid" id="who-grid"></div>
   </section>
 
@@ -210,7 +213,7 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
   function renderQ(){
     $('#q-eyebrow').textContent = 'Q' + (qi + 1) + ' / ' + N;
     $('#q-text').textContent = Q[qi];
-    $('#q-text').style.fontSize = Q[qi].length > 50 ? '20px' : Q[qi].length > 30 ? '23px' : '';
+    $('#q-text').classList.toggle('is-long', Q[qi].length > 50);
     $('#q-grid').innerHTML = PEOPLE.filter(p => p.id !== voter.id).map(p => cardHTML(p, picks[qi] === p.id)).join('');
     $('#q-prev').textContent = qi === 0 ? '이름 다시 고르기' : '이전';
     $('#q-next').disabled = !picks[qi];
@@ -242,7 +245,7 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
   /* ---- 4. 제출 ---- */
   function showErr(msg){ const el = $('#err'); el.textContent = msg; el.hidden = false; }
   function finishDone(note){
-    $('#done-msg').textContent = voter.name + ' 님, 제출됐어요. 결과는 행사 당일 발표 때 공개됩니다.';
+    $('#done-msg').textContent = voter.name + ' 님, 투표를 제출했어요. 결과는 행사 당일에 공개됩니다.';
     const n = $('#done-note'); n.hidden = !note; n.textContent = note || '';
     progress(N); show('v-done');
   }
@@ -259,12 +262,12 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
         const r = await fetch(CONFIG.endpoint, { method: 'POST', body: JSON.stringify(payload) });
         const data = await r.json();
         if (data.ok) { writeDone({ voterId: voter.id, voterName: voter.name, at: payload.submittedAt }); finishDone(''); }
-        else if (data.error === 'duplicate') showErr('이미 제출된 이름이에요. 본인이 제출한 적이 없다면 진행자에게 알려주세요.');
+        else if (data.error === 'duplicate') showErr('이미 제출된 이름이에요. 본인이 제출한 적이 없다면 진행자에게 알려 주세요.');
         else if (data.error === 'closed') show('v-closed');
-        else showErr('제출하지 못했어요. 잠시 후 다시 시도해주세요. (' + (data.error || 'unknown') + ')');
+        else showErr('제출하지 못했어요. 잠시 후 다시 시도해 주세요. (' + (data.error || 'unknown') + ')');
       }
     } catch (e) {
-      showErr('네트워크 오류로 제출하지 못했어요. 연결을 확인하고 다시 시도해주세요.');
+      showErr('네트워크 오류로 제출하지 못했어요. 연결을 확인하고 다시 시도해 주세요.');
     } finally {
       btn.classList.remove('is-busy'); btn.textContent = '제출하기';
     }
@@ -275,7 +278,7 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
   const done = readDone();
   if (done && !PREVIEW) {
     voter = byId(done.voterId) || { name: done.voterName };
-    $('#done-msg').textContent = voter.name + ' 님은 이미 제출했어요. 결과는 행사 당일 발표 때 공개됩니다.';
+    $('#done-msg').textContent = voter.name + ' 님은 이미 투표를 제출했어요. 결과는 행사 당일에 공개됩니다.';
     progress(N); show('v-done');
     return;
   }
