@@ -419,6 +419,9 @@ kbd{font-family:var(--font-body);font-weight:700;color:var(--fg);background:var(
     $('#qbadge').textContent = 'Q' + (qi + 1);
     $('#qprog').textContent = 'Q' + (qi + 1) + ' / ' + N;
     $('#qtext').textContent = Q[qi];
+    // 질문 길이에 따라 글자 크기 조절 (긴 질문이 카드 영역을 먹지 않도록)
+    const L = Q[qi].length;
+    $('#qtext').style.fontSize = L > 60 ? 'clamp(18px,2.1vw,32px)' : L > 38 ? 'clamp(22px,2.8vw,42px)' : '';
     grid.innerHTML = PEOPLE.map(cardHTML).join('');
     result.classList.remove('is-on', 'is-empty');
     hint.textContent = 'Space 또는 클릭으로 개표 시작';
