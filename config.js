@@ -4,15 +4,8 @@
    이 파일만 고치면 양쪽에 동시에 반영됩니다.
    ========================================================= */
 window.AWARDS_CONFIG = {
-  // 행사 이름 (투표·발표 페이지 타이틀)
-  title: '양치기 여론조사',
-  // 타이틀 둘째 줄(발표 화면) / 부제 / 브라우저 주소창에 넣을 문구
-  titleLine2: '결과발표',
-  subtitle: '사SHEEP 2th 중운위 모임',
-  chromeUrl: 'WWW.Hanyang.univ.42th.council.2026.11.28',
-  // 투표 첫 화면 안내문에 쓰이는 행사 정보
-  eventDate: '11월 28일(토)',
-  eventPlace: '대관령',
+  // 행사 이름 (투표 페이지 상단, 발표 페이지 타이틀)
+  title: '우리끼리 어워즈',
 
   // Apps Script "웹 앱" 배포 URL. 비워두면 투표 페이지는 미리보기 모드(저장 안 함).
   endpoint: 'https://script.google.com/macros/s/AKfycby_MY2nwja0UO2VnbuuD2a8hC4E9t5GcFLLMOLOrgnKu07Gy_20taJYGPSjDChxWpVl/exec',

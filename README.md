@@ -6,7 +6,7 @@
 ## 수정 및 배포
 
 - 모바일 투표 화면은 `index.html`, 노트북·TV 발표 화면은 `reveal.html`에서 직접 수정합니다.
-- 공통 설정은 `config.js`에서 관리합니다. 행사 문구는 `title`, `titleLine2`, `subtitle`, `eventDate`, `eventPlace`를 수정합니다.
+- 공통 설정은 `config.js`에서 관리합니다. 행사 이름은 `title`을 수정합니다.
 - 참가자 사진은 `photos/NN.jpg`에 저장하고 `people[].photo`에 경로를 적습니다. 파일명의 숫자는 참가자 ID에 대응합니다.
 - GitHub Pages가 `main` 브랜치의 루트에서 배포합니다. 별도 빌드 단계가 없습니다.
 

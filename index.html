@@ -3,200 +3,102 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>양치기 여론조사 투표</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700;900&family=VT323&display=swap">
+<title>우리끼리 어워즈 투표</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
 <style>
-/* Layout: phone-first single column inside a fake browser window on textured paper (matches the 사SHEEP 2th deck).
-   One view at a time: intro (why + rules) → who → confirm → question ×N → review → done / closed. Hills + sheep close the page. */
+/* Layout: phone-first single column sheet (max 520px) centered on the same midnight stage as the reveal screen.
+   One view at a time: who → confirm → question ×N → review → done / closed. */
 :root{
-  --paper:#f4f4ef;
-  --paper-2:#ebebe5;
-  --ink:#1f231f;
-  --line:#5f6b52;
-  --muted:#6f766a;
-  --card:#ffffff;
-  --mint:#c6e2b3;
-  --mint-soft:#eaf4e1;
-  --sky:#a9d2f2;
-  --sky-soft:#dcecfa;
-  --cream:#fff2b8;
-  --navy:#2f3a8f;
-  --red:#c0392b;
-  --dot-r:#ff5f57; --dot-y:#febc2e; --dot-g:#28c840;
-  --font-display:'Jua','Noto Sans KR',system-ui,sans-serif;
+  --bg:#0b0a1f;
+  --glow-1:rgba(124,92,255,.38);
+  --glow-2:rgba(255,79,154,.2);
+  --surface:rgba(255,255,255,.055);
+  --surface-2:rgba(255,255,255,.12);
+  --line:rgba(255,255,255,.14);
+  --fg:#f6f3ff;
+  --fg-muted:rgba(246,243,255,.62);
+  --accent:#ff4f9a;
+  --accent-2:#7c5cff;
+  --gold:#ffd166;
+  --danger:#ff7a7a;
+  --font-display:'Black Han Sans','Noto Sans KR',system-ui,sans-serif;
   --font-body:'Noto Sans KR',system-ui,-apple-system,sans-serif;
-  --font-mono:'VT323',ui-monospace,monospace;
-  --chrome:46px;
-  --o:.035em; --on:-.035em; --d:.08em;
-  --blk:var(--on) var(--on) 0 var(--ink), var(--o) var(--on) 0 var(--ink), var(--on) var(--o) 0 var(--ink), var(--o) var(--o) 0 var(--ink),
-        0 var(--on) 0 var(--ink), 0 var(--o) 0 var(--ink), var(--on) 0 0 var(--ink), var(--o) 0 0 var(--ink), var(--d) var(--d) 0 var(--ink);
-  color-scheme:light;
+  color-scheme:dark;
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{min-height:100%}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);-webkit-font-smoothing:antialiased;
-  background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .25 0 0 0 0 .25 0 0 0 0 .2 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-body);-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(ellipse 90% 40% at 50% -10%,var(--glow-1),transparent 62%),radial-gradient(ellipse 60% 35% at 100% 100%,var(--glow-2),transparent 60%);background-attachment:fixed;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
-  padding-block:calc(env(safe-area-inset-top,0px) + var(--chrome) + 16px) 0}
+  padding-block:calc(env(safe-area-inset-top,0px) + 16px) calc(env(safe-area-inset-bottom,0px) + 24px)}
 button{font:inherit}
-button:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 
-.blk{font-family:var(--font-display);font-weight:400;line-height:1.08;text-shadow:var(--blk)}
-.blk-mint{color:var(--mint)} .blk-sky{color:var(--sky)} .blk-cream{color:var(--cream)}
+.app{max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.top{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--fg-muted);font-variant-numeric:tabular-nums}
+.pbar{height:6px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
+.pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent-2),var(--accent));transition:width .3s}
 
-/* ---------- browser chrome ---------- */
-.chrome{position:fixed;left:0;right:0;top:0;z-index:40;height:calc(env(safe-area-inset-top,0px) + var(--chrome));
-  padding-top:env(safe-area-inset-top,0px);padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px));
-  display:flex;align-items:center;gap:8px;background:var(--paper-2);border-bottom:1.5px solid #cfd0c8}
-.dot{width:11px;height:11px;border-radius:50%;flex:none;border:1px solid rgba(0,0,0,.15)}
-.dot.r{background:var(--dot-r)} .dot.y{background:var(--dot-y)} .dot.g{background:var(--dot-g)}
-.url{flex:1;min-width:0;margin-left:4px;height:30px;display:flex;align-items:center;padding:0 12px;border-radius:999px;background:#fff;border:1.5px solid #c9cac2;
-  font-family:var(--font-mono);font-size:17px;color:#4a4f46;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
-.app{max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:14px;position:relative;z-index:1}
-.top{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--muted);font-variant-numeric:tabular-nums}
-.top .prog{font-family:var(--font-display);font-size:16px;color:var(--ink);letter-spacing:0}
-.pbar{height:8px;border-radius:99px;background:#fff;border:1.5px solid var(--line);overflow:hidden}
-.pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--mint),var(--sky));transition:width .3s}
-
-.view{display:none;flex-direction:column;gap:12px;padding-top:4px}
+.view{display:none;flex-direction:column;gap:12px;padding-top:8px}
 .view.is-active{display:flex}
-.eyebrow{margin:0;align-self:flex-start;font-family:var(--font-display);font-size:13px;letter-spacing:.06em;color:var(--navy);background:var(--sky-soft);border:1.5px solid var(--navy);padding:3px 12px;border-radius:999px}
-.h{margin:0;font-family:var(--font-display);font-weight:400;font-size:clamp(26px,7vw,34px);line-height:1.2;text-wrap:balance}
-.help{margin:0 0 6px;color:var(--muted);font-size:14px;line-height:1.6}
+.eyebrow{margin:0;font-size:12px;font-weight:700;letter-spacing:.22em;color:var(--accent)}
+.h{margin:0;font-family:var(--font-display);font-weight:400;font-size:clamp(26px,7vw,34px);line-height:1.2;letter-spacing:-.01em;text-wrap:balance}
+.help{margin:0 0 6px;color:var(--fg-muted);font-size:14px;line-height:1.6}
 
-/* ---------- intro ---------- */
-.hero{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:10px 0 4px}
-.hero .title{margin:0;font-size:clamp(40px,11vw,56px);text-wrap:balance}
-.mascot{position:relative;width:min(100%,260px);margin:6px auto 0}
-.mascot svg{width:58%;display:block;margin-left:auto}
-.bubble{position:absolute;left:0;top:4px;max-width:50%;font-family:var(--font-display);font-size:15px;line-height:1.3;color:var(--ink);text-align:left;word-break:keep-all;
-  background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:8px 12px}
-.bubble::after{content:"";position:absolute;right:-8px;bottom:9px;width:12px;height:12px;background:#fff;border-right:1.5px solid var(--line);border-bottom:1.5px solid var(--line);transform:skewX(30deg) rotate(-20deg)}
-.box{background:var(--card);border:1.5px solid var(--line);border-radius:16px;overflow:hidden}
-.box-head{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--mint-soft);border-bottom:1.5px solid var(--line);font-family:var(--font-display);font-size:16px}
-.box-head .x{margin-left:auto;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--red);color:var(--red);font-size:10px;display:grid;place-items:center}
-.box-body{padding:12px 14px;font-size:14.5px;line-height:1.7}
-.box-body p{margin:0}
-.box-body b{color:var(--red);font-weight:700}
-.box-body em{font-style:normal;background:var(--cream);padding:0 3px;border-radius:3px}
-.rules{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-.rules li{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;font-size:14.5px;line-height:1.6}
-.rules li i{font-family:var(--font-display);font-style:normal;width:28px;height:28px;border-radius:8px;background:var(--sky-soft);border:1.5px solid var(--navy);color:var(--navy);display:grid;place-items:center;font-size:14px;margin-top:1px}
-.deadline{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--navy)}
-.deadline::before{content:"⏰"}
-
-/* ---------- people grid ---------- */
 .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 @media (min-width:600px){.pgrid{grid-template-columns:repeat(4,1fr)}}
-.pcard{color:var(--ink);background:var(--card);border:1.5px solid #c7cbbf;border-radius:16px;padding:10px 8px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;
-  transition:transform .15s,background .15s,border-color .15s,box-shadow .15s;-webkit-tap-highlight-color:transparent}
+.pcard{color:var(--fg);background:rgba(255,255,255,.04);border:2px solid var(--line);border-radius:18px;padding:10px 8px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;
+  transition:transform .15s,background .15s,border-color .15s;-webkit-tap-highlight-color:transparent}
 .pcard:active{transform:scale(.97)}
-.pcard.is-sel{border:2px solid var(--navy);background:var(--cream);transform:scale(1.04);box-shadow:3px 3px 0 var(--navy)}
+.pcard.is-sel{border-color:var(--accent);background:rgba(255,79,154,.16);transform:scale(1.04)}
 .pavatar{width:100%;max-width:96px;aspect-ratio:1;border-radius:16px;display:grid;place-items:center;overflow:hidden;
-  font-family:var(--font-display);font-size:22px;background:hsl(var(--h) 60% 80%);color:var(--ink);border:1.5px solid var(--line)}
+  font-family:var(--font-display);font-size:22px;background:hsl(var(--h) 72% 56%);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.35)}
 .pavatar img{width:100%;height:100%;object-fit:cover;display:block}
 .pname{font-size:13px;font-weight:700;text-align:center;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
-.bigcard{display:flex;align-items:center;gap:14px;padding:14px;border-radius:18px;background:var(--card);border:1.5px solid var(--line)}
+.bigcard{display:flex;align-items:center;gap:14px;padding:14px;border-radius:20px;background:var(--surface);border:1px solid var(--line)}
 .bigcard .pavatar{width:72px;flex:none;border-radius:50%}
 .bigcard .pname{font-size:18px;white-space:normal}
 
 .row{display:flex;gap:10px;margin-top:8px}
 .row .btn{flex:1}
-.btn{font-family:var(--font-display);font-weight:400;font-size:18px;padding:13px 18px;border-radius:14px;border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer;
-  box-shadow:4px 4px 0 var(--ink);transition:transform .12s,box-shadow .12s,opacity .15s;-webkit-tap-highlight-color:transparent}
-.btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
-.btn-primary{background:var(--mint)}
-.btn-big{font-size:21px;padding:15px 20px}
-.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:4px 4px 0 var(--ink)}
+.btn{font-weight:700;padding:14px 20px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer;transition:transform .15s,opacity .15s,filter .15s;-webkit-tap-highlight-color:transparent}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:linear-gradient(135deg,var(--accent-2),var(--accent));border-color:transparent;box-shadow:0 10px 30px rgba(255,79,154,.3)}
+.btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
 .btn.is-busy{opacity:.7;pointer-events:none}
 
 .review{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-.review li{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;background:var(--card);border:1.5px solid #c7cbbf;cursor:pointer}
+.review li{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;background:var(--surface);border:1px solid var(--line);cursor:pointer}
 .review .rq{flex:1;min-width:0}
-.review .rn{display:block;font-family:var(--font-display);font-size:12px;letter-spacing:.08em;color:var(--navy)}
-.review .rt{display:block;font-size:13px;color:var(--muted);line-height:1.4}
+.review .rn{display:block;font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--accent)}
+.review .rt{display:block;font-size:13px;color:var(--fg-muted);line-height:1.4}
 .review .rpick{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;white-space:nowrap}
 .review .rpick .pavatar{width:32px;border-radius:50%;font-size:12px}
-.err{margin:0;padding:12px 14px;border-radius:12px;background:#fdecea;border:1.5px solid var(--red);color:var(--red);font-size:14px;line-height:1.5}
+.err{margin:0;padding:12px 14px;border-radius:12px;background:rgba(255,122,122,.12);border:1px solid rgba(255,122,122,.4);color:var(--danger);font-size:14px;line-height:1.5}
 
-.done{text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;padding:30px 0 10px}
-.mark{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;font-size:34px;font-weight:900;color:var(--ink);background:var(--mint);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink)}
-.mark-muted{background:var(--paper-2)}
-.preview-note{margin:8px 0 0;font-size:12px;color:var(--muted);text-align:center}
-
-/* ---------- hills footer (in flow) ---------- */
-.hills{position:relative;width:calc(100% + max(16px,env(safe-area-inset-left,0px)) + max(16px,env(safe-area-inset-right,0px)));margin:28px calc(-1 * max(16px,env(safe-area-inset-right,0px))) 0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));height:120px}
-.hills svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.done{text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;padding:40px 0 20px}
+.mark{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;font-size:34px;font-weight:900;color:var(--bg);background:var(--gold)}
+.mark-muted{background:var(--surface-2);color:var(--fg)}
+.preview-note{margin:8px 0 0;font-size:12px;color:var(--fg-muted);text-align:center}
 
 @media (prefers-reduced-motion:reduce){.pcard,.btn,.pbar i{transition:none}}
 </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="sheep" viewBox="0 0 44 32">
-    <rect x="12" y="21" width="3" height="9" rx="1.2" fill="#2a2d28"/><rect x="18" y="22" width="3" height="8" rx="1.2" fill="#2a2d28"/>
-    <rect x="25" y="22" width="3" height="8" rx="1.2" fill="#2a2d28"/><rect x="31" y="21" width="3" height="9" rx="1.2" fill="#2a2d28"/>
-    <ellipse cx="22" cy="15" rx="15" ry="10.5" fill="#fff" stroke="#2a2d28" stroke-width="1.3"/>
-    <circle cx="35" cy="11" r="5.4" fill="#2a2d28"/><ellipse cx="31.5" cy="7.8" rx="2.6" ry="1.4" fill="#2a2d28" transform="rotate(-30 31.5 7.8)"/>
-    <circle cx="36.6" cy="10" r=".9" fill="#fff"/>
-  </symbol>
-</svg>
-
-<div class="chrome">
-  <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
-  <span class="url" id="brand">WWW.Hanyang.univ.42th.council.2026.11.28</span>
-</div>
-
 <main class="app">
-  <div id="progress-wrap" hidden>
-    <header class="top"><span id="top-title">양치기 여론조사</span><span class="prog" id="prog"></span></header>
-    <div class="pbar" style="margin-top:8px"><i id="pfill"></i></div>
-  </div>
+  <header class="top">
+    <span id="brand">우리끼리 어워즈 투표</span>
+    <span id="prog"></span>
+  </header>
+  <div class="pbar"><i id="pfill"></i></div>
 
-  <!-- INTRO -->
-  <section class="view is-active" id="v-intro">
-    <div class="hero">
-      <p class="eyebrow" id="intro-eyebrow" style="align-self:center">사SHEEP 2th 중운위 모임 · 3 ROUND</p>
-      <h1 class="title blk blk-cream" id="intro-title">양치기 여론조사</h1>
-      <div class="mascot" aria-hidden="true">
-        <span class="bubble">솔직하게<br>찍어라양</span>
-        <svg viewBox="0 0 44 32"><use href="#sheep"/></svg>
-      </div>
-    </div>
-
-    <div class="box">
-      <div class="box-head">01 &nbsp;이게 뭐냐면 <span class="x">×</span></div>
-      <div class="box-body" id="why">
-        <p><em>11월 28일(토) 대관령</em> 계모임 레크 3라운드 <b>「양치기 여론조사 결과발표」</b>에서 이 투표 결과를 한 표씩 개표합니다.</p>
-        <p>질문마다 가장 많이 지목된 사람의 <b>조에 +1점</b>, 그리고 소소한 <b>벌주</b>가 따라옵니다.</p>
-      </div>
-    </div>
-
-    <div class="box">
-      <div class="box-head">02 &nbsp;규칙 <span class="x">×</span></div>
-      <div class="box-body">
-        <ul class="rules">
-          <li><i>1</i><span><b>본인 이름</b>을 먼저 고르고 시작합니다.</span></li>
-          <li><i>2</i><span>질문마다 가장 어울리는 <b>한 명</b>을 지목합니다. 본인은 선택지에 없습니다.</span></li>
-          <li><i>3</i><span>총 <b id="rule-count">36문항</b>, 3~4분이면 끝납니다.</span></li>
-          <li><i>4</i><span>한 사람당 <b>한 번만</b> 제출할 수 있고, 제출 후엔 수정이 안 됩니다. 투표 내용은 행사 당일 결과 발표에서만 공개됩니다.</span></li>
-        </ul>
-      </div>
-    </div>
-
-    <p class="deadline" id="deadline-note" hidden></p>
-    <div class="row"><button class="btn btn-primary btn-big" id="intro-start" type="button">투표 시작하기</button></div>
-  </section>
-
-  <section class="view" id="v-who">
+  <section class="view is-active" id="v-who">
     <p class="eyebrow">시작</p>
     <h1 class="h">본인 이름을 골라주세요</h1>
     <p class="help">이름당 한 번만 제출할 수 있어요.</p>
     <div class="pgrid" id="who-grid"></div>
-    <div class="row"><button class="btn" id="who-back" type="button">← 안내로</button></div>
   </section>
 
   <section class="view" id="v-confirm">
@@ -250,57 +152,26 @@ button:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
   </section>
 </main>
 
-<div class="hills" aria-hidden="true">
-  <svg viewBox="0 0 1600 200" preserveAspectRatio="none">
-    <path d="M0 120 C200 70 380 140 560 95 C740 50 900 120 1080 85 C1260 50 1420 110 1600 70 L1600 200 L0 200 Z" fill="#d9e7c9"/>
-    <path d="M0 150 C220 110 400 170 600 135 C800 100 980 160 1180 125 C1360 95 1480 150 1600 120 L1600 200 L0 200 Z" fill="#a8c2d6"/>
-    <path d="M0 168 C260 140 520 185 780 160 C1040 135 1300 180 1600 150 L1600 200 L0 200 Z" fill="#6aa84f"/>
-    <path d="M0 184 C300 170 600 196 900 180 C1200 165 1400 192 1600 178 L1600 200 L0 200 Z" fill="#5f9d3f"/>
-  </svg>
-  <svg viewBox="0 0 1600 200" preserveAspectRatio="xMidYMax slice">
-    <use href="#sheep" x="560" y="150" width="60" height="44"/>
-    <use href="#sheep" x="700" y="164" width="40" height="30"/>
-    <use href="#sheep" x="860" y="154" width="54" height="40"/>
-    <use href="#sheep" x="1000" y="166" width="38" height="28"/>
-  </svg>
-</div>
-
 <script src="config.js"></script>
 <script>
 (function(){
   'use strict';
   const $ = s => document.querySelector(s);
-  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const CONFIG = window.AWARDS_CONFIG;
   if (!CONFIG || !Array.isArray(CONFIG.people) || !Array.isArray(CONFIG.questions)) {
     document.querySelector('.app').innerHTML = '<p class="err">config.js를 찾지 못했어요. index.html과 같은 폴더에 config.js가 있어야 합니다.</p>';
     return;
   }
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const STORE_KEY = 'awards_vote_done_v1';
   const PEOPLE = CONFIG.people.map((p, i) => Object.assign({ hue: Math.round((i * 137.508) % 360) }, p));
   const Q = CONFIG.questions;
   const N = Q.length;
   const PREVIEW = !CONFIG.endpoint;
-  const TITLE = CONFIG.title || '양치기 여론조사';
 
   let voter = null, qi = 0, picks = new Array(N).fill(0);
 
-  $('#brand').textContent = CONFIG.chromeUrl || TITLE;
-  $('#top-title').textContent = TITLE;
-  $('#intro-title').textContent = TITLE;
-  if (CONFIG.subtitle) $('#intro-eyebrow').textContent = CONFIG.subtitle + ' · 3 ROUND';
-  $('#rule-count').textContent = N + '문항';
-  if (CONFIG.eventDate || CONFIG.eventPlace) {
-    const em = $('#why em'); if (em) em.textContent = [CONFIG.eventDate, CONFIG.eventPlace].filter(Boolean).join(' ');
-  }
-  if (CONFIG.deadline) {
-    const d = new Date(CONFIG.deadline);
-    if (!isNaN(d)) {
-      const days = ['일', '월', '화', '수', '목', '금', '토'];
-      $('#deadline-note').textContent = '마감: ' + (d.getMonth() + 1) + '월 ' + d.getDate() + '일(' + days[d.getDay()] + ') ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
-      $('#deadline-note').hidden = false;
-    }
-  }
+  $('#brand').textContent = CONFIG.title + ' 투표';
 
   function byId(id){ return PEOPLE.find(p => p.id === id); }
   function avatarHTML(p, extra){
@@ -311,11 +182,7 @@ button:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
     return '<button type="button" class="pcard' + (selected ? ' is-sel' : '') + '" data-id="' + p.id + '">' +
       avatarHTML(p) + '<span class="pname">' + esc(p.name) + '</span></button>';
   }
-  function show(id){
-    document.querySelectorAll('.view').forEach(v => v.classList.toggle('is-active', v.id === id));
-    $('#progress-wrap').hidden = (id === 'v-intro' || id === 'v-closed');
-    window.scrollTo(0, 0);
-  }
+  function show(id){ document.querySelectorAll('.view').forEach(v => v.classList.toggle('is-active', v.id === id)); window.scrollTo(0, 0); }
   function progress(step){
     $('#pfill').style.width = (step / N * 100) + '%';
     $('#prog').textContent = step > 0 ? step + ' / ' + N : '';
@@ -323,10 +190,6 @@ button:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
   function closed(){ return CONFIG.deadline && Date.now() > new Date(CONFIG.deadline).getTime(); }
   function readDone(){ try { return JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); } catch (e) { return null; } }
   function writeDone(v){ try { localStorage.setItem(STORE_KEY, JSON.stringify(v)); } catch (e) {} }
-
-  /* ---- 0. 안내 ---- */
-  $('#intro-start').addEventListener('click', () => { if (closed()) { show('v-closed'); return; } renderWho(); });
-  $('#who-back').addEventListener('click', () => { voter = null; show('v-intro'); });
 
   /* ---- 1. 본인 선택 ---- */
   function renderWho(){
@@ -416,7 +279,7 @@ button:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
     progress(N); show('v-done');
     return;
   }
-  show('v-intro');
+  renderWho();
 })();
 </script>
 </body>
