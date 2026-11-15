@@ -6,7 +6,7 @@
 <title>우리끼리 어워즈</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
 <style>
-/* Layout: one full-viewport stage at a time — intro → roster grid (6×3) with HUD above and a result band below → finale.
+/* Layout: one full-viewport stage at a time — intro → roster grid with HUD above and a result band below → finale.
    Operator-only settings live in an overlay (S key / gear) so the TV never shows them. Single dark "award show" look. */
 :root{
   --bg:#0b0a1f;
@@ -71,45 +71,49 @@ kbd{font-family:var(--font-body);font-weight:700;color:var(--fg);background:var(
 .hud-hint{color:var(--gold);text-align:center;transition:opacity .3s}
 .hud-hint.is-hidden{visibility:hidden}
 .hud-prog{text-align:right;font-variant-numeric:tabular-nums}
-.q-head{display:flex;align-items:center;gap:clamp(10px,1.4vw,22px);flex-wrap:wrap}
+.q-head{display:flex;align-items:flex-start;gap:clamp(10px,1.4vw,22px)}
 .q-badge{flex:none;font-family:var(--font-display);font-size:clamp(20px,2.6vw,38px);line-height:1.25;color:var(--bg);background:var(--gold);padding:2px 14px;border-radius:12px}
-.q-text{margin:0;min-width:0;font-family:var(--font-display);font-weight:400;font-size:clamp(26px,3.9vw,58px);line-height:1.15;letter-spacing:-.01em;text-wrap:balance}
+.q-text{flex:1;margin:0;min-width:0;font-family:var(--font-display);font-weight:400;font-size:clamp(24px,3.5vw,54px);line-height:1.15;letter-spacing:-.01em;word-break:keep-all;overflow-wrap:anywhere;text-wrap:pretty}
 
-.grid{flex:1;min-height:0;display:grid;grid-template-columns:repeat(var(--cols,6),1fr);grid-auto-rows:minmax(0,1fr);gap:clamp(8px,1.1vw,16px)}
-.card{position:relative;min-height:0;min-width:0;overflow:hidden;display:grid;grid-template-columns:auto 1fr auto;grid-template-rows:auto auto;align-content:center;align-items:center;
-  column-gap:clamp(8px,.9vw,14px);row-gap:clamp(6px,.9vh,12px);padding:clamp(8px,1.1vw,18px);border-radius:18px;background:var(--surface);border:1px solid var(--line);
-  transition:transform .28s cubic-bezier(.2,.8,.2,1.3),background .2s,opacity .55s,box-shadow .3s,filter .55s,border-color .3s}
-.avatar{width:clamp(34px,min(3.6vw,7vh),68px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;overflow:hidden;font-family:var(--font-display);font-size:clamp(13px,1.4vw,24px);
-  background:hsl(var(--h) 72% 56%);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.35)}
-.avatar img{width:100%;height:100%;object-fit:cover;display:block}
-.name{min-width:0;font-weight:700;font-size:clamp(12px,1.15vw,19px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.count{font-family:var(--font-display);font-variant-numeric:tabular-nums;font-size:clamp(22px,2.7vw,46px);line-height:1;min-width:1.1em;text-align:right;transition:color .3s}
-.bar{grid-column:1 / -1;height:clamp(7px,.7vw,11px);border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
+.grid{flex:1;min-height:0;display:grid;grid-template-columns:repeat(var(--cols,5),minmax(0,1fr));grid-auto-rows:minmax(0,1fr);gap:clamp(7px,1.1vh,14px)}
+.card{position:relative;min-height:0;min-width:0;overflow:hidden;display:grid;grid-template-rows:minmax(0,1fr) auto auto;
+  gap:clamp(3px,.65vh,8px);padding:clamp(4px,.8vh,10px);border-radius:clamp(10px,1vw,18px);background:var(--surface);border:1px solid var(--line);
+  transition:transform .28s cubic-bezier(.2,.8,.2,1.3),background .2s,box-shadow .3s,border-color .3s}
+.photo-slot{min-height:0;display:flex;justify-content:center}
+.avatar{position:relative;height:100%;max-width:100%;aspect-ratio:5 / 4;border-radius:clamp(5px,.55vw,11px);display:grid;place-items:center;overflow:hidden;
+  font-family:var(--font-display);font-size:clamp(15px,1.7vw,26px);background:hsl(var(--h) 72% 56%);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.35)}
+.avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 18%;display:block}
+.card-meta{min-width:0;display:flex;align-items:baseline;justify-content:center;gap:clamp(5px,1vw,16px)}
+.name{min-width:0;font-weight:700;font-size:clamp(12px,min(1.45vw,2.5vh),26px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.votes{display:inline-flex;align-items:baseline;gap:.18em;white-space:nowrap;font-weight:700;font-size:clamp(10px,1.3vh,16px)}
+.count{font-family:var(--font-display);font-variant-numeric:tabular-nums;font-size:clamp(20px,min(2.4vw,3.8vh),44px);line-height:1;transition:color .3s}
+.bar{height:clamp(3px,.55vh,6px);border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
 .bar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--accent-2),var(--accent));transition:width .38s cubic-bezier(.2,.8,.2,1)}
 
 .count.is-pop{animation:pop .38s cubic-bezier(.2,.8,.2,1.4)}
 @keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.5);color:var(--gold)}100%{transform:scale(1)}}
-.card.is-hit{transform:scale(1.05);background:var(--surface-2);box-shadow:0 0 0 2px rgba(255,209,102,.65),0 12px 34px rgba(124,92,255,.35);z-index:1}
+.card.is-hit{transform:scale(1.02);background:var(--surface-2);box-shadow:0 0 0 2px rgba(255,209,102,.65),0 12px 34px rgba(124,92,255,.35);z-index:1}
 .plus{position:absolute;right:clamp(8px,1vw,16px);top:4px;font-family:var(--font-display);color:var(--gold);font-size:clamp(14px,1.5vw,24px);pointer-events:none;animation:rise .85s ease-out forwards}
 @keyframes rise{0%{opacity:0;transform:translateY(6px)}20%{opacity:1}100%{opacity:0;transform:translateY(-36px)}}
 
-.card.is-lose{opacity:.25;filter:grayscale(.65)}
-.card.is-win{transform:scale(1.08);z-index:2;border-color:var(--gold);background:linear-gradient(135deg,rgba(255,209,102,.24),rgba(255,79,154,.18));
+.card.is-lose .avatar{opacity:.72;filter:grayscale(.35)}
+.card.is-win{transform:scale(1.02);z-index:2;border-color:var(--gold);background:linear-gradient(135deg,rgba(255,209,102,.24),rgba(255,79,154,.18));
   animation:winpulse 1.5s ease-in-out infinite}
 .card.is-win .count{color:var(--gold)}
 .card.is-win .bar i{background:linear-gradient(90deg,var(--gold-deep),var(--gold))}
 .card.is-win::after{content:'👑';position:absolute;top:-4px;left:-4px;font-size:clamp(18px,2vw,32px);transform:rotate(-16deg);filter:drop-shadow(0 4px 8px rgba(0,0,0,.45))}
 @keyframes winpulse{0%,100%{box-shadow:0 0 0 2px var(--gold),0 18px 50px rgba(255,209,102,.3)}50%{box-shadow:0 0 0 4px var(--gold),0 22px 70px rgba(255,209,102,.6)}}
 
-.result{min-height:clamp(66px,11vh,114px);display:grid;place-items:center}
-.result-inner{display:flex;flex-direction:column;align-items:center;gap:4px;padding:clamp(8px,1.2vh,14px) clamp(22px,3vw,44px);border-radius:22px;
+.result{min-height:clamp(42px,6.8vh,74px);display:grid;place-items:center}
+.result-inner{display:none;justify-content:center;align-items:center;gap:5px clamp(10px,1.8vw,30px);padding:clamp(5px,.7vh,9px) clamp(12px,2vw,32px);border-radius:14px;
   background:rgba(11,10,31,.86);border:1px solid var(--gold);box-shadow:0 18px 70px rgba(255,209,102,.3);backdrop-filter:blur(10px);
-  opacity:0;transform:translateY(18px) scale(.9);transition:opacity .45s,transform .55s cubic-bezier(.2,.8,.2,1.25)}
-.result.is-on .result-inner{opacity:1;transform:none}
+  max-width:100%}
+.result.is-on .result-inner{display:flex}
 .result.is-empty .result-inner{border-color:var(--line);box-shadow:none}
-.result-label{color:var(--gold);font-weight:900;letter-spacing:.2em;font-size:clamp(11px,1vw,14px)}
-.result-names{font-family:var(--font-display);font-size:clamp(26px,3.6vw,54px);line-height:1.1;text-align:center;text-wrap:balance;
+.result-label{flex:none;color:var(--gold);font-weight:900;letter-spacing:.12em;font-size:clamp(11px,1vw,14px)}
+.result-names{font-family:var(--font-display);font-size:clamp(20px,min(2.5vw,4vh),40px);line-height:1.15;text-align:center;word-break:keep-all;text-wrap:balance;
   background:linear-gradient(180deg,#fff,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.result.is-many .result-names{font-size:clamp(14px,1.45vw,24px)}
 
 /* ---------- controls / overlay / fx ---------- */
 .ctrl{position:fixed;z-index:60;display:flex;gap:8px;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 12px)}
@@ -134,14 +138,16 @@ kbd{font-family:var(--font-body);font-weight:700;color:var(--fg);background:var(
 .btn-sm{padding:10px 16px;font-size:14px}
 
 @media (max-width:860px){
-  .grid{grid-template-columns:repeat(3,1fr);grid-auto-rows:minmax(64px,auto);overflow-y:auto;align-content:start;padding-bottom:4px}
+  .grid{grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:clamp(120px,31vw,172px);overflow-y:auto;align-content:start;padding:3px}
   .hud{grid-template-columns:1fr auto}
   .hud-hint{grid-column:1 / -1;order:3;text-align:left}
-  .card.is-win{transform:scale(1.03)}
+  #s-show{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 55px)}
+  .result-inner{flex-wrap:wrap}
 }
 @media (prefers-reduced-motion:reduce){
-  .card,.bar i,.result-inner{transition:none}
+  .card,.bar i{transition:none}
   .count.is-pop,.card.is-win,.plus{animation:none}
+  #fx{display:none}
 }
 </style>
 </head>
@@ -251,7 +257,7 @@ kbd{font-family:var(--font-body);font-weight:700;color:var(--fg);background:var(
   const TITLE = CONFIG.title || '우리끼리 어워즈';
   $('#hud-brand').textContent = TITLE;
   $('#title-main').innerHTML = esc(TITLE).replace(/\s+/, '<br>');
-  const STORE_RESULTS = 'awards_results_v1', STORE_KEY = 'awards_admin_key', STORE_HINTS = 'awards_hints';
+  const STORE_RESULTS = 'awards_results_v2', STORE_KEY = 'awards_admin_key', STORE_HINTS = 'awards_hints';
   const lsGet = k => { try { return localStorage.getItem(k); } catch (e) { return null; } };
   const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
 
@@ -407,11 +413,12 @@ kbd{font-family:var(--font-body);font-weight:700;color:var(--fg);background:var(
   function shuffle(a){ for (let i = a.length - 1; i > 0; i--) { const j = (Math.random() * (i + 1)) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; }
   function avatarHTML(p){
     const inner = p.photo ? '<img src="' + esc(p.photo) + '" alt="">' : pad2(p.id);
-    return '<div class="avatar" style="--h:' + p.hue + '">' + inner + '</div>';
+    return '<div class="photo-slot"><div class="avatar" style="--h:' + p.hue + '">' + inner + '</div></div>';
   }
   function cardHTML(p){
     return '<div class="card" data-id="' + p.id + '">' + avatarHTML(p) +
-      '<div class="name">' + esc(p.name) + '</div><div class="count">0</div><div class="bar"><i></i></div></div>';
+      '<div class="card-meta"><span class="name">' + esc(p.name) + '</span>' +
+      '<span class="votes"><span class="count">0</span>표</span></div><div class="bar"><i></i></div></div>';
   }
   function loadQuestion(){
     clearTimeout(timer);
@@ -423,7 +430,7 @@ kbd{font-family:var(--font-body);font-weight:700;color:var(--fg);background:var(
     const L = Q[qi].length;
     $('#qtext').style.fontSize = L > 60 ? 'clamp(18px,2.1vw,32px)' : L > 38 ? 'clamp(22px,2.8vw,42px)' : '';
     grid.innerHTML = PEOPLE.map(cardHTML).join('');
-    result.classList.remove('is-on', 'is-empty');
+    result.classList.remove('is-on', 'is-empty', 'is-many');
     hint.textContent = 'Space 또는 클릭으로 개표 시작';
     phase = 'ready'; fast = false;
     showScreen('s-show');
@@ -470,6 +477,7 @@ kbd{font-family:var(--font-body);font-weight:700;color:var(--fg);background:var(
     grid.querySelectorAll('.card').forEach(c => c.classList.add(counts[c.dataset.id] === max ? 'is-win' : 'is-lose'));
     $('#rlabel').textContent = (winners.length > 1 ? '공동 1위 · ' : 'WINNER · ') + max + '표';
     $('#rnames').textContent = winners.map(w => w.name).join(' & ');
+    result.classList.toggle('is-many', winners.length > 4);
     result.classList.add('is-on');
     fanfare(); celebrate(winners.length > 1);
   }
