@@ -4,298 +4,191 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>양치기 여론조사 투표</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700;900&family=VT323&display=swap">
 <style>
-:root {
-  --paper: #faf8f3;
-  --card: #fff;
-  --ink: #26251f;
-  --muted: #655f57;
-  --line: #dedad0;
-  --coral: #ff6768;
-  --coral-ink: #a52c3b;
-  --blush: #ffe4e3;
-  --green: #31452e;
-  --font: 'Noto Sans KR', system-ui, sans-serif;
-  color-scheme: light;
+/* Layout: phone-first single column inside a fake browser window on textured paper (matches the 사SHEEP 2th deck).
+   One view at a time: intro (why + rules) → who → confirm → question ×N → review → done / closed. Hills + sheep close the page. */
+:root{
+  --paper:#f4f4ef;
+  --paper-2:#ebebe5;
+  --ink:#1f231f;
+  --line:#5f6b52;
+  --muted:#6f766a;
+  --card:#ffffff;
+  --mint:#c6e2b3;
+  --mint-soft:#eaf4e1;
+  --sky:#a9d2f2;
+  --sky-soft:#dcecfa;
+  --cream:#fff2b8;
+  --navy:#2f3a8f;
+  --red:#c0392b;
+  --dot-r:#ff5f57; --dot-y:#febc2e; --dot-g:#28c840;
+  --font-display:'Jua','Noto Sans KR',system-ui,sans-serif;
+  --font-body:'Noto Sans KR',system-ui,-apple-system,sans-serif;
+  --font-mono:'VT323',ui-monospace,monospace;
+  --chrome:46px;
+  --o:.035em; --on:-.035em; --d:.08em;
+  --blk:var(--on) var(--on) 0 var(--ink), var(--o) var(--on) 0 var(--ink), var(--on) var(--o) 0 var(--ink), var(--o) var(--o) 0 var(--ink),
+        0 var(--on) 0 var(--ink), 0 var(--o) 0 var(--ink), var(--on) 0 0 var(--ink), var(--o) 0 0 var(--ink), var(--d) var(--d) 0 var(--ink);
+  color-scheme:light;
 }
-* { box-sizing: border-box }
-[hidden] { display: none !important }
-html { scroll-padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px)) }
-body {
-  margin: 0;
-  background: var(--paper);
-  color: var(--ink);
-  font-family: var(--font);
-  word-break: keep-all;
-  overflow-wrap: anywhere;
-  padding: env(safe-area-inset-top, 0px) max(16px, env(safe-area-inset-right, 0px))
-    env(safe-area-inset-bottom, 0px) max(16px, env(safe-area-inset-left, 0px));
-}
-button { font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent }
-button:focus-visible { outline: 3px solid var(--green); outline-offset: 3px }
-h1:focus { outline: none }
-.app { max-width: 520px; margin-inline: auto }
-.masthead {
-  min-height: 57px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  border-bottom: 1px solid var(--line);
-  font-size: 12px;
-  color: var(--muted);
-}
-.masthead-brand { color: var(--green); font-size: 14px; font-weight: 900; letter-spacing: -.035em }
-.masthead-brand > span:first-child { margin-right: 3px }
-#event-meta { text-align: right }
-.view { display: none; flex-direction: column; gap: 12px; padding: 20px 0 28px }
-.view.is-active { display: flex }
-.h { margin: 0; font-size: clamp(24px, 6.1vw, 32px); font-weight: 900; line-height: 1.33; letter-spacing: -.055em; text-wrap: balance }
-.help { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.65; text-wrap: pretty }
-.eyebrow {
-  margin: 0;
-  color: var(--coral-ink);
-  font-size: 12px;
-  line-height: 1.5;
-  font-weight: 800;
-}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{min-height:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);-webkit-font-smoothing:antialiased;
+  background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .25 0 0 0 0 .25 0 0 0 0 .2 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:calc(env(safe-area-inset-top,0px) + var(--chrome) + 16px) 0}
+button{font:inherit}
+button:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
 
-/* The introduction follows the photo-and-caption format of the trip notices. */
-#v-intro { gap: 0 }
-.hero-media {
-  position: relative;
-  overflow: hidden;
-  aspect-ratio: 1.63;
-  background: #dbe5cf;
-  border: 2px solid var(--ink);
-  border-radius: 20px;
-}
-.hero-media img { display: block; width: 100%; height: 100%; object-fit: cover }
-.bubble {
-  position: absolute;
-  left: 6%;
-  top: 16%;
-  max-width: 42%;
-  padding: 9px 14px;
-  border: 2px solid var(--ink);
-  border-radius: 50%;
-  background: var(--card);
-  box-shadow: 2px 3px 0 var(--ink);
-  font: 400 clamp(15px, 4.3vw, 22px)/1.14 'Jua', var(--font);
-  text-align: center;
-  text-wrap: balance;
-  transform: rotate(-7deg);
-}
-.bubble::after {
-  content: '';
-  position: absolute;
-  right: 9%;
-  bottom: -5px;
-  width: 10px;
-  height: 10px;
-  border-right: 2px solid var(--ink);
-  border-bottom: 2px solid var(--ink);
-  background: var(--card);
-  transform: skew(18deg, 18deg) rotate(16deg);
-}
-.hero-copy { padding: 20px 0 23px }
-.hero-copy .eyebrow { display: flex; align-items: center; gap: 9px; color: var(--green) }
-.hero-copy .eyebrow > span:first-child {
-  flex: none;
-  padding: 3px 8px;
-  background: var(--green);
-  color: #fff;
-  border-radius: 4px;
-  letter-spacing: .08em;
-}
-.hero-title {
-  margin: 10px 0 6px;
-  font-size: clamp(34px, 10.15vw, 57px);
-  font-weight: 900;
-  line-height: 1.16;
-  letter-spacing: -.07em;
-  text-wrap: balance;
-}
-.hero-title strong { color: var(--coral-ink); background: linear-gradient(transparent 57%, var(--blush) 57%); font-weight: inherit }
-.hero-copy .help { font-size: 15px }
-.deadline { margin: 12px 0 0; color: var(--coral-ink); font-size: 14px; font-weight: 800 }
-.intro-info { padding: 17px 16px; border: 1px solid var(--line); border-radius: 15px; background: var(--card); font-size: 14px; line-height: 1.65 }
-.intro-info h2 { margin: 0 0 9px; font-size: 16px; font-weight: 900 }
-#why { display: grid; gap: 4px }
-#why p { margin: 0 }
-#why em { background: var(--blush); font-style: normal; font-weight: 800 }
-.intro-info b { color: var(--coral-ink) }
-.rules { margin: 12px 0 0; padding: 10px 0 0 1.25em; border-top: 1px solid var(--line) }
-.rules li + li { margin-top: 5px }
-.rules li::marker { color: var(--coral-ink) }
+.blk{font-family:var(--font-display);font-weight:400;line-height:1.08;text-shadow:var(--blk)}
+.blk-mint{color:var(--mint)} .blk-sky{color:var(--sky)} .blk-cream{color:var(--cream)}
 
-#progress-wrap { padding-top: 13px }
-.top { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 700; color: var(--muted) }
-.top .prog { color: var(--coral-ink); font-weight: 900; font-variant-numeric: tabular-nums }
-.pbar { height: 5px; margin-top: 7px; border-radius: 99px; background: #e9e2d9; overflow: hidden }
-.pbar i { display: block; height: 100%; width: 0; border-radius: inherit; background: var(--coral-ink); transition: width .25s }
-#v-q { padding-top: 13px }
-.question {
-  display: grid;
-  gap: 7px;
-  padding: 13px 15px 15px;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-left: 4px solid var(--coral);
-  border-radius: 13px;
-}
-#q-text { font-size: clamp(22px, 5.8vw, 28px); line-height: 1.41; text-wrap: pretty }
+/* ---------- browser chrome ---------- */
+.chrome{position:fixed;left:0;right:0;top:0;z-index:40;height:calc(env(safe-area-inset-top,0px) + var(--chrome));
+  padding-top:env(safe-area-inset-top,0px);padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px));
+  display:flex;align-items:center;gap:8px;background:var(--paper-2);border-bottom:1.5px solid #cfd0c8}
+.dot{width:11px;height:11px;border-radius:50%;flex:none;border:1px solid rgba(0,0,0,.15)}
+.dot.r{background:var(--dot-r)} .dot.y{background:var(--dot-y)} .dot.g{background:var(--dot-g)}
+.url{flex:1;min-width:0;margin-left:4px;height:30px;display:flex;align-items:center;padding:0 12px;border-radius:999px;background:#fff;border:1.5px solid #c9cac2;
+  font-family:var(--font-mono);font-size:17px;color:#4a4f46;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-.pgrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px }
-.pcard {
-  position: relative;
-  display: grid;
-  justify-items: center;
-  gap: 4px;
-  min-width: 0;
-  padding: 5px 5px 6px;
-  background: var(--card);
-  color: var(--ink);
-  border: 2px solid var(--line);
-  border-radius: 12px;
-}
-.pcard:active { scale: .97 }
-.pcard.is-sel { border-color: var(--coral-ink); background: var(--blush) }
-.pcard.is-sel::after {
-  content: '✓';
-  position: absolute;
-  top: 2px;
-  right: 2px;
-  display: grid;
-  place-items: center;
-  width: 20px;
-  height: 20px;
-  background: var(--coral-ink);
-  color: #fff;
-  border: 1px solid #fff;
-  border-radius: 50%;
-  font-size: 12px;
-  font-weight: 900;
-}
-.pavatar {
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  width: min(100%, 62px);
-  aspect-ratio: 1;
-  border-radius: 8px;
-  background: hsl(var(--h) 45% 84%);
-  font-weight: 900;
-}
-.pavatar img { display: block; width: 100%; height: 100%; object-fit: cover }
-#q-grid .pavatar { width: min(100%, 54px) }
-#q-grid .pcard { padding-block: 4px 5px }
-.pname { font-size: 13px; line-height: 1.35; font-weight: 800; text-align: center }
-.bigcard { display: flex; align-items: center; gap: 14px; padding: 12px; border: 1px solid var(--line); border-radius: 14px; background: var(--card) }
-.bigcard .pavatar { width: 68px }
-.bigcard .pname { font-size: 18px }
-.row { display: flex; gap: 9px; margin-top: 5px }
-.row .btn { flex: 1 }
-.btn {
-  min-height: 48px;
-  padding: 9px 11px;
-  border: 2px solid var(--ink);
-  border-radius: 12px;
-  background: var(--card);
-  color: var(--ink);
-  font-weight: 800;
-  font-size: 14px;
-  box-shadow: 0 3px 0 var(--ink);
-}
-.btn-primary { background: var(--coral); color: #271c19 }
-.btn:active:not(:disabled) { translate: 0 2px; box-shadow: 0 1px 0 var(--ink) }
-.btn:disabled, .btn.is-busy { background: #ece7df; border-color: #d7d0c4; color: var(--muted); box-shadow: none; cursor: default }
-.btn.is-busy { pointer-events: none }
-.btn-big { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 16px; min-height: 54px; padding: 10px 16px; font-size: 17px }
-.btn-big span:last-child { font-size: 23px; line-height: 1 }
-.action-dock {
-  position: sticky;
-  z-index: 2;
-  bottom: 0;
-  margin: 2px -5px -28px;
-  padding: 9px 5px calc(12px + env(safe-area-inset-bottom, 0px));
-  border-top: 1px solid var(--line);
-  background: var(--paper);
-}
-.action-dock > .row { margin-top: 0 }
-.action-dock .err { margin-bottom: 8px }
-.review { display: grid; gap: 8px; list-style: none; margin: 0; padding: 0 }
-.review button {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  padding: 10px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--card);
-  color: var(--ink);
-  text-align: left;
-}
-.review .rq { display: grid; gap: 3px }
-.review .rn { color: var(--coral-ink); font-size: 12px; font-weight: 900 }
-.review .rt { font-size: 13px; line-height: 1.5; text-wrap: pretty }
-.review .rpick { display: flex; align-items: center; gap: 5px; white-space: nowrap; font-size: 12px; font-weight: 800 }
-.review .pavatar { width: 25px; border-radius: 50% }
-.edit-arrow { color: var(--coral-ink); font-size: 20px }
-.err { margin: 0; padding: 10px 12px; border-radius: 10px; background: var(--blush); color: var(--coral-ink); font-size: 14px }
-.done { padding: 30px 0; display: grid; justify-items: center; gap: 12px; text-align: center }
-.mark { display: grid; place-items: center; width: 58px; height: 58px; border-radius: 50%; background: var(--blush); color: var(--coral-ink); font-size: 29px; font-weight: 900 }
-.mark-muted { background: #eee8de }
-.preview-note { margin: 0; font-size: 12px; color: var(--muted) }
-@media (max-width: 350px) {
-  .pgrid { gap: 5px }
-  .pcard { padding-inline: 3px }
-  .pname, .masthead { font-size: 12px }
-  .masthead-brand { font-size: 13px }
-}
-@media (prefers-reduced-motion: reduce) { .pbar i { transition: none } }
+.app{max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:14px;position:relative;z-index:1}
+.top{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--muted);font-variant-numeric:tabular-nums}
+.top .prog{font-family:var(--font-display);font-size:16px;color:var(--ink);letter-spacing:0}
+.pbar{height:8px;border-radius:99px;background:#fff;border:1.5px solid var(--line);overflow:hidden}
+.pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--mint),var(--sky));transition:width .3s}
+
+.view{display:none;flex-direction:column;gap:12px;padding-top:4px}
+.view.is-active{display:flex}
+.eyebrow{margin:0;align-self:flex-start;font-family:var(--font-display);font-size:13px;letter-spacing:.06em;color:var(--navy);background:var(--sky-soft);border:1.5px solid var(--navy);padding:3px 12px;border-radius:999px}
+.h{margin:0;font-family:var(--font-display);font-weight:400;font-size:clamp(26px,7vw,34px);line-height:1.2;text-wrap:balance}
+.help{margin:0 0 6px;color:var(--muted);font-size:14px;line-height:1.6}
+
+/* ---------- intro ---------- */
+.hero{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:10px 0 4px}
+.hero .title{margin:0;font-size:clamp(40px,11vw,56px);text-wrap:balance}
+.mascot{position:relative;width:min(100%,260px);margin:6px auto 0}
+.mascot svg{width:58%;display:block;margin-left:auto}
+.bubble{position:absolute;left:0;top:4px;max-width:50%;font-family:var(--font-display);font-size:15px;line-height:1.3;color:var(--ink);text-align:left;word-break:keep-all;
+  background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:8px 12px}
+.bubble::after{content:"";position:absolute;right:-8px;bottom:9px;width:12px;height:12px;background:#fff;border-right:1.5px solid var(--line);border-bottom:1.5px solid var(--line);transform:skewX(30deg) rotate(-20deg)}
+.box{background:var(--card);border:1.5px solid var(--line);border-radius:16px;overflow:hidden}
+.box-head{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--mint-soft);border-bottom:1.5px solid var(--line);font-family:var(--font-display);font-size:16px}
+.box-head .x{margin-left:auto;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--red);color:var(--red);font-size:10px;display:grid;place-items:center}
+.box-body{padding:12px 14px;font-size:14.5px;line-height:1.7}
+.box-body p{margin:0}
+.box-body b{color:var(--red);font-weight:700}
+.box-body em{font-style:normal;background:var(--cream);padding:0 3px;border-radius:3px}
+.rules{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.rules li{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;font-size:14.5px;line-height:1.6}
+.rules li i{font-family:var(--font-display);font-style:normal;width:28px;height:28px;border-radius:8px;background:var(--sky-soft);border:1.5px solid var(--navy);color:var(--navy);display:grid;place-items:center;font-size:14px;margin-top:1px}
+.deadline{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--navy)}
+.deadline::before{content:"⏰"}
+
+/* ---------- people grid ---------- */
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media (min-width:600px){.pgrid{grid-template-columns:repeat(4,1fr)}}
+.pcard{color:var(--ink);background:var(--card);border:1.5px solid #c7cbbf;border-radius:16px;padding:10px 8px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;
+  transition:transform .15s,background .15s,border-color .15s,box-shadow .15s;-webkit-tap-highlight-color:transparent}
+.pcard:active{transform:scale(.97)}
+.pcard.is-sel{border:2px solid var(--navy);background:var(--cream);transform:scale(1.04);box-shadow:3px 3px 0 var(--navy)}
+.pavatar{width:100%;max-width:96px;aspect-ratio:1;border-radius:16px;display:grid;place-items:center;overflow:hidden;
+  font-family:var(--font-display);font-size:22px;background:hsl(var(--h) 60% 80%);color:var(--ink);border:1.5px solid var(--line)}
+.pavatar img{width:100%;height:100%;object-fit:cover;display:block}
+.pname{font-size:13px;font-weight:700;text-align:center;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.bigcard{display:flex;align-items:center;gap:14px;padding:14px;border-radius:18px;background:var(--card);border:1.5px solid var(--line)}
+.bigcard .pavatar{width:72px;flex:none;border-radius:50%}
+.bigcard .pname{font-size:18px;white-space:normal}
+
+.row{display:flex;gap:10px;margin-top:8px}
+.row .btn{flex:1}
+.btn{font-family:var(--font-display);font-weight:400;font-size:18px;padding:13px 18px;border-radius:14px;border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer;
+  box-shadow:4px 4px 0 var(--ink);transition:transform .12s,box-shadow .12s,opacity .15s;-webkit-tap-highlight-color:transparent}
+.btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.btn-primary{background:var(--mint)}
+.btn-big{font-size:21px;padding:15px 20px}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:4px 4px 0 var(--ink)}
+.btn.is-busy{opacity:.7;pointer-events:none}
+
+.review{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.review li{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;background:var(--card);border:1.5px solid #c7cbbf;cursor:pointer}
+.review .rq{flex:1;min-width:0}
+.review .rn{display:block;font-family:var(--font-display);font-size:12px;letter-spacing:.08em;color:var(--navy)}
+.review .rt{display:block;font-size:13px;color:var(--muted);line-height:1.4}
+.review .rpick{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;white-space:nowrap}
+.review .rpick .pavatar{width:32px;border-radius:50%;font-size:12px}
+.err{margin:0;padding:12px 14px;border-radius:12px;background:#fdecea;border:1.5px solid var(--red);color:var(--red);font-size:14px;line-height:1.5}
+
+.done{text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;padding:30px 0 10px}
+.mark{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;font-size:34px;font-weight:900;color:var(--ink);background:var(--mint);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink)}
+.mark-muted{background:var(--paper-2)}
+.preview-note{margin:8px 0 0;font-size:12px;color:var(--muted);text-align:center}
+
+/* ---------- hills footer (in flow) ---------- */
+.hills{position:relative;width:calc(100% + max(16px,env(safe-area-inset-left,0px)) + max(16px,env(safe-area-inset-right,0px)));margin:28px calc(-1 * max(16px,env(safe-area-inset-right,0px))) 0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));height:120px}
+.hills svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+
+@media (prefers-reduced-motion:reduce){.pcard,.btn,.pbar i{transition:none}}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="sheep" viewBox="0 0 44 32">
+    <rect x="12" y="21" width="3" height="9" rx="1.2" fill="#2a2d28"/><rect x="18" y="22" width="3" height="8" rx="1.2" fill="#2a2d28"/>
+    <rect x="25" y="22" width="3" height="8" rx="1.2" fill="#2a2d28"/><rect x="31" y="21" width="3" height="9" rx="1.2" fill="#2a2d28"/>
+    <ellipse cx="22" cy="15" rx="15" ry="10.5" fill="#fff" stroke="#2a2d28" stroke-width="1.3"/>
+    <circle cx="35" cy="11" r="5.4" fill="#2a2d28"/><ellipse cx="31.5" cy="7.8" rx="2.6" ry="1.4" fill="#2a2d28" transform="rotate(-30 31.5 7.8)"/>
+    <circle cx="36.6" cy="10" r=".9" fill="#fff"/>
+  </symbol>
+</svg>
+
+<div class="chrome">
+  <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+  <span class="url" id="brand">WWW.Hanyang.univ.42th.council.2026.11.28</span>
+</div>
+
 <main class="app">
-  <header class="masthead">
-    <span class="masthead-brand"><span aria-hidden="true">🐑</span> <span id="top-title">양치기 여론조사</span></span>
-    <span id="event-meta"></span>
-  </header>
   <div id="progress-wrap" hidden>
-    <div class="top"><span>응답 진행률</span><span class="prog" id="prog"></span></div>
-    <div class="pbar" aria-hidden="true"><i id="pfill"></i></div>
+    <header class="top"><span id="top-title">양치기 여론조사</span><span class="prog" id="prog"></span></header>
+    <div class="pbar" style="margin-top:8px"><i id="pfill"></i></div>
   </div>
 
+  <!-- INTRO -->
   <section class="view is-active" id="v-intro">
-    <div class="hero-media">
-      <img src="assets/sheep.webp" alt="" width="1200" height="800" fetchpriority="high">
-      <span class="bubble">솔직하게 찍어라양!</span>
+    <div class="hero">
+      <p class="eyebrow" id="intro-eyebrow" style="align-self:center">사SHEEP 2th 중운위 모임 · 3 ROUND</p>
+      <h1 class="title blk blk-cream" id="intro-title">양치기 여론조사</h1>
+      <div class="mascot" aria-hidden="true">
+        <span class="bubble">솔직하게<br>찍어라양</span>
+        <svg viewBox="0 0 44 32"><use href="#sheep"/></svg>
+      </div>
     </div>
-    <div class="hero-copy">
-      <p class="eyebrow"><span>3 ROUND</span> <span id="intro-subtitle">사SHEEP 2th 중운위 모임</span></p>
-      <h1 class="hero-title" id="intro-title">양치기 <strong>여론조사</strong></h1>
-      <p class="help">질문마다 떠오르는 사람에게 한 표씩.</p>
-      <p class="deadline" id="deadline-note" hidden></p>
-      <button class="btn btn-primary btn-big" id="intro-start" type="button">
-        <span>투표 시작하기</span><span aria-hidden="true">→</span>
-      </button>
-    </div>
-    <div class="intro-info">
-      <h2>투표 전에 읽어주세요</h2>
-      <div id="why">
-        <p><em>11월 28일(토) 대관령</em> 레크 3라운드에서 투표 결과를 한 표씩 개표합니다.</p>
+
+    <div class="box">
+      <div class="box-head">01 &nbsp;이게 뭐냐면 <span class="x">×</span></div>
+      <div class="box-body" id="why">
+        <p><em>11월 28일(토) 대관령</em> 계모임 레크 3라운드 <b>「양치기 여론조사 결과발표」</b>에서 이 투표 결과를 한 표씩 개표합니다.</p>
         <p>질문마다 가장 많이 지목된 사람의 <b>조에 +1점</b>, 그리고 소소한 <b>벌주</b>가 따라옵니다.</p>
       </div>
-      <ul class="rules">
-        <li>본인 이름을 고른 뒤 질문마다 가장 어울리는 한 명을 지목하세요. 본인은 선택지에서 빠집니다.</li>
-        <li>총 <b id="rule-count">36문항</b>이며 약 3~4분 걸려요.</li>
-        <li>한 사람당 한 번만 제출할 수 있고 제출 후에는 수정할 수 없어요.</li>
-      </ul>
     </div>
+
+    <div class="box">
+      <div class="box-head">02 &nbsp;규칙 <span class="x">×</span></div>
+      <div class="box-body">
+        <ul class="rules">
+          <li><i>1</i><span><b>본인 이름</b>을 먼저 고르고 시작합니다.</span></li>
+          <li><i>2</i><span>질문마다 가장 어울리는 <b>한 명</b>을 지목합니다. 본인은 선택지에 없습니다.</span></li>
+          <li><i>3</i><span>총 <b id="rule-count">36문항</b>, 3~4분이면 끝납니다.</span></li>
+          <li><i>4</i><span>한 사람당 <b>한 번만</b> 제출할 수 있고, 제출 후엔 수정이 안 됩니다. 투표 내용은 행사 당일 결과 발표에서만 공개됩니다.</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="deadline" id="deadline-note" hidden></p>
+    <div class="row"><button class="btn btn-primary btn-big" id="intro-start" type="button">투표 시작하기</button></div>
   </section>
 
   <section class="view" id="v-who">
@@ -317,13 +210,11 @@ h1:focus { outline: none }
   </section>
 
   <section class="view" id="v-q">
-    <div class="question">
-      <p class="eyebrow" id="q-eyebrow">Q1</p>
-      <h1 class="h" id="q-text"></h1>
-    </div>
-    <p class="help">가장 어울리는 한 명을 골라주세요.</p>
-    <div class="pgrid" id="q-grid" role="group" aria-label="선택할 참가자"></div>
-    <div class="row action-dock">
+    <p class="eyebrow" id="q-eyebrow">Q1</p>
+    <h1 class="h" id="q-text"></h1>
+    <p class="help">가장 어울리는 한 명을 고르세요. 본인은 목록에 없어요.</p>
+    <div class="pgrid" id="q-grid"></div>
+    <div class="row">
       <button class="btn" id="q-prev" type="button">이전</button>
       <button class="btn btn-primary" id="q-next" type="button" disabled>다음</button>
     </div>
@@ -334,12 +225,10 @@ h1:focus { outline: none }
     <h1 class="h">이대로 제출할까요?</h1>
     <p class="help">항목을 누르면 다시 고를 수 있어요. 제출 후에는 바꿀 수 없습니다.</p>
     <ul class="review" id="review"></ul>
-    <div class="action-dock">
-      <p class="err" id="err" role="alert" hidden></p>
-      <div class="row">
-        <button class="btn" id="r-back" type="button">이전</button>
-        <button class="btn btn-primary" id="r-submit" type="button">제출하기</button>
-      </div>
+    <p class="err" id="err" hidden></p>
+    <div class="row">
+      <button class="btn" id="r-back" type="button">이전</button>
+      <button class="btn btn-primary" id="r-submit" type="button">제출하기</button>
     </div>
   </section>
 
@@ -361,6 +250,21 @@ h1:focus { outline: none }
   </section>
 </main>
 
+<div class="hills" aria-hidden="true">
+  <svg viewBox="0 0 1600 200" preserveAspectRatio="none">
+    <path d="M0 120 C200 70 380 140 560 95 C740 50 900 120 1080 85 C1260 50 1420 110 1600 70 L1600 200 L0 200 Z" fill="#d9e7c9"/>
+    <path d="M0 150 C220 110 400 170 600 135 C800 100 980 160 1180 125 C1360 95 1480 150 1600 120 L1600 200 L0 200 Z" fill="#a8c2d6"/>
+    <path d="M0 168 C260 140 520 185 780 160 C1040 135 1300 180 1600 150 L1600 200 L0 200 Z" fill="#6aa84f"/>
+    <path d="M0 184 C300 170 600 196 900 180 C1200 165 1400 192 1600 178 L1600 200 L0 200 Z" fill="#5f9d3f"/>
+  </svg>
+  <svg viewBox="0 0 1600 200" preserveAspectRatio="xMidYMax slice">
+    <use href="#sheep" x="560" y="150" width="60" height="44"/>
+    <use href="#sheep" x="700" y="164" width="40" height="30"/>
+    <use href="#sheep" x="860" y="154" width="54" height="40"/>
+    <use href="#sheep" x="1000" y="166" width="38" height="28"/>
+  </svg>
+</div>
+
 <script src="config.js"></script>
 <script>
 (function(){
@@ -379,14 +283,12 @@ h1:focus { outline: none }
   const PREVIEW = !CONFIG.endpoint;
   const TITLE = CONFIG.title || '양치기 여론조사';
 
-  let voter = null, qi = 0, picks = new Array(N).fill(0), editingReview = false;
+  let voter = null, qi = 0, picks = new Array(N).fill(0);
 
+  $('#brand').textContent = CONFIG.chromeUrl || TITLE;
   $('#top-title').textContent = TITLE;
-  const titleBreak = TITLE.lastIndexOf(' ');
-  $('#intro-title').innerHTML = titleBreak < 0 ? esc(TITLE)
-    : esc(TITLE.slice(0, titleBreak)) + ' <strong>' + esc(TITLE.slice(titleBreak + 1)) + '</strong>';
-  if (CONFIG.subtitle) $('#intro-subtitle').textContent = CONFIG.subtitle;
-  $('#event-meta').textContent = [CONFIG.eventDate, CONFIG.eventPlace].filter(Boolean).join(' · ');
+  $('#intro-title').textContent = TITLE;
+  if (CONFIG.subtitle) $('#intro-eyebrow').textContent = CONFIG.subtitle + ' · 3 ROUND';
   $('#rule-count').textContent = N + '문항';
   if (CONFIG.eventDate || CONFIG.eventPlace) {
     const em = $('#why em'); if (em) em.textContent = [CONFIG.eventDate, CONFIG.eventPlace].filter(Boolean).join(' ');
@@ -406,23 +308,17 @@ h1:focus { outline: none }
     return '<span class="pavatar ' + (extra || '') + '" style="--h:' + p.hue + '">' + inner + '</span>';
   }
   function cardHTML(p, selected){
-    const pressed = selected === undefined ? '' : ' aria-pressed="' + selected + '"';
-    return '<button type="button" class="pcard' + (selected ? ' is-sel' : '') + '" data-id="' + p.id + '"' + pressed + '>' +
+    return '<button type="button" class="pcard' + (selected ? ' is-sel' : '') + '" data-id="' + p.id + '">' +
       avatarHTML(p) + '<span class="pname">' + esc(p.name) + '</span></button>';
   }
   function show(id){
     document.querySelectorAll('.view').forEach(v => v.classList.toggle('is-active', v.id === id));
-    $('#progress-wrap').hidden = id !== 'v-q' && id !== 'v-review';
+    $('#progress-wrap').hidden = (id === 'v-intro' || id === 'v-closed');
     window.scrollTo(0, 0);
-    if (id !== 'v-intro') {
-      const heading = $('#' + id + ' h1');
-      heading.tabIndex = -1;
-      heading.focus({ preventScroll: true });
-    }
   }
   function progress(step){
     $('#pfill').style.width = (step / N * 100) + '%';
-    $('#prog').textContent = step + ' / ' + N;
+    $('#prog').textContent = step > 0 ? step + ' / ' + N : '';
   }
   function closed(){ return CONFIG.deadline && Date.now() > new Date(CONFIG.deadline).getTime(); }
   function readDone(){ try { return JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); } catch (e) { return null; } }
@@ -434,7 +330,7 @@ h1:focus { outline: none }
 
   /* ---- 1. 본인 선택 ---- */
   function renderWho(){
-    $('#who-grid').innerHTML = PEOPLE.map(p => cardHTML(p)).join('');
+    $('#who-grid').innerHTML = PEOPLE.map(p => cardHTML(p, false)).join('');
     progress(0); show('v-who');
   }
   $('#who-grid').addEventListener('click', e => {
@@ -449,51 +345,35 @@ h1:focus { outline: none }
 
   /* ---- 2. 질문 ---- */
   function renderQ(){
-    $('#q-eyebrow').textContent = 'Q' + String(qi + 1).padStart(2, '0');
+    $('#q-eyebrow').textContent = 'Q' + (qi + 1) + ' / ' + N;
     $('#q-text').textContent = Q[qi];
+    $('#q-text').style.fontSize = Q[qi].length > 50 ? '20px' : Q[qi].length > 30 ? '23px' : '';
     $('#q-grid').innerHTML = PEOPLE.filter(p => p.id !== voter.id).map(p => cardHTML(p, picks[qi] === p.id)).join('');
     $('#q-prev').textContent = qi === 0 ? '이름 다시 고르기' : '이전';
-    $('#q-prev').hidden = editingReview;
     $('#q-next').disabled = !picks[qi];
-    $('#q-next').textContent = editingReview ? '확인 화면으로' : qi === N - 1 ? '확인하러 가기 →' : '다음 →';
-    progress(picks.filter(Boolean).length); show('v-q');
+    $('#q-next').textContent = qi === N - 1 ? '확인하러 가기' : '다음';
+    progress(qi); show('v-q');
   }
   $('#q-grid').addEventListener('click', e => {
     const b = e.target.closest('.pcard'); if (!b) return;
     picks[qi] = +b.dataset.id;
-    $('#q-grid').querySelectorAll('.pcard').forEach(card => {
-      const selected = +card.dataset.id === picks[qi];
-      card.classList.toggle('is-sel', selected);
-      card.setAttribute('aria-pressed', String(selected));
-    });
-    progress(picks.filter(Boolean).length);
+    $('#q-grid').querySelectorAll('.pcard').forEach(c => c.classList.toggle('is-sel', +c.dataset.id === picks[qi]));
     $('#q-next').disabled = false;
   });
   $('#q-prev').addEventListener('click', () => { if (qi === 0) { voter = null; renderWho(); } else { qi--; renderQ(); } });
-  $('#q-next').addEventListener('click', () => {
-    if (!picks[qi]) return;
-    if (editingReview || qi === N - 1) renderReview();
-    else { qi++; renderQ(); }
-  });
+  $('#q-next').addEventListener('click', () => { if (!picks[qi]) return; if (qi < N - 1) { qi++; renderQ(); } else renderReview(); });
 
   /* ---- 3. 확인 ---- */
   function renderReview(){
-    editingReview = false;
     $('#review').innerHTML = Q.map((q, i) => {
       const p = byId(picks[i]);
-      return '<li><button type="button" data-i="' + i + '"><span class="rq"><span class="rn">Q' + (i + 1) + '</span><span class="rt">' + esc(q) + '</span></span>' +
-        '<span class="rpick">' + avatarHTML(p) + '<span>' + esc(p.name) + '</span><span class="edit-arrow" aria-hidden="true">›</span></span></button></li>';
+      return '<li data-i="' + i + '"><span class="rq"><span class="rn">Q' + (i + 1) + '</span><span class="rt">' + esc(q) + '</span></span>' +
+        '<span class="rpick">' + avatarHTML(p) + esc(p.name) + '</span></li>';
     }).join('');
     $('#err').hidden = true;
     progress(N); show('v-review');
   }
-  $('#review').addEventListener('click', e => {
-    const button = e.target.closest('button[data-i]');
-    if (!button) return;
-    qi = +button.dataset.i;
-    editingReview = true;
-    renderQ();
-  });
+  $('#review').addEventListener('click', e => { const li = e.target.closest('li'); if (!li) return; qi = +li.dataset.i; renderQ(); });
   $('#r-back').addEventListener('click', () => { qi = N - 1; renderQ(); });
 
   /* ---- 4. 제출 ---- */
@@ -506,11 +386,7 @@ h1:focus { outline: none }
   $('#r-submit').addEventListener('click', async () => {
     if (closed()) { show('v-closed'); return; }
     if (picks.some(p => !p || p === voter.id)) { showErr('아직 고르지 않은 질문이 있어요.'); return; }
-    const btn = $('#r-submit'), back = $('#r-back'), review = $('#review');
-    btn.classList.add('is-busy');
-    btn.disabled = back.disabled = review.inert = true;
-    btn.textContent = '제출 중…';
-    $('#err').hidden = true;
+    const btn = $('#r-submit'); btn.classList.add('is-busy'); btn.textContent = '제출 중…'; $('#err').hidden = true;
     const payload = { voterId: voter.id, voterName: voter.name, answers: picks.slice(), submittedAt: new Date().toISOString() };
     try {
       if (PREVIEW) {
@@ -527,9 +403,7 @@ h1:focus { outline: none }
     } catch (e) {
       showErr('네트워크 오류로 제출하지 못했어요. 연결을 확인하고 다시 시도해주세요.');
     } finally {
-      btn.classList.remove('is-busy');
-      btn.disabled = back.disabled = review.inert = false;
-      btn.textContent = '제출하기';
+      btn.classList.remove('is-busy'); btn.textContent = '제출하기';
     }
   });
 

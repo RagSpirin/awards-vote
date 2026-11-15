@@ -4,309 +4,232 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>양치기 여론조사 결과발표</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700;900&family=VT323&display=swap">
 <style>
-:root {
-  --paper: #faf8f3;
-  --white: #fff;
-  --ink: #26251f;
-  --muted: #655f57;
-  --line: #dedad0;
-  --green: #31452e;
-  --pale-green: #e4ebdb;
-  --coral: #ff6768;
-  --coral-ink: #a52c3b;
-  --blush: #ffe4e3;
-  --chrome: 56px;
-  --pad: clamp(16px, 2.6vw, 48px);
-  --font: 'Noto Sans KR', system-ui, sans-serif;
-  color-scheme: light;
+/* Layout: a fake browser window on textured paper (matches the 사SHEEP 2th deck). One full-viewport stage at a time:
+   intro (folders sidebar + block title + mascot) → 5×4 roster grid with result band → finale. Hills + sheep sit fixed at the bottom.
+   Single light "paper" look by design, mirroring the deck. */
+:root{
+  --paper:#f4f4ef;
+  --paper-2:#ebebe5;
+  --ink:#1f231f;
+  --line:#5f6b52;          /* olive outline */
+  --muted:#6f766a;
+  --card:#ffffff;
+  --mint:#c6e2b3;
+  --mint-soft:#eaf4e1;
+  --sky:#a9d2f2;
+  --sky-soft:#dcecfa;
+  --cream:#fff2b8;
+  --navy:#2f3a8f;
+  --grass:#5f9d3f;
+  --hill:#d9e7c9;
+  --mountain:#a8c2d6;
+  --dot-r:#ff5f57; --dot-y:#febc2e; --dot-g:#28c840;
+  --font-display:'Jua','Noto Sans KR',system-ui,sans-serif;
+  --font-body:'Noto Sans KR',system-ui,-apple-system,sans-serif;
+  --font-mono:'VT323',ui-monospace,monospace;
+  --chrome:46px;
+  --pad:clamp(12px,2vh,24px);
+  /* block-title outline (deck style): thick dark outline + hard offset shadow */
+  --o:.035em; --on:-.035em; --d:.08em;
+  --blk:var(--on) var(--on) 0 var(--ink), var(--o) var(--on) 0 var(--ink), var(--on) var(--o) 0 var(--ink), var(--o) var(--o) 0 var(--ink),
+        0 var(--on) 0 var(--ink), 0 var(--o) 0 var(--ink), var(--on) 0 0 var(--ink), var(--o) 0 0 var(--ink), var(--d) var(--d) 0 var(--ink);
+  color-scheme:light;
 }
-* { box-sizing: border-box }
-[hidden] { display: none !important }
-body {
-  margin: 0;
-  background: var(--paper);
-  color: var(--ink);
-  font-family: var(--font);
-  word-break: keep-all;
-  overflow-wrap: anywhere;
-}
-button, input, textarea { font: inherit }
-button { cursor: pointer }
-button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid var(--green); outline-offset: 3px }
-.chrome {
-  position: fixed;
-  z-index: 10;
-  inset: 0 0 auto;
-  min-height: calc(var(--chrome) + env(safe-area-inset-top, 0px));
-  padding: env(safe-area-inset-top, 0px) var(--pad) 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  background: var(--paper);
-  border-bottom: 1px solid var(--line);
-}
-.stage-brand { font-weight: 900; color: var(--green); letter-spacing: -.035em }
-.stage-brand > span:first-child { margin-right: 4px }
-.hud-hint { margin-left: auto; color: var(--muted); font-size: 13px; font-weight: 700; text-align: right }
-.hud-hint.is-hidden, .keys.is-hidden { visibility: hidden }
-.hud-prog { color: var(--coral-ink); font-size: 15px; font-weight: 900; font-variant-numeric: tabular-nums; white-space: nowrap }
-.hud-prog:empty { display: none }
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);overflow:hidden;-webkit-font-smoothing:antialiased;
+  background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .25 0 0 0 0 .25 0 0 0 0 .2 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+button,input,textarea{font:inherit}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
 
-.screen {
-  position: fixed;
-  inset: 0;
-  display: none;
-  padding: calc(var(--chrome) + env(safe-area-inset-top, 0px) + 16px) var(--pad)
-    calc(52px + env(safe-area-inset-bottom, 0px));
-}
-.screen.is-active { display: grid }
-#s-intro, #s-end { align-items: center; overflow: auto }
-.stage {
-  width: 100%;
-  max-width: 1680px;
-  margin: auto;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
-  align-items: center;
-  gap: clamp(24px, 4.1vw, 74px);
-}
-.intro { display: grid; justify-items: start; gap: clamp(10px, 1.75vh, 23px) }
-.eyebrow { display: flex; align-items: center; gap: 12px; margin: 0; color: var(--green); font-size: clamp(12px, 1.16vw, 17px); font-weight: 800 }
-.eyebrow > span:first-child { flex: none; padding: 5px 10px; border-radius: 5px; background: var(--green); color: #fff; letter-spacing: .07em }
-.title { margin: 0; font-size: clamp(39px, 5.15vw, 96px); font-weight: 900; line-height: 1.15; letter-spacing: -.075em; text-wrap: balance }
-.title strong {
-  display: table;
-  margin-top: 3px;
-  padding: 0 .1em .05em;
-  background: var(--coral);
-  color: #271c19;
-  font-size: 1.14em;
-  line-height: 1.12;
-  font-weight: inherit;
-}
-.lede { margin: 0; color: var(--muted); font-size: clamp(15px, 1.42vw, 24px); font-weight: 600; line-height: 1.6; text-wrap: pretty }
-.chips { display: flex; flex-wrap: wrap; gap: 8px }
-.chips span { padding: 5px 9px; border: 1px solid #d6dfcb; border-radius: 6px; background: var(--pale-green); font-weight: 700; font-size: clamp(12px, 1.1vw, 15px) }
-.chips b { color: var(--coral-ink) }
-.row { display: flex; flex-wrap: wrap; gap: 10px }
-.btn {
-  min-height: 44px;
-  padding: 9px 17px;
-  border: 2px solid var(--ink);
-  border-radius: 11px;
-  background: var(--white);
-  color: var(--ink);
-  font-size: clamp(15px, 1.35vw, 21px);
-  font-weight: 800;
-  box-shadow: 0 3px 0 var(--ink);
-}
-.btn:hover:not(:disabled) { background: var(--pale-green) }
-.btn:active:not(:disabled) { translate: 0 2px; box-shadow: 0 1px 0 var(--ink) }
-.btn-primary { background: var(--coral); color: #271c19 }
-.btn-primary:hover:not(:disabled) { background: #ff8787 }
-.btn:disabled, .btn.is-busy { opacity: .5; pointer-events: none }
-.btn-sm { padding: 7px 12px; font-size: 14px }
-#btn-start span { margin-left: .5em }
-.data-status { display: flex; align-items: baseline; gap: 7px; margin: 0; color: var(--muted); font-size: 13px; line-height: 1.5; font-weight: 700 }
-.data-status::before { content: ''; flex: 0 0 8px; height: 8px; border-radius: 50%; background: #a09b91 }
-.data-status.is-live::before { background: #477b37 }
-.data-status.is-sample::before { background: #b87122 }
-.keys { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.9 }
-kbd { padding: 1px 4px; border: 1px solid var(--line); border-radius: 4px; background: #fff; color: var(--ink); font: inherit; font-weight: 800 }
-.stage-media {
-  position: relative;
-  height: min(68vh, 740px);
-  min-height: 260px;
-  overflow: hidden;
-  border: 2px solid var(--ink);
-  border-radius: clamp(16px, 2vw, 34px);
-  background: #dbe5cf;
-  box-shadow: 7px 7px 0 var(--green);
-}
-.stage-media img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 57% center }
-.bubble {
-  position: absolute;
-  top: 15%;
-  left: 5%;
-  max-width: 41%;
-  padding: .5em .75em;
-  border: 2px solid var(--ink);
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 3px 4px 0 var(--ink);
-  font: 400 clamp(16px, 2.2vw, 42px)/1.18 'Jua', var(--font);
-  text-align: center;
-  text-wrap: balance;
-  transform: rotate(-8deg);
-}
-.bubble::after {
-  content: '';
-  position: absolute;
-  right: 10%;
-  bottom: -.2em;
-  width: .48em;
-  height: .48em;
-  border-right: 2px solid var(--ink);
-  border-bottom: 2px solid var(--ink);
-  background: #fff;
-  transform: skew(18deg, 18deg) rotate(16deg);
-}
+/* ---------- block titles ---------- */
+.blk{font-family:var(--font-display);font-weight:400;line-height:1.05;letter-spacing:-.005em;text-shadow:var(--blk)}
+.blk-mint{color:var(--mint)} .blk-sky{color:var(--sky)} .blk-cream{color:var(--cream)}
 
-#s-show { gap: clamp(9px, 1.6vh, 19px); grid-template-rows: auto minmax(0, 1fr) auto }
-.q-head {
-  display: flex;
-  align-items: flex-start;
-  gap: clamp(10px, 1.5vw, 25px);
-  padding: clamp(10px, 1.9vh, 20px) clamp(12px, 1.8vw, 27px);
-  background: #fff;
-  border: 1px solid var(--line);
-  border-left: 5px solid var(--coral);
-  border-radius: 14px;
-}
-.q-badge {
-  flex: none;
-  min-width: 3ch;
-  margin-top: .12em;
-  padding: .2em .42em;
-  border-radius: 5px;
-  background: var(--blush);
-  color: var(--coral-ink);
-  font-size: clamp(16px, 1.7vw, 30px);
-  font-weight: 900;
-  line-height: 1.2;
-}
-.q-text { margin: 0; min-width: 0; font-size: clamp(25px, 3vw, 55px); line-height: 1.28; font-weight: 900; letter-spacing: -.05em; text-wrap: pretty }
-.grid { display: grid; min-height: 0; grid-template-columns: repeat(var(--cols, 5), minmax(0, 1fr)); grid-auto-rows: minmax(0, 1fr); gap: clamp(6px, 1vw, 16px) }
-.card {
-  position: relative;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  grid-template-rows: auto auto;
-  align-content: center;
-  align-items: center;
-  gap: clamp(5px, .7vw, 12px);
-  min-width: 0;
-  padding: clamp(6px, .85vw, 17px);
-  border: 1px solid var(--line);
-  border-radius: clamp(8px, 1vw, 16px);
-  background: #fff;
-  transition: opacity .35s, background .2s, border-color .2s;
-}
-.avatar {
-  width: clamp(30px, min(4vw, 8vh), 82px);
-  aspect-ratio: 1;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  border-radius: 11px;
-  background: hsl(var(--h) 45% 84%);
-  color: var(--ink);
-  font-weight: 900;
-}
-.avatar img { display: block; width: 100%; height: 100%; object-fit: cover }
-.name { font-size: clamp(13px, 1.45vw, 26px); font-weight: 800; line-height: 1.22; letter-spacing: -.045em }
-.count { min-width: 1ch; text-align: right; color: var(--green); font-size: clamp(22px, 2.8vw, 54px); line-height: 1; font-weight: 900; font-variant-numeric: tabular-nums }
-.bar { grid-column: 1 / -1; height: clamp(4px, .65vh, 8px); overflow: hidden; border-radius: 99px; background: #ece8e0 }
-.bar i { display: block; height: 100%; width: 0; border-radius: inherit; background: #668353; transition: width .35s }
-.card.is-hit { border-color: var(--green); background: var(--pale-green) }
-.count.is-pop { animation: pop .38s ease-out }
-@keyframes pop { 45% { scale: 1.2; color: var(--coral-ink) } }
-.plus { position: absolute; right: 9px; top: 2px; color: var(--coral-ink); font-size: clamp(14px, 1.5vw, 25px); font-weight: 900; pointer-events: none; animation: rise .85s ease-out forwards }
-@keyframes rise { 0% { opacity: 0; translate: 0 6px } 20% { opacity: 1 } 100% { opacity: 0; translate: 0 -28px } }
-.card.is-lose { opacity: .55 }
-.card.is-win { z-index: 1; border-color: var(--coral-ink); background: var(--blush); box-shadow: 0 0 0 2px var(--coral-ink) }
-.card.is-win .count { color: var(--coral-ink) }
-.card.is-win .bar i { background: var(--coral-ink) }
-.result { display: grid; place-items: stretch; min-height: clamp(48px, 8vh, 84px) }
-.result-inner {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  gap: 8px clamp(10px, 2vw, 25px);
-  padding: 7px 12px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--green);
-  color: #fff;
-  text-align: center;
-}
-.result.is-on .result-inner { display: flex }
-.result.is-empty .result-inner { background: #fff; color: var(--ink) }
-.result-label { flex: none; padding: 5px 8px; border-radius: 5px; background: var(--coral); color: #271c19; font-size: clamp(13px, 1.15vw, 19px); font-weight: 900 }
-.result-names { font-size: clamp(21px, 3vw, 47px); font-weight: 900; line-height: 1.18; text-wrap: balance }
-.result.is-tie .result-names, .result.is-empty .result-names { font-size: clamp(16px, 1.65vw, 29px) }
+/* ---------- browser chrome ---------- */
+.chrome{position:fixed;left:0;right:0;top:0;z-index:40;height:calc(env(safe-area-inset-top,0px) + var(--chrome));
+  padding-top:env(safe-area-inset-top,0px);padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px,env(safe-area-inset-right,0px));
+  display:flex;align-items:center;gap:10px;background:var(--paper-2);border-bottom:1.5px solid #cfd0c8}
+.dot{width:12px;height:12px;border-radius:50%;flex:none;border:1px solid rgba(0,0,0,.15)}
+.dot.r{background:var(--dot-r)} .dot.y{background:var(--dot-y)} .dot.g{background:var(--dot-g)}
+.url{flex:1;min-width:0;margin-left:6px;height:30px;display:flex;align-items:center;padding:0 14px;border-radius:999px;background:#fff;border:1.5px solid #c9cac2;
+  font-family:var(--font-mono);font-size:19px;letter-spacing:.02em;color:#4a4f46;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hud-hint{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--navy);white-space:nowrap}
+.hud-hint.is-hidden{visibility:hidden}
+.hud-prog{font-family:var(--font-display);font-size:18px;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap;min-width:5ch;text-align:right}
+.chrome-icons{display:flex;gap:8px;color:#6a6f66;font-size:14px}
+.chrome-icons span{width:28px;height:28px;border-radius:8px;border:1.5px solid #c9cac2;background:#fff;display:grid;place-items:center}
 
-.ctrl { position: fixed; z-index: 12; right: var(--pad); bottom: calc(8px + env(safe-area-inset-bottom, 0px)); display: flex; gap: 7px }
-.ctrl-btn { display: grid; place-items: center; width: 36px; height: 36px; padding: 0; border: 1px solid var(--line); border-radius: 9px; background: #fff; color: var(--ink); font-size: 16px }
-.ctrl-btn:hover { background: var(--pale-green) }
-#fx { position: fixed; z-index: 11; inset: 0; width: 100%; height: 100%; pointer-events: none }
-.overlay { position: fixed; z-index: 20; inset: 0; display: grid; place-items: center; padding: 16px; background: #24251fb3; backdrop-filter: blur(3px) }
-.panel { width: min(100%, 560px); max-height: 100%; overflow: auto; display: grid; gap: 14px; padding: 19px; border: 2px solid var(--ink); border-radius: 16px; background: var(--paper) }
-.panel-head { display: flex; justify-content: space-between; align-items: center; gap: 10px }
-.panel-head strong { font-size: 21px; font-weight: 900 }
-.st-status { margin: 0; padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px; background: #fff; font-size: 14px; line-height: 1.5 }
-.st-block { display: grid; gap: 8px }
-.st-block label { color: var(--muted); font-size: 13px; font-weight: 800 }
-.st-row { display: flex; flex-wrap: wrap; gap: 8px }
-.st-row input, .st-block textarea { flex: 1; min-width: 0; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink) }
-.st-block textarea { width: 100%; resize: vertical; font: 13px/1.5 ui-monospace, monospace }
-.st-note, .st-msg { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.5 }
-.st-msg { color: var(--green); font-weight: 800 }
-.st-msg.is-err { color: var(--coral-ink) }
-@media (max-width: 860px) {
-  .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: minmax(62px, auto); align-content: start; overflow: auto; padding: 2px }
-  .card { gap: 4px }
+/* ---------- hills (fixed, behind) ---------- */
+.hills{position:fixed;left:0;right:0;bottom:0;height:clamp(90px,16vh,190px);z-index:0;pointer-events:none}
+.hills svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+
+/* ---------- screens ---------- */
+.screen{position:fixed;inset:0;z-index:1;display:none;flex-direction:column;gap:clamp(8px,1.5vh,18px);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:calc(env(safe-area-inset-top,0px) + var(--chrome) + var(--pad)) calc(env(safe-area-inset-bottom,0px) + var(--pad))}
+.screen.is-active{display:flex}
+
+/* ---------- intro / finale ---------- */
+#s-intro,#s-end{align-items:center;justify-content:center;text-align:center}
+.intro{display:flex;flex-direction:column;align-items:center;gap:clamp(12px,2vh,24px);max-width:900px;position:relative;z-index:1}
+.eyebrow{margin:0;font-family:var(--font-display);font-size:clamp(14px,1.4vw,20px);letter-spacing:.06em;color:var(--navy);
+  background:var(--sky-soft);border:1.5px solid var(--navy);padding:4px 14px;border-radius:999px}
+.title{margin:0;display:flex;flex-direction:column;align-items:center;gap:.08em;font-size:clamp(52px,8.5vw,120px);text-wrap:balance}
+.title .t2{font-size:.72em}
+.lede{margin:0;color:var(--ink);line-height:1.7;font-size:clamp(15px,1.5vw,20px);font-weight:500;text-wrap:balance;max-width:34em}
+.chips{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:12px;border:1.5px solid var(--line);background:#fff;font-weight:700;font-size:clamp(13px,1.2vw,16px)}
+.chip b{font-family:var(--font-display);font-weight:400;color:#c0392b}
+.row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.keys{margin:6px 0 0;color:var(--muted);font-size:13px;letter-spacing:.02em}
+.keys.is-hidden{visibility:hidden}
+kbd{font-family:var(--font-body);font-weight:700;color:var(--ink);background:#fff;border:1.5px solid #c9cac2;border-bottom-width:3px;border-radius:6px;padding:1px 7px}
+.data-status{margin:0;font-size:13px;font-weight:700;color:var(--muted);display:flex;align-items:center;gap:8px}
+.data-status i{width:10px;height:10px;border-radius:50%;background:#b9bdb3;border:1px solid rgba(0,0,0,.2)}
+.data-status.is-live i{background:var(--dot-g)}
+.data-status.is-sample i{background:var(--dot-y)}
+
+/* sticker buttons */
+.btn{font-family:var(--font-display);font-weight:400;font-size:clamp(17px,1.5vw,22px);padding:12px 26px;border-radius:14px;border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer;
+  box-shadow:4px 4px 0 var(--ink);transition:transform .12s,box-shadow .12s,opacity .15s}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--ink)}
+.btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.btn-primary{background:var(--mint)}
+.btn-sky{background:var(--sky)}
+.btn:disabled,.btn.is-busy{opacity:.4;cursor:not-allowed;transform:none;box-shadow:4px 4px 0 var(--ink);pointer-events:none}
+.btn-sm{font-size:16px;padding:9px 16px;box-shadow:3px 3px 0 var(--ink)}
+
+/* folders sidebar (deck motif) */
+.folders{position:absolute;left:clamp(10px,2vw,40px);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:clamp(14px,3vh,30px);z-index:0}
+.folder{display:flex;flex-direction:column;align-items:center;gap:6px;font-family:var(--font-mono);font-size:18px;color:#5a5f57;opacity:.75}
+.folder i{display:block;width:clamp(44px,5vw,78px);aspect-ratio:1.35;border-radius:5px;background:linear-gradient(180deg,#d7e6c6,#b7cfe0);position:relative;border:1.5px solid transparent}
+.folder i::before{content:"";position:absolute;left:0;top:-7px;width:42%;height:9px;border-radius:4px 4px 0 0;background:#cfe1bd}
+.folder.is-on{opacity:1;color:var(--navy)}
+.folder.is-on i{border-color:var(--navy)}
+
+/* mascot */
+.mascot{position:absolute;right:clamp(6px,3vw,60px);bottom:clamp(60px,12vh,160px);width:clamp(120px,16vw,240px);z-index:0}
+.bubble{position:absolute;right:calc(100% - 20px);bottom:70%;white-space:nowrap;font-family:var(--font-display);font-size:clamp(14px,1.3vw,20px);color:var(--ink);
+  background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:8px 14px}
+.bubble::after{content:"";position:absolute;right:-9px;bottom:10px;width:14px;height:14px;background:#fff;border-right:1.5px solid var(--line);border-bottom:1.5px solid var(--line);transform:skewX(30deg) rotate(-20deg)}
+
+/* ---------- show ---------- */
+.q-head{display:flex;align-items:center;gap:clamp(10px,1.4vw,22px);flex-wrap:nowrap;position:relative;z-index:1}
+.q-badge{flex:none;font-family:var(--font-display);font-size:clamp(22px,2.6vw,38px);line-height:1.2;color:var(--ink);background:var(--cream);padding:2px 16px;border-radius:12px;border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink)}
+.q-text{margin:0;min-width:0;font-family:var(--font-display);font-weight:400;font-size:clamp(26px,3.6vw,54px);line-height:1.18;letter-spacing:-.005em;text-wrap:balance;color:var(--ink)}
+
+.grid{flex:1;min-height:0;display:grid;grid-template-columns:repeat(var(--cols,6),1fr);grid-auto-rows:minmax(0,1fr);gap:clamp(8px,1.1vw,16px);position:relative;z-index:1}
+.card{position:relative;min-height:0;min-width:0;overflow:hidden;display:grid;grid-template-columns:auto 1fr auto;grid-template-rows:auto auto;align-content:center;align-items:center;
+  column-gap:clamp(8px,.9vw,14px);row-gap:clamp(6px,.9vh,12px);padding:clamp(8px,1.1vw,18px);border-radius:16px;background:var(--card);border:1.5px solid #c7cbbf;
+  transition:transform .28s cubic-bezier(.2,.8,.2,1.3),background .2s,opacity .55s,box-shadow .3s,filter .55s,border-color .3s}
+.avatar{width:clamp(34px,min(3.6vw,7vh),68px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;overflow:hidden;font-family:var(--font-display);font-size:clamp(13px,1.4vw,24px);
+  background:hsl(var(--h) 60% 80%);color:var(--ink);border:1.5px solid var(--line)}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.name{min-width:0;font-weight:700;font-size:clamp(12px,1.15vw,19px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.count{font-family:var(--font-display);font-variant-numeric:tabular-nums;font-size:clamp(22px,2.7vw,46px);line-height:1;min-width:1.1em;text-align:right;color:var(--navy);transition:color .3s}
+.bar{grid-column:1 / -1;height:clamp(7px,.7vw,11px);border-radius:99px;background:#ecefe7;border:1px solid #dfe3d8;overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--mint),var(--sky));transition:width .38s cubic-bezier(.2,.8,.2,1)}
+
+.count.is-pop{animation:pop .38s cubic-bezier(.2,.8,.2,1.4)}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.5);color:#c0392b}100%{transform:scale(1)}}
+.card.is-hit{transform:scale(1.05);border-color:var(--navy);box-shadow:4px 4px 0 var(--navy);z-index:1}
+.plus{position:absolute;right:clamp(8px,1vw,16px);top:4px;font-family:var(--font-display);color:#c0392b;font-size:clamp(14px,1.5vw,24px);pointer-events:none;animation:rise .85s ease-out forwards}
+@keyframes rise{0%{opacity:0;transform:translateY(6px)}20%{opacity:1}100%{opacity:0;transform:translateY(-36px)}}
+
+.card.is-lose{opacity:.3;filter:grayscale(.7)}
+.card.is-win{transform:scale(1.08);z-index:2;border:2px solid var(--navy);background:var(--cream);outline:2px dashed var(--navy);outline-offset:5px;animation:winpulse 1.4s ease-in-out infinite}
+.card.is-win .count{color:#c0392b}
+.card.is-win .bar i{background:linear-gradient(90deg,#f7c948,#ff8a5c)}
+.card.is-win::after{content:'🐑';position:absolute;top:-6px;right:-4px;font-size:clamp(20px,2.2vw,34px);transform:rotate(14deg);filter:drop-shadow(1px 2px 0 rgba(0,0,0,.25))}
+@keyframes winpulse{0%,100%{box-shadow:4px 4px 0 var(--navy)}50%{box-shadow:6px 6px 0 var(--navy),0 0 0 8px rgba(169,210,242,.5)}}
+
+.result{min-height:clamp(66px,11vh,114px);display:grid;place-items:center;position:relative;z-index:1}
+.result-inner{display:flex;flex-direction:column;align-items:center;gap:4px;padding:clamp(8px,1.2vh,14px) clamp(22px,3vw,44px);border-radius:22px;
+  background:#fff;border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);
+  opacity:0;transform:translateY(18px) scale(.9);transition:opacity .45s,transform .55s cubic-bezier(.2,.8,.2,1.25)}
+.result.is-on .result-inner{opacity:1;transform:none}
+.result.is-empty .result-inner{border-color:var(--line);box-shadow:none}
+.result-label{color:#c0392b;font-family:var(--font-display);letter-spacing:.1em;font-size:clamp(13px,1.1vw,16px)}
+.result-names{font-family:var(--font-display);font-size:clamp(26px,3.4vw,52px);line-height:1.1;text-align:center;text-wrap:balance;color:var(--ink);
+  background:var(--sky-soft);padding:0 .3em;border-left:4px solid var(--navy);border-right:4px solid var(--navy)}
+
+/* ---------- controls / overlay / fx ---------- */
+.ctrl{position:fixed;z-index:60;display:flex;gap:8px;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 12px)}
+.ctrl-btn{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;font-size:16px;opacity:.6;transition:opacity .2s}
+.ctrl-btn:hover{opacity:1}
+#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:50}
+
+.overlay{position:fixed;inset:0;z-index:70;background:rgba(40,44,38,.45);backdrop-filter:blur(3px);display:grid;place-items:center;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px}
+.panel{width:min(100%,560px);max-height:100%;overflow:auto;background:var(--paper);border:2px solid var(--ink);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:18px;box-shadow:8px 8px 0 var(--ink)}
+.panel-head{display:flex;justify-content:space-between;align-items:center}
+.panel-head strong{font-family:var(--font-display);font-weight:400;font-size:24px}
+.st-status{margin:0;padding:12px 14px;border-radius:12px;background:#fff;border:1.5px solid var(--line);font-size:14px;line-height:1.5}
+.st-block{display:flex;flex-direction:column;gap:8px}
+.st-block label{font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--muted)}
+.st-row{display:flex;gap:8px;flex-wrap:wrap}
+.st-row input,.st-block textarea{flex:1;min-width:0;padding:11px 14px;border-radius:12px;border:1.5px solid var(--line);background:#fff;color:var(--ink)}
+.st-block textarea{width:100%;resize:vertical;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
+.st-note{margin:0;font-size:12px;color:var(--muted);line-height:1.5}
+.st-msg{margin:0;font-size:13px;line-height:1.5;color:#2e7d32;font-weight:700}
+.st-msg.is-err{color:#c0392b}
+
+@media (max-width:860px){
+  .grid{grid-template-columns:repeat(3,1fr);grid-auto-rows:minmax(64px,auto);overflow-y:auto;align-content:start;padding-bottom:4px}
+  .card.is-win{transform:scale(1.03)}
+  .folders,.mascot{display:none}
+  .hud-hint{display:none}
+  .url{font-size:16px}
 }
-@media (max-width: 640px) {
-  :root { --chrome: 48px }
-  .stage { grid-template-columns: 1fr; gap: 17px }
-  .stage-media { grid-row: 1; height: clamp(155px, 32vh, 240px); min-height: 0 }
-  .title { font-size: clamp(35px, 8vw, 45px) }
-  .bubble { font-size: clamp(17px, 4.2vw, 23px) }
-  .hud-hint { display: none }
-  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)) }
-  .q-text { font-size: clamp(19px, 5.3vw, 26px) }
-  .result-inner { flex-wrap: wrap }
-}
-@media (max-height: 620px) and (min-width: 861px) {
-  .screen { padding-top: calc(var(--chrome) + env(safe-area-inset-top, 0px) + 8px) }
-  .q-text { font-size: clamp(23px, 3vw, 37px) }
-  .avatar { width: clamp(28px, 6.6vh, 45px) }
-  .card { padding-block: 4px; row-gap: 4px }
-  .stage-media { height: 70vh }
-}
-@media (prefers-reduced-motion: reduce) {
-  .card, .bar i { transition: none }
-  .count.is-pop { animation: none }
-  .plus, #fx { display: none }
+@media (prefers-reduced-motion:reduce){
+  .card,.bar i,.result-inner{transition:none}
+  .count.is-pop,.card.is-win,.plus{animation:none}
 }
 </style>
 </head>
 <body>
-<header class="chrome">
-  <span class="stage-brand"><span aria-hidden="true">🐑</span> <span id="hud-brand">양치기 여론조사</span></span>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="sheep" viewBox="0 0 44 32">
+    <rect x="12" y="21" width="3" height="9" rx="1.2" fill="#2a2d28"/><rect x="18" y="22" width="3" height="8" rx="1.2" fill="#2a2d28"/>
+    <rect x="25" y="22" width="3" height="8" rx="1.2" fill="#2a2d28"/><rect x="31" y="21" width="3" height="9" rx="1.2" fill="#2a2d28"/>
+    <ellipse cx="22" cy="15" rx="15" ry="10.5" fill="#fff" stroke="#2a2d28" stroke-width="1.3"/>
+    <circle cx="35" cy="11" r="5.4" fill="#2a2d28"/><ellipse cx="31.5" cy="7.8" rx="2.6" ry="1.4" fill="#2a2d28" transform="rotate(-30 31.5 7.8)"/>
+    <circle cx="36.6" cy="10" r=".9" fill="#fff"/>
+  </symbol>
+</svg>
+
+<!-- BROWSER CHROME -->
+<div class="chrome">
+  <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+  <span class="url" id="hud-brand">WWW.Hanyang.univ.42th.council.2026.11.28</span>
   <span class="hud-hint" id="hint"></span>
   <span class="hud-prog" id="qprog"></span>
-</header>
+  <span class="chrome-icons"><span>⌕</span><span>▦</span></span>
+</div>
 
+<!-- INTRO -->
 <section class="screen is-active" id="s-intro">
-  <div class="stage">
-    <div class="intro">
-      <p class="eyebrow"><span>3 ROUND</span> <span id="intro-subtitle">사SHEEP 2th 중운위 모임</span></p>
-      <h1 class="title" id="title-main">양치기 여론조사 <strong>결과발표</strong></h1>
-      <p class="lede" id="lede">미리 보내준 표를 지금부터 한 표씩 공개합니다.</p>
-      <div class="chips"><span>지목된 조 <b>+1점</b></span><span>소소한 <b>벌주</b> 이벤트</span></div>
-      <div class="row"><button class="btn btn-primary" id="btn-start" type="button">결과 발표 시작 <span aria-hidden="true">→</span></button></div>
-      <p class="data-status" id="data-status"><span id="data-status-text">결과 데이터 없음</span></p>
-      <p class="keys" id="keys"><kbd>Space</kbd> 진행 · <kbd>←</kbd> 이전 · <kbd>R</kbd> 다시 · <kbd>F</kbd> 전체화면 · <kbd>M</kbd> 소리 · <kbd>H</kbd> 안내 숨김 · <kbd>S</kbd> 설정</p>
-    </div>
-    <div class="stage-media">
-      <img src="assets/sheep.webp" alt="" width="1200" height="800" fetchpriority="high">
-      <span class="bubble">자, 개표 들어간다양!</span>
-    </div>
+  <div class="folders" aria-hidden="true">
+    <div class="folder"><i></i>1 round</div>
+    <div class="folder"><i></i>2 round</div>
+    <div class="folder is-on"><i></i>3 round</div>
+  </div>
+  <div class="intro">
+    <p class="eyebrow" id="eyebrow">사SHEEP 2th 중운위 모임 · 3 ROUND</p>
+    <h1 class="title" id="title-main"><span class="blk blk-cream t1">양치기 여론조사</span><span class="blk blk-sky t2">결과발표</span></h1>
+    <p class="lede" id="lede">양들이 미리 보내준 표를 지금부터 한 표씩 공개합니다.</p>
+    <div class="chips"><span class="chip">지목된 조 <b>+1점</b></span><span class="chip">소소한 <b>벌주</b> 이벤트까지</span></div>
+    <div class="row"><button class="btn btn-primary" id="btn-start" type="button">결과 발표 시작</button></div>
+    <p class="keys" id="keys"><kbd>Space</kbd> 진행 · <kbd>←</kbd> 이전 · <kbd>R</kbd> 다시 · <kbd>F</kbd> 전체화면 · <kbd>M</kbd> 소리 · <kbd>H</kbd> 안내 숨김 · <kbd>S</kbd> 설정</p>
+    <p class="data-status" id="data-status"><i></i><span id="data-status-text">결과 데이터 없음</span></p>
+  </div>
+  <div class="mascot" aria-hidden="true">
+    <span class="bubble">자, 개표 들어간다양</span>
+    <svg viewBox="0 0 44 32" width="100%"><use href="#sheep"/></svg>
   </div>
 </section>
 
@@ -327,17 +250,11 @@ kbd { padding: 1px 4px; border: 1px solid var(--line); border-radius: 4px; backg
 
 <!-- FINALE -->
 <section class="screen" id="s-end">
-  <div class="stage">
-    <div class="intro">
-      <p class="eyebrow"><span>개표 완료</span></p>
-      <h1 class="title">오늘의 여론조사 <strong>끝났다양!</strong></h1>
-      <p class="lede">수고하셨습니다. Space 또는 클릭하면 처음 화면으로 돌아갑니다.</p>
-      <div class="row"><button class="btn" id="btn-home" type="button">처음으로</button></div>
-    </div>
-    <div class="stage-media">
-      <img src="assets/sheep.webp" alt="" width="1200" height="800">
-      <span class="bubble">다들 수고했어양!</span>
-    </div>
+  <div class="intro">
+    <p class="eyebrow">모든 질문 공개 완료</p>
+    <h1 class="title"><span class="blk blk-mint t1">오늘의 여론조사</span><span class="blk blk-sky t2">끝났다양</span></h1>
+    <p class="lede">수고하셨습니다. Space 또는 클릭하면 처음 화면으로 돌아갑니다.</p>
+    <div class="row"><button class="btn" id="btn-home" type="button">처음으로</button></div>
   </div>
 </section>
 
@@ -376,6 +293,26 @@ kbd { padding: 1px 4px; border: 1px solid var(--line); border-radius: 4px; backg
   </div>
 </div>
 
+<!-- HILLS: 배경 언덕은 늘려 채우고(none), 양은 비율 유지(slice)로 따로 얹음 -->
+<div class="hills" aria-hidden="true">
+  <svg viewBox="0 0 1600 200" preserveAspectRatio="none">
+    <path d="M0 120 C200 70 380 140 560 95 C740 50 900 120 1080 85 C1260 50 1420 110 1600 70 L1600 200 L0 200 Z" fill="#d9e7c9"/>
+    <path d="M0 150 C220 110 400 170 600 135 C800 100 980 160 1180 125 C1360 95 1480 150 1600 120 L1600 200 L0 200 Z" fill="#a8c2d6"/>
+    <path d="M0 168 C260 140 520 185 780 160 C1040 135 1300 180 1600 150 L1600 200 L0 200 Z" fill="#6aa84f"/>
+    <path d="M0 184 C300 170 600 196 900 180 C1200 165 1400 192 1600 178 L1600 200 L0 200 Z" fill="#5f9d3f"/>
+  </svg>
+  <svg viewBox="0 0 1600 200" preserveAspectRatio="xMidYMax slice">
+    <use href="#sheep" x="120" y="156" width="40" height="30"/>
+    <use href="#sheep" x="300" y="166" width="30" height="22"/>
+    <use href="#sheep" x="520" y="160" width="36" height="27"/>
+    <use href="#sheep" x="760" y="170" width="26" height="19"/>
+    <use href="#sheep" x="980" y="158" width="38" height="28"/>
+    <use href="#sheep" x="1180" y="168" width="30" height="22"/>
+    <use href="#sheep" x="1380" y="156" width="42" height="31"/>
+    <use href="#sheep" x="1500" y="172" width="26" height="19"/>
+  </svg>
+</div>
+
 <canvas id="fx" aria-hidden="true"></canvas>
 
 <script src="config.js"></script>
@@ -397,9 +334,9 @@ kbd { padding: 1px 4px; border: 1px solid var(--line); border-radius: 4px; backg
   const Q = CONFIG.questions;
   const N = Q.length;
   const TITLE = CONFIG.title || '양치기 여론조사';
-  $('#hud-brand').textContent = TITLE;
-  $('#title-main').innerHTML = esc(TITLE) + ' <strong>' + esc(CONFIG.titleLine2 || '결과발표') + '</strong>';
-  if (CONFIG.subtitle) $('#intro-subtitle').textContent = CONFIG.subtitle;
+  $('#hud-brand').textContent = CONFIG.chromeUrl || TITLE;
+  $('#title-main').innerHTML = '<span class="blk blk-cream t1">' + esc(TITLE) + '</span><span class="blk blk-sky t2">' + esc(CONFIG.titleLine2 || '결과발표') + '</span>';
+  if (CONFIG.subtitle) $('#eyebrow').textContent = CONFIG.subtitle + ' · 3 ROUND';
   $('#lede').textContent = '양들이 미리 보내준 ' + N + '문항의 표를 지금부터 한 표씩 공개합니다.';
   const STORE_RESULTS = 'awards_results_v1', STORE_KEY = 'awards_admin_key', STORE_HINTS = 'awards_hints';
   const lsGet = k => { try { return localStorage.getItem(k); } catch (e) { return null; } };
@@ -558,11 +495,12 @@ kbd { padding: 1px 4px; border: 1px solid var(--line); border-radius: 4px; backg
     clearTimeout(timer);
     counts = {}; PEOPLE.forEach(p => counts[p.id] = 0);
     $('#qbadge').textContent = 'Q' + (qi + 1);
-    $('#qprog').textContent = (qi + 1) + ' / ' + N;
+    $('#qprog').textContent = 'Q' + (qi + 1) + ' / ' + N;
     $('#qtext').textContent = Q[qi];
-
+    const L = Q[qi].length;
+    $('#qtext').style.fontSize = L > 60 ? 'clamp(18px,2.1vw,32px)' : L > 38 ? 'clamp(22px,2.8vw,42px)' : '';
     grid.innerHTML = PEOPLE.map(cardHTML).join('');
-    result.classList.remove('is-on', 'is-empty', 'is-tie');
+    result.classList.remove('is-on', 'is-empty');
     hint.textContent = 'Space 또는 클릭으로 개표 시작';
     phase = 'ready'; fast = false;
     showScreen('s-show');
@@ -607,8 +545,7 @@ kbd { padding: 1px 4px; border: 1px solid var(--line); border-radius: 4px; backg
     }
     const winners = PEOPLE.filter(p => counts[p.id] === max);
     grid.querySelectorAll('.card').forEach(c => c.classList.add(counts[c.dataset.id] === max ? 'is-win' : 'is-lose'));
-    $('#rlabel').textContent = (winners.length > 1 ? '공동 1위 · ' : '1위 · ') + max + '표';
-    result.classList.toggle('is-tie', winners.length > 3);
+    $('#rlabel').textContent = (winners.length > 1 ? '공동 1위 · ' : 'WINNER · ') + max + '표';
     $('#rnames').textContent = winners.map(w => w.name).join(' & ');
     result.classList.add('is-on');
     fanfare(); celebrate(winners.length > 1);
