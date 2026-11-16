@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>우리끼리 어워즈 투표</title>
+<title>사Sheep 2th 중운위 어워즈 투표</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
 <style>
 /* Layout: phone-first single column sheet (max 520px) centered on the same midnight stage as the reveal screen.
@@ -87,21 +87,261 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .preview-note{margin:8px 0 0;font-size:12px;color:var(--fg-muted);text-align:center}
 
 @media (prefers-reduced-motion:reduce){.pcard,.btn,.pbar i{transition:none}}
+:root {
+  --bg:#171220;
+  --glow-1:#7c387d64;
+  --glow-2:#d7548e30;
+  --surface:#251e31;
+  --surface-2:#362b43;
+  --line:#e7cbe636;
+  --fg:#fff5e9;
+  --fg-muted:#d1c4d7;
+  --accent:#ff9bc9;
+  --accent-2:#e989c8;
+  --gold:#ffe1a0;
+  --gold-deep:#bd8651;
+  --party:#ff91bd;
+  --danger:#ffada0;
+  --ok:#b3caa3;
+  --font-display:'Black Han Sans','Noto Sans KR',system-ui,sans-serif;
+}
+body {
+  background-image:radial-gradient(ellipse 65% 60% at 76% -10%, var(--glow-1), transparent 70%),
+    radial-gradient(ellipse 54% 65% at 5% 100%, var(--glow-2), transparent 70%);
+  word-break:keep-all;
+  overflow-wrap:anywhere;
+}
+.night-masthead {
+  min-height:54px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  border-bottom:1px solid var(--line);
+  color:var(--fg-muted);
+  font:700 13px/1.35 var(--font-body);
+  letter-spacing:.025em;
+}
+.night-mode {display:flex;align-items:center;gap:8px}
+.night-mode::before {content:'';width:7px;height:7px;border-radius:50%;background:var(--party)}
+.demo-label {border:1px solid var(--line);border-radius:99px;color:var(--fg-muted);padding:4px 10px;font-size:11px;letter-spacing:.02em;white-space:nowrap}
+.night-eyebrow {
+  margin:0;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  color:var(--gold);
+  font:700 clamp(12px,1.1vw,16px)/1.4 var(--font-body);
+  letter-spacing:.13em;
+}
+.night-eyebrow::before {content:'';width:17px;height:1px;background:currentColor}
+.night-title {
+  margin:0;
+  font-family:var(--font-display);
+  font-weight:400;
+  line-height:1.1;
+  letter-spacing:-.07em;
+  color:var(--fg);
+}
+.night-title em {color:var(--gold);font-style:normal}
+.night-title .event-title-line {display:block;white-space:nowrap;line-height:1.18}
+.night-hero {
+  margin:0;
+  position:relative;
+  overflow:hidden;
+  background:#393044;
+  border:1px solid #ff91bd85;
+  border-radius:14px;
+  box-shadow:0 13px 52px #0d071877;
+}
+.night-hero img {width:100%;height:100%;display:block;object-fit:cover;object-position:58% center}
+.night-hero::after {content:'';position:absolute;inset:55% 0 0;pointer-events:none;background:linear-gradient(transparent,#140a18a3)}
+.night-hero figcaption {
+  position:absolute;
+  z-index:1;
+  left:5%;
+  bottom:6%;
+  max-width:86%;
+  padding:7px 11px;
+  border:1px solid #362739;
+  border-radius:99px;
+  background:var(--fg);
+  color:#201725;
+  font-size:clamp(12px,1vw,15px);
+  font-weight:800;
+  line-height:1.45;
+  transform:rotate(-3deg);
+}
+.night-hero figcaption::after {content:'';position:absolute;right:1px;bottom:-4px;width:9px;height:9px;border-right:1px solid #362739;border-bottom:1px solid #362739;background:var(--fg);transform:skew(15deg,15deg) rotate(16deg)}
+.btn {
+  border-radius:8px;
+  color:var(--fg);
+  min-height:46px;
+  box-shadow:none;
+  font-family:var(--font-body);
+}
+.btn-primary,.btn-primary:hover {
+  background:var(--party);
+  border-color:transparent;
+  color:#271724;
+  box-shadow:none;
+}
+.btn-primary:hover:not(:disabled){filter:brightness(1.07)}
+.night-action {display:flex;align-items:center;justify-content:space-between;gap:20px}
+.night-action span {font-size:1.25em;line-height:1}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+/* One participant component, shared by voting and the live reveal. */
+:root {--card-radius:14px;--grid-gap:10px;--page-width:1760px}
+button,a {touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.btn {min-height:48px;border-radius:12px;line-height:1.4;transition:background .18s,transform .18s,box-shadow .18s}
+.btn-primary {font-weight:900}
+.btn:disabled {opacity:.4;cursor:not-allowed}
+.people-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--grid-gap);align-content:start}
+.people-grid .person-card {
+  position:relative;display:flex;flex-direction:column;align-items:stretch;gap:0;min-width:0;min-height:0;
+  padding:5px;overflow:hidden;border:1px solid var(--line);border-radius:var(--card-radius);
+  background:var(--surface);color:var(--fg);text-align:left;
+  transition:border-color .18s,background .18s,box-shadow .18s,transform .18s;
+}
+.people-grid .person-photo {
+  display:grid;place-items:center;position:relative;width:100%;height:auto;max-width:none;
+  aspect-ratio:1;border-radius:9px;overflow:hidden;background:#d4d0d6;flex:none;
+}
+.people-grid .person-photo img {position:static;display:block;width:100%;height:100%;object-fit:contain;object-position:center;transform:none}
+.person-meta {display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:9px 2px 6px;min-width:0}
+.person-name {display:block;width:100%;text-align:center;font-size:14px;font-weight:700;line-height:1.4;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}
+.person-status {display:flex;align-items:center;justify-content:center;gap:3px;height:22px;min-height:22px;font-size:11px;line-height:22px;color:var(--fg-muted);font-weight:500;white-space:nowrap}
+.person-status .count {font:900 16px/22px var(--font-body);color:var(--fg);font-variant-numeric:tabular-nums}
+.person-card .bar {height:3px;flex:none;margin:0 4px 2px;background:#ffffff12}
+.person-card .bar i {background:var(--party)}
+.person-card.is-sel {border-color:var(--party);background:#493046;box-shadow:0 0 0 1px var(--party);transform:none}
+.person-card.is-sel .person-status {color:var(--party);font-weight:900}
+.person-card.is-sel::after {content:'✓';position:absolute;top:10px;right:10px;display:grid;place-items:center;width:23px;height:23px;border:2px solid var(--bg);border-radius:50%;background:var(--party);color:var(--bg);font:900 13px/1 var(--font-body);animation:check-in .22s ease-out}
+.person-card.is-hit {border-color:var(--party);background:#493046;box-shadow:0 0 18px #ff91bd25;transform:none}
+.person-card.is-win {border-color:var(--gold);background:#49392e;box-shadow:0 0 0 1px var(--gold),0 6px 24px #ffe1a01a;transform:none;animation:winner-in .5s ease-out}
+.person-card.is-win::after {content:'1위';position:absolute;top:10px;left:10px;display:grid;place-items:center;padding:4px 7px;border-radius:6px;background:var(--gold);color:var(--bg);font:900 11px/1.3 var(--font-body);transform:none;filter:none}
+.person-card.is-win .person-status,.person-card.is-win .count {color:var(--gold)}
+.person-card.is-lose .person-photo {opacity:1;filter:none}
+.question-label {display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--gold);font-size:12px;font-weight:700;letter-spacing:.06em}
+.question-label .quiet {color:var(--fg-muted);letter-spacing:0;font-weight:400}
+.question-heading {margin:0;font:900 clamp(22px,5.5vw,30px)/1.48 var(--font-body);letter-spacing:-.04em;word-break:keep-all;overflow-wrap:anywhere;text-wrap:pretty}
+.question-heading.is-long {font-size:clamp(19px,4.8vw,25px)}
+.question-help {margin:0;color:var(--fg-muted);font-size:12px;line-height:1.6}
+.action-dock {position:fixed;inset:auto 0 0;z-index:20;border-top:1px solid var(--line);background:#1d1726f5;backdrop-filter:blur(20px);padding:11px max(16px,env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom));box-shadow:0 -10px 40px #100b181f}
+.dock-inner {width:100%;max-width:var(--page-width);margin:0 auto;display:grid;gap:9px}
+.dock-note {margin:0;min-height:20px;font-size:12px;color:var(--fg-muted);line-height:1.6}
+.dock-note strong {color:var(--party);font-weight:700}
+.dock-actions {display:grid;grid-template-columns:1fr 2fr;gap:10px}
+.dock-actions .btn {width:100%;padding:12px 10px;font-size:14px}
+.sample-switch {color:var(--fg-muted);text-underline-offset:4px;font-size:12px;min-height:44px;display:inline-flex;align-items:center;gap:6px;text-decoration-color:#d1c4d760}
+.sample-switch:hover {color:var(--fg)}
+.sr-only {position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.view.is-active,.screen.is-active {animation:screen-in .25s ease-out}
+@keyframes screen-in {from{opacity:0}to{opacity:1}}
+@keyframes check-in {from{opacity:0;scale:.6}to{opacity:1;scale:1}}
+@keyframes winner-in {from{box-shadow:0 0 0 4px #ffe1a077}to{box-shadow:0 0 0 1px var(--gold),0 6px 24px #ffe1a01a}}
+@media (hover:hover) {button.person-card:hover {border-color:#ff9bc980;background:#30253d;transform:translateY(-2px)}.btn-primary:hover:not(:disabled){box-shadow:0 4px 20px #ff91bd22}.btn:active{transform:scale(.98)}}
+@media (min-width:600px) {.people-grid {grid-template-columns:repeat(5,minmax(0,1fr));--grid-gap:12px}}
+@media (min-width:1200px) {.people-grid {grid-template-columns:repeat(10,minmax(0,1fr))}.person-name {font-size:clamp(14px,1.1vw,20px)}.person-status{font-size:12px}.person-status .count{font-size:18px}.person-meta{padding-block:10px 8px}}
+@media (max-width:350px) {:root{--grid-gap:7px}.person-name{font-size:13px}.people-grid .person-card{padding:4px}.person-meta{padding-block:7px 4px}.person-status{font-size:10px}}
+@media (prefers-reduced-motion:reduce) {*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+body {padding-block:env(safe-area-inset-top,0px) calc(30px + env(safe-area-inset-bottom,0px))}
+.app {max-width:var(--page-width);gap:16px}
+.app[data-view="v-cover"],.app[data-view="v-confirm"],.app[data-view="v-done"] {max-width:520px}
+.app[data-view="v-cover"] .pbar {display:none}
+.night-masthead .night-mode {color:var(--fg)}
+.cover-progress {margin-left:auto;color:var(--fg-muted);font-variant-numeric:tabular-nums;font-size:12px}
+.cover-progress:empty {display:none}
+#v-cover {gap:0;padding-top:4px}
+#v-cover .night-hero {aspect-ratio:1.46}
+.cover-copy {display:grid;gap:12px;padding-top:23px}
+.cover-copy .night-title {font-size:clamp(36px,10vw,56px);text-wrap:balance}
+.cover-copy .help {margin:0;line-height:1.65}
+.cover-copy .night-action {margin-top:4px;padding-inline:16px;min-height:54px}
+.cover-meta {margin:0;color:var(--fg-muted);font-size:12px}
+.cover-links {display:flex;justify-content:space-between;gap:12px;align-items:center}
+.text-button {border:0;background:none;color:var(--fg-muted);font-size:12px;min-height:44px;cursor:pointer;text-decoration:underline;text-underline-offset:4px;padding:0 4px}
+.h {font-weight:900;font-family:var(--font-body);letter-spacing:-.04em}
+.view h1[tabindex="-1"]:focus {outline:none}
+.view:not(#v-cover) {gap:14px;padding-top:3px}
+.view > .eyebrow {color:var(--gold);letter-spacing:.06em}
+.pbar {height:4px}
+.pbar i {background:linear-gradient(90deg,var(--gold),var(--party))}
+#q-text {font-size:clamp(22px,5.5vw,30px);line-height:1.48;text-wrap:pretty;padding:0;border:0;background:none}
+#q-text.is-long {font-size:clamp(19px,4.8vw,25px)}
+#v-q,#v-review {padding-bottom:128px}
+.question-top {display:grid;gap:12px;padding-bottom:4px}
+.question-top .eyebrow {margin:0;color:var(--gold);font-size:12px;letter-spacing:.06em}
+#selection-status {text-align:center}
+.bigcard {border-radius:var(--card-radius);padding:16px;gap:20px}
+.bigcard .pavatar {width:112px;max-width:40%;aspect-ratio:1;border-radius:10px;flex:none}
+.bigcard .pavatar img {object-fit:contain}
+.bigcard .pname {font-size:22px}
+#v-confirm .row {margin-top:8px}
+.review {gap:10px}
+.review li {padding:0;border-radius:12px;overflow:hidden}
+.review-item {display:flex;align-items:center;gap:12px;width:100%;padding:14px 12px;border:0;background:none;color:var(--fg);text-align:left;cursor:pointer}
+.review .rt {color:var(--fg);font-size:13px;line-height:1.65}
+.review .rn {color:var(--gold);margin-bottom:5px;letter-spacing:.04em}
+.review .rpick {flex-direction:column;gap:4px;font-size:12px}
+.review .rpick .pavatar {width:44px;border-radius:7px}
+.review-edit {display:block;color:var(--fg-muted);font-size:10px;font-weight:400}
+.done {padding-block:35px;gap:18px}
+.done .btn {width:100%;margin-top:5px}
+html {scroll-padding-bottom:140px}
+@media(min-width:600px){body {padding-inline:24px}.question-top{max-width:900px}#v-review{max-width:800px;width:100%;margin:0 auto}.dock-inner{grid-template-columns:1fr auto;align-items:center;gap:24px}.dock-actions{min-width:320px}#selection-status{text-align:left}}
+
+/* Quick press feedback, followed by a single intentional step forward. */
+:root {--vote-ease:cubic-bezier(.22,.8,.25,1);--vote-spring:cubic-bezier(.22,1.25,.4,1)}
+#v-q {padding-bottom:88px}
+.vote-auto-dock .dock-inner {display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:12px}
+.vote-auto-dock #q-prev {min-width:82px;min-height:46px;padding:10px 14px;font-size:13px}
+.vote-auto-dock #selection-status {text-align:right;display:flex;justify-content:flex-end;align-items:center;gap:4px;flex-wrap:wrap;font-size:12px;line-height:1.5}
+.selection-check {display:inline-grid;place-items:center;flex:none;width:18px;height:18px;margin-right:2px;border-radius:50%;color:var(--bg);background:var(--party);font-size:11px;font-weight:900}
+#q-grid .pcard {transition:transform 110ms var(--vote-ease),border-color 160ms,background 160ms,box-shadow 160ms;will-change:auto}
+#q-grid .pcard:active:not(:disabled) {transform:scale(.955)}
+#q-grid .pcard:disabled {cursor:default;opacity:1}
+#q-grid .pcard.is-confirming {animation:vote-picked 350ms var(--vote-spring) both;border-color:var(--party);background:#493046;box-shadow:0 0 0 2px var(--party),0 6px 24px #ff91bd33;z-index:1}
+#q-grid .pcard::after,#q-grid .person-photo::before,#q-grid .person-photo::after {content:none!important;display:none!important}
+#v-q.is-entering .question-top,#v-q.is-entering #q-grid {animation:vote-enter 180ms var(--vote-ease) both}
+#v-q[data-direction="back"].is-entering .question-top,#v-q[data-direction="back"].is-entering #q-grid {animation-name:vote-back}
+@keyframes vote-picked {0%{transform:scale(.955)}55%{transform:scale(1.025)}100%{transform:scale(1)}}
+@keyframes vote-enter {from{opacity:.25;transform:translateX(12px)}to{opacity:1;transform:translateX(0)}}
+@keyframes vote-back {from{opacity:.25;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
+@media(max-width:350px){.vote-auto-dock .dock-inner{gap:8px}.vote-auto-dock #q-prev{min-width:74px;padding-inline:10px}.vote-auto-dock #selection-status{font-size:11px}}
+
 </style>
 </head>
 <body>
-<main class="app">
-  <header class="top">
-    <span id="brand">우리끼리 어워즈 투표</span>
-    <span id="prog"></span>
-  </header>
-  <div class="pbar"><i id="pfill"></i></div>
+<main class="app" data-view="v-cover">
+  <header class="night-masthead">
+    <span class="night-mode">사전투표</span>
+    <span class="cover-progress" id="prog"></span>
 
-  <section class="view is-active" id="v-who">
-    <p class="eyebrow">시작</p>
+  </header>
+  <div class="pbar" aria-hidden="true"><i id="pfill"></i></div>
+
+  <section class="view is-active" id="v-cover">
+    <figure class="night-hero">
+    <img src="party-sheep.webp" alt="턱시도와 선글라스를 착용하고 와인잔을 든 양들" width="1400" height="933" fetchpriority="high">
+    <figcaption>행사 전에 한 표 부탁해양.</figcaption>
+  </figure>
+    <div class="cover-copy">
+      <p class="night-eyebrow">목장 뒤풀이</p>
+      <h1 class="night-title"><span class="event-title-line">사Sheep 2th</span> <span class="event-title-line">중운위 <em>어워즈</em></span></h1>
+      <p class="help">미리 한 표씩 골라 주세요. 결과는 행사 당일에 공개해요.</p>
+      <button class="btn btn-primary night-action" id="cover-start" type="button">투표 시작하기 <span aria-hidden="true">→</span></button>
+      <p class="cover-meta" id="cover-resume"><span id="cover-count">36</span>문항</p><div class="cover-links"><button class="text-button" type="button" id="cover-reset" hidden>처음부터 다시</button></div>
+    </div>
+  </section>
+
+  <section class="view" id="v-who">
+    <div class="question-label"><span>WHO ARE YOU?</span><button class="text-button" id="who-back" type="button">← 첫 화면</button></div>
     <h1 class="h">본인 이름을 골라 주세요</h1>
-    <p class="help">한 사람당 한 번만 제출할 수 있어요.</p>
-    <div class="pgrid" id="who-grid"></div>
+    <p class="help">사진과 이름을 확인하고 본인을 선택해 주세요.</p>
+    <div class="pgrid people-grid" id="who-grid"></div>
   </section>
 
   <section class="view" id="v-confirm">
@@ -115,14 +355,9 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
   </section>
 
   <section class="view" id="v-q">
-    <p class="eyebrow" id="q-eyebrow">Q1</p>
-    <h1 class="h" id="q-text"></h1>
-    <p class="help">가장 어울리는 한 명을 고르세요. 본인은 목록에 없어요.</p>
-    <div class="pgrid" id="q-grid"></div>
-    <div class="row">
-      <button class="btn" id="q-prev" type="button">이전</button>
-      <button class="btn btn-primary" id="q-next" type="button" disabled>다음</button>
-    </div>
+    <div class="question-top"><div class="question-label"><span id="q-eyebrow"></span><span class="quiet">한 번 눌러 선택</span></div><h1 class="h question-heading" id="q-text"></h1><p class="question-help" id="q-help">사진을 누르면 선택 후 다음으로 넘어가요. 본인은 제외돼요.</p></div>
+    <div class="pgrid people-grid" id="q-grid" role="group" aria-labelledby="q-text" aria-describedby="q-help"></div>
+    <div class="action-dock vote-auto-dock"><div class="dock-inner"><button class="btn" id="q-prev" type="button">이전</button><p class="dock-note" id="selection-status" role="status" aria-live="polite"></p></div></div>
   </section>
 
   <section class="view" id="v-review">
@@ -131,10 +366,7 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
     <p class="help">항목을 누르면 다시 고를 수 있어요. 제출 후에는 바꿀 수 없습니다.</p>
     <ul class="review" id="review"></ul>
     <p class="err" id="err" hidden></p>
-    <div class="row">
-      <button class="btn" id="r-back" type="button">이전</button>
-      <button class="btn btn-primary" id="r-submit" type="button">제출하기</button>
-    </div>
+    <div class="action-dock"><div class="dock-inner"><p class="dock-note">36문항 모두 골랐어요. 마지막으로 확인해 주세요.</p><div class="dock-actions"><button class="btn" id="r-back" type="button">← 이전</button><button class="btn btn-primary" id="r-submit" type="button">제출하기 ✓</button></div></div></div>
   </section>
 
   <section class="view" id="v-done">
@@ -143,6 +375,7 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
       <h1 class="h">제출 완료</h1>
       <p class="help" id="done-msg">결과는 행사 당일 발표 때 공개됩니다.</p>
       <p class="preview-note" id="done-note" hidden></p>
+
     </div>
   </section>
 
@@ -155,135 +388,241 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
   </section>
 </main>
 
-<script src="config.js"></script>
+<script src="config.js?v=night-pasture-1"></script>
 <script>
-(function(){
+(() => {
+  const esc = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const avatar = p => '<span class="pavatar person-photo">' + (p.photo ? '<img src="' + esc(p.photo) + '" alt="" decoding="async">' : esc(p.name)) + '</span>';
+  function card(p, mode, selected = false) {
+    const reveal = mode === 'reveal';
+    const tag = reveal ? 'article' : 'button';
+    const attributes = reveal ? '' : ' type="button" aria-pressed="' + selected + '"';
+    const status = reveal ? '<span class="count">0</span>표' : (mode === 'who' ? '본인 선택' : selected ? '선택했어요' : '선택하기');
+    return '<' + tag + attributes + ' class="person-card ' + (reveal ? 'card' : 'pcard') + (selected ? ' is-sel' : '') + '" data-id="' + p.id + '">' + avatar(p) +
+      '<span class="person-meta"><span class="person-name">' + esc(p.name) + '</span><span class="person-status' + (reveal ? ' votes' : '') + '">' + status + '</span></span>' +
+      '<span class="bar"' + (reveal ? '' : ' style="visibility:hidden"') + ' aria-hidden="true"><i></i></span></' + tag + '>';
+  }
+  window.PartyUI = { esc, avatar, card };
+})();
+
+(() => {
   'use strict';
   const $ = s => document.querySelector(s);
-  const CONFIG = window.AWARDS_CONFIG;
-  if (!CONFIG || !Array.isArray(CONFIG.people) || !Array.isArray(CONFIG.questions)) {
-    document.querySelector('.app').innerHTML = '<p class="err">config.js를 찾지 못했어요. index.html과 같은 폴더에 config.js가 있어야 합니다.</p>';
-    return;
-  }
-  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const STORE_KEY = 'awards_vote_done_v2';
-  const PEOPLE = CONFIG.people.map((p, i) => Object.assign({ hue: Math.round((i * 137.508) % 360) }, p));
-  const Q = CONFIG.questions;
+  const { esc, avatar, card } = window.PartyUI;
+  const config = window.AWARDS_CONFIG;
+  const {people: PEOPLE, questionOrder} = config;
+  const Q = questionOrder.map(id => config.questions[id - 1]);
+  const doneKey = 'awards_vote_done_v2';
+  const closed = () => config.deadline && Date.now() > new Date(config.deadline).getTime();
   const N = Q.length;
-  const PREVIEW = !CONFIG.endpoint;
-
-  let voter = null, qi = 0, picks = new Array(N).fill(0);
-
-  $('#brand').textContent = CONFIG.title + ' 투표';
-
-  function byId(id){ return PEOPLE.find(p => p.id === id); }
-  function avatarHTML(p, extra){
-    const inner = p.photo ? '<img src="' + esc(p.photo) + '" alt="">' : String(p.id).padStart(2, '0');
-    return '<span class="pavatar ' + (extra || '') + '" style="--h:' + p.hue + '">' + inner + '</span>';
+  const KEY = 'awards_party_live_draft_v1';
+  const signature = JSON.stringify([Q, PEOPLE.map(p => p.id)]);
+  let voter = null, qi = 0, picks = Array(N).fill(0), edit = null, busy = false;
+  const PICK_FEEDBACK_MS = 350, QUESTION_ENTER_MS = 180;
+  let pickTimer = null, enterTimer = null, choosing = false;
+  const byId = id => PEOPLE.find(p => p.id === id);
+  $('#cover-count').textContent = N;
+  function save() {
+    if (!voter) return;
+    try { localStorage.setItem(KEY, JSON.stringify({ signature, voterId:voter.id, qi, picks })); } catch {}
   }
-  function cardHTML(p, selected){
-    return '<button type="button" class="pcard' + (selected ? ' is-sel' : '') + '" data-id="' + p.id + '">' +
-      avatarHTML(p) + '<span class="pname">' + esc(p.name) + '</span></button>';
+  function clearDraft() { try { localStorage.removeItem(KEY); } catch {} }
+  function restore() {
+    try {
+      const d = JSON.parse(localStorage.getItem(KEY));
+      if (!d || d.signature !== signature || !byId(d.voterId) || !Array.isArray(d.picks) || d.picks.length !== N) return;
+      voter = byId(d.voterId);
+      picks = d.picks.map(id => id !== voter.id && byId(id) ? id : 0);
+      qi = Math.max(0, Math.min(N - 1, Number.isInteger(d.qi) ? d.qi : 0));
+    } catch {}
   }
-  function show(id){ document.querySelectorAll('.view').forEach(v => v.classList.toggle('is-active', v.id === id)); window.scrollTo(0, 0); }
-  function progress(step){
-    $('#pfill').style.width = (step / N * 100) + '%';
-    $('#prog').textContent = step > 0 ? step + ' / ' + N : '';
+  function show(id) {
+    cancelTransition();
+    document.querySelectorAll('.view').forEach(v => v.classList.toggle('is-active', v.id === id));
+    $('.app').dataset.view = id;
+    window.scrollTo(0, 0);
+    const h = $('#' + id + ' h1');
+    if (h) { h.tabIndex = -1; h.focus({preventScroll:true}); }
   }
-  function closed(){ return CONFIG.deadline && Date.now() > new Date(CONFIG.deadline).getTime(); }
-  function readDone(){ try { return JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); } catch (e) { return null; } }
-  function writeDone(v){ try { localStorage.setItem(STORE_KEY, JSON.stringify(v)); } catch (e) {} }
-
-  /* ---- 1. 본인 선택 ---- */
-  function renderWho(){
-    $('#who-grid').innerHTML = PEOPLE.map(p => cardHTML(p, false)).join('');
-    progress(0); show('v-who');
+  function cancelTransition() {
+    clearTimeout(pickTimer); clearTimeout(enterTimer);
+    pickTimer = enterTimer = null; choosing = false;
+    $('#v-q').dataset.state = 'idle';
+    $('#v-q').classList.remove('is-entering');
+    $('#q-grid').setAttribute('aria-busy', 'false');
+    $('#q-grid').querySelectorAll('.pcard').forEach(c => { c.disabled = false; c.classList.remove('is-confirming'); });
   }
-  $('#who-grid').addEventListener('click', e => {
-    const b = e.target.closest('.pcard'); if (!b) return;
-    voter = byId(+b.dataset.id);
-    $('#confirm-name').textContent = voter.name;
-    $('#confirm-card').innerHTML = avatarHTML(voter) + '<span class="pname">' + esc(voter.name) + '</span>';
-    show('v-confirm');
-  });
-  $('#confirm-no').addEventListener('click', () => { voter = null; renderWho(); });
-  $('#confirm-yes').addEventListener('click', () => { qi = 0; picks = new Array(N).fill(0); renderQ(); });
-
-  /* ---- 2. 질문 ---- */
-  function renderQ(){
-    $('#q-eyebrow').textContent = 'Q' + (qi + 1) + ' / ' + N;
+  function lockChoices(state) {
+    $('#v-q').dataset.state = state;
+    $('#q-grid').setAttribute('aria-busy', 'true');
+    $('#q-grid').querySelectorAll('.pcard').forEach(c => { c.disabled = true; });
+  }
+  function progress() {
+    const answered = picks.filter(Boolean).length;
+    $('#pfill').style.width = (answered / N * 100) + '%';
+    $('#prog').textContent = voter ? answered + ' / ' + N + ' 완료' : '';
+  }
+  function cover() {
+    edit = null;
+    $('#cover-start').innerHTML = (voter ? '이어서 투표하기' : '투표 시작하기') + ' <span aria-hidden="true">→</span>';
+    $('#cover-resume').textContent = voter ? voter.name + ' 님 · ' + picks.filter(Boolean).length + '문항 선택을 저장했어요.' : N + '문항';
+    $('#cover-reset').hidden = !voter;
+    progress(); show('v-cover');
+  }
+  function who() {
+    $('#who-grid').innerHTML = PEOPLE.map(p => card(p, 'who')).join('');
+    show('v-who');
+  }
+  function selection() {
+    const chosen = byId(picks[qi]);
+    $('#q-grid').querySelectorAll('.pcard').forEach(c => {
+      const selected = +c.dataset.id === picks[qi];
+      c.classList.toggle('is-sel', selected);
+      c.setAttribute('aria-pressed', String(selected));
+      c.querySelector('.person-status').textContent = selected ? '선택했어요' : '선택하기';
+    });
+    $('#selection-status').innerHTML = chosen ? '<strong>' + esc(chosen.name) + '</strong> 님 선택 · 다시 눌러도 돼요' : '사진을 누르면 바로 넘어가요';
+    progress();
+  }
+  function question(direction = 'forward', fromPick = false) {
+    $('#q-eyebrow').textContent = 'QUESTION ' + String(qi + 1).padStart(2, '0') + ' / ' + N;
     $('#q-text').textContent = Q[qi];
     $('#q-text').classList.toggle('is-long', Q[qi].length > 50);
-    $('#q-grid').innerHTML = PEOPLE.filter(p => p.id !== voter.id).map(p => cardHTML(p, picks[qi] === p.id)).join('');
-    $('#q-prev').textContent = qi === 0 ? '이름 다시 고르기' : '이전';
-    $('#q-next').disabled = !picks[qi];
-    $('#q-next').textContent = qi === N - 1 ? '확인하러 가기' : '다음';
-    progress(qi); show('v-q');
+    $('#q-grid').innerHTML = PEOPLE.filter(p => p.id !== voter.id).map(p => card(p, 'vote', p.id === picks[qi])).join('');
+    $('#q-prev').textContent = edit ? '취소' : qi === 0 ? '이름 변경' : '← 이전';
+    $('#q-help').textContent = edit ? '사진을 누르면 선택을 바꾸고 확인 화면으로 돌아가요.' : '사진을 누르면 선택 후 다음으로 넘어가요. 본인은 제외돼요.';
+    selection(); show('v-q'); save();
+    $('#v-q').dataset.direction = direction;
+    $('#v-q').classList.add('is-entering');
+    if (fromPick) lockChoices('entering');
+    enterTimer = setTimeout(() => {
+      $('#v-q').classList.remove('is-entering');
+      if (!choosing) cancelTransition();
+    }, QUESTION_ENTER_MS);
   }
-  $('#q-grid').addEventListener('click', e => {
-    const b = e.target.closest('.pcard'); if (!b) return;
-    picks[qi] = +b.dataset.id;
-    $('#q-grid').querySelectorAll('.pcard').forEach(c => c.classList.toggle('is-sel', +c.dataset.id === picks[qi]));
-    $('#q-next').disabled = false;
-  });
-  $('#q-prev').addEventListener('click', () => { if (qi === 0) { voter = null; renderWho(); } else { qi--; renderQ(); } });
-  $('#q-next').addEventListener('click', () => { if (!picks[qi]) return; if (qi < N - 1) { qi++; renderQ(); } else renderReview(); });
-
-  /* ---- 3. 확인 ---- */
-  function renderReview(){
+  function review() {
+    edit = null;
     $('#review').innerHTML = Q.map((q, i) => {
       const p = byId(picks[i]);
-      return '<li data-i="' + i + '"><span class="rq"><span class="rn">Q' + (i + 1) + '</span><span class="rt">' + esc(q) + '</span></span>' +
-        '<span class="rpick">' + avatarHTML(p) + esc(p.name) + '</span></li>';
+      return '<li><button class="review-item" type="button" data-i="' + i + '" aria-label="' + (i + 1) + '번 질문, ' + esc(p.name) + ' 선택 수정"><span class="rq"><span class="rn">QUESTION ' + String(i + 1).padStart(2, '0') + '</span><span class="rt">' + esc(q) + '</span></span><span class="rpick">' + avatar(p) + esc(p.name) + '<span class="review-edit">수정 ↗</span></span></button></li>';
     }).join('');
-    $('#err').hidden = true;
-    progress(N); show('v-review');
+    progress(); show('v-review'); save();
   }
-  $('#review').addEventListener('click', e => { const li = e.target.closest('li'); if (!li) return; qi = +li.dataset.i; renderQ(); });
-  $('#r-back').addEventListener('click', () => { qi = N - 1; renderQ(); });
+  $('#cover-start').addEventListener('click', () => {
+    if (!voter) who();
+    else if (picks.every(Boolean)) review();
+    else question();
+  });
+  $('#cover-reset').addEventListener('click', () => { clearDraft(); voter = null; picks = Array(N).fill(0); qi = 0; cover(); });
+  $('#who-back').addEventListener('click', cover);
+  $('#who-grid').addEventListener('click', e => {
+    const b = e.target.closest('.pcard'); if (!b) return;
+    const person = byId(+b.dataset.id);
+    $('#confirm-name').textContent = person.name;
+    $('#confirm-card').innerHTML = avatar(person) + '<span class="pname">' + esc(person.name) + '</span>';
+    $('#confirm-card').dataset.id = person.id;
+    show('v-confirm');
+  });
+  $('#confirm-no').addEventListener('click', who);
+  $('#confirm-yes').addEventListener('click', () => {
+    const person = byId(+$('#confirm-card').dataset.id);
+    if (voter?.id !== person.id) { picks = Array(N).fill(0); qi = 0; }
+    voter = person; edit = null; question();
+  });
+  $('#q-grid').addEventListener('click', e => {
+    const b = e.target.closest('.pcard');
+    if (!b || b.disabled || choosing || $('#v-q').dataset.state === 'entering') return;
+    clearTimeout(enterTimer);
+    $('#v-q').classList.remove('is-entering');
+    choosing = true;
+    picks[qi] = +b.dataset.id;
+    selection(); save();
+    lockChoices('selecting');
+    b.classList.add('is-confirming');
+    $('#selection-status').innerHTML = '<span class="selection-check" aria-hidden="true">✓</span><strong>' + esc(byId(picks[qi]).name) + '</strong> 님 선택 완료';
+    pickTimer = setTimeout(() => {
+      if (edit || qi === N - 1) review();
+      else { qi++; question('forward', true); }
+    }, PICK_FEEDBACK_MS);
+  });
+  $('#q-prev').addEventListener('click', () => {
+    cancelTransition();
+    if (edit) { picks[qi] = edit.original; review(); }
+    else if (qi === 0) who();
+    else { qi--; question('back'); }
+  });
+  $('#review').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    qi = +b.dataset.i; edit = {original:picks[qi]}; question();
+  });
+  $('#r-back').addEventListener('click', () => { qi = N - 1; question(); });
+  function finishDone(name, note = '') {
+    $('#done-msg').textContent = name + ' 님, 투표를 제출했어요. 결과는 행사 당일에 공개됩니다.';
+    $('#done-note').hidden = !note;
+    $('#done-note').textContent = note;
+    show('v-done');
+  }
 
-  /* ---- 4. 제출 ---- */
-  function showErr(msg){ const el = $('#err'); el.textContent = msg; el.hidden = false; }
-  function finishDone(note){
-    $('#done-msg').textContent = voter.name + ' 님, 투표를 제출했어요. 결과는 행사 당일에 공개됩니다.';
-    const n = $('#done-note'); n.hidden = !note; n.textContent = note || '';
-    progress(N); show('v-done');
-  }
   $('#r-submit').addEventListener('click', async () => {
+    if (busy || !voter || picks.some(id => !byId(id) || id === voter.id)) return;
     if (closed()) { show('v-closed'); return; }
-    if (picks.some(p => !p || p === voter.id)) { showErr('아직 고르지 않은 질문이 있어요.'); return; }
-    const btn = $('#r-submit'); btn.classList.add('is-busy'); btn.textContent = '제출 중…'; $('#err').hidden = true;
-    const payload = { voterId: voter.id, voterName: voter.name, answers: picks.slice(), submittedAt: new Date().toISOString() };
+    busy = true;
+    const submit = $('#r-submit');
+    const back = $('#r-back');
+    const error = $('#err');
+    const items = Array.from(document.querySelectorAll('#review button'));
+    submit.disabled = back.disabled = true;
+    items.forEach(item => { item.disabled = true; });
+    submit.textContent = '제출 중…';
+    error.hidden = true;
+    // 화면의 순서를 구글 시트의 Q1–Q36 열 순서로 되돌려 보냅니다.
+    const answers = new Array(N);
+    questionOrder.forEach((id, index) => { answers[id - 1] = picks[index]; });
+    const payload = {voterId: voter.id, voterName: voter.name, answers, submittedAt: new Date().toISOString()};
     try {
-      if (PREVIEW) {
-        await new Promise(r => setTimeout(r, 700));
-        finishDone('미리보기 모드라 실제로 저장되지는 않았어요.');
-      } else {
-        const r = await fetch(CONFIG.endpoint, { method: 'POST', body: JSON.stringify(payload) });
-        const data = await r.json();
-        if (data.ok) { writeDone({ voterId: voter.id, voterName: voter.name, at: payload.submittedAt }); finishDone(''); }
-        else if (data.error === 'duplicate') showErr('이미 제출된 이름이에요. 본인이 제출한 적이 없다면 진행자에게 알려 주세요.');
-        else if (data.error === 'closed') show('v-closed');
-        else showErr('제출하지 못했어요. 잠시 후 다시 시도해 주세요. (' + (data.error || 'unknown') + ')');
+      if (!config.endpoint) {
+        finishDone(voter.name, '미리보기 모드라 실제로 저장되지는 않았어요.');
+        return;
       }
-    } catch (e) {
-      showErr('네트워크 오류로 제출하지 못했어요. 연결을 확인하고 다시 시도해 주세요.');
+      const response = await fetch(config.endpoint, {method: 'POST', body: JSON.stringify(payload)});
+      const data = await response.json();
+      if (data.ok) {
+        try {
+          localStorage.setItem(doneKey, JSON.stringify({voterId: voter.id, voterName: voter.name, at: payload.submittedAt}));
+        } catch {}
+        clearDraft();
+        finishDone(voter.name);
+      } else if (data.error === 'closed') {
+        show('v-closed');
+      } else {
+        error.textContent = data.error === 'duplicate'
+          ? '이미 제출된 이름이에요. 본인이 제출한 적이 없다면 진행자에게 알려 주세요.'
+          : '제출하지 못했어요. 잠시 후 다시 시도해 주세요.';
+        error.hidden = false;
+      }
+    } catch {
+      error.textContent = '네트워크 오류로 제출하지 못했어요. 연결을 확인하고 다시 시도해 주세요.';
+      error.hidden = false;
     } finally {
-      btn.classList.remove('is-busy'); btn.textContent = '제출하기';
+      busy = false;
+      submit.disabled = back.disabled = false;
+      items.forEach(item => { item.disabled = false; });
+      submit.textContent = '제출하기 ✓';
     }
   });
 
-  /* ---- 시작 ---- */
   if (closed()) { show('v-closed'); return; }
-  const done = readDone();
-  if (done && !PREVIEW) {
-    voter = byId(done.voterId) || { name: done.voterName };
-    $('#done-msg').textContent = voter.name + ' 님은 이미 투표를 제출했어요. 결과는 행사 당일에 공개됩니다.';
-    progress(N); show('v-done');
+  let done;
+  try { done = JSON.parse(localStorage.getItem(doneKey) || 'null'); } catch {}
+  if (config.endpoint && done?.voterName) {
+    $('#done-msg').textContent = done.voterName + ' 님은 이미 투표를 제출했어요. 결과는 행사 당일에 공개됩니다.';
+    show('v-done');
     return;
   }
-  renderWho();
+  restore();
+  cover();
 })();
+
 </script>
 </body>
 </html>

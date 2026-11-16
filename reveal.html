@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>우리끼리 어워즈</title>
+<title>사Sheep 2th 중운위 어워즈</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
 <style>
 /* Layout: one full-viewport stage at a time — intro → roster grid with HUD above and a result band below → finale.
@@ -103,7 +103,7 @@ kbd{font-family:var(--font-body);font-weight:700;color:var(--fg);background:var(
   animation:winpulse 1.5s ease-in-out infinite}
 .card.is-win .count{color:var(--gold)}
 .card.is-win .bar i{background:linear-gradient(90deg,var(--gold-deep),var(--gold))}
-.card.is-win::after{content:'👑';position:absolute;top:-4px;left:-4px;font-size:clamp(18px,2vw,32px);transform:rotate(-16deg);filter:drop-shadow(0 4px 8px rgba(0,0,0,.45))}
+.card.is-win::after{content:'🐑';position:absolute;top:-4px;left:-4px;font-size:clamp(18px,2vw,32px);transform:rotate(-16deg);filter:drop-shadow(0 4px 8px rgba(0,0,0,.45))}
 @keyframes winpulse{0%,100%{box-shadow:0 0 0 2px var(--gold),0 18px 50px rgba(255,209,102,.3)}50%{box-shadow:0 0 0 4px var(--gold),0 22px 70px rgba(255,209,102,.6)}}
 
 .result{min-height:clamp(42px,6.8vh,74px);display:grid;place-items:center}
@@ -151,41 +151,372 @@ kbd{font-family:var(--font-body);font-weight:700;color:var(--fg);background:var(
   .count.is-pop,.card.is-win,.plus{animation:none}
   #fx{display:none}
 }
+:root {
+  --bg:#171220;
+  --glow-1:#7c387d64;
+  --glow-2:#d7548e30;
+  --surface:#251e31;
+  --surface-2:#362b43;
+  --line:#e7cbe636;
+  --fg:#fff5e9;
+  --fg-muted:#d1c4d7;
+  --accent:#ff9bc9;
+  --accent-2:#e989c8;
+  --gold:#ffe1a0;
+  --gold-deep:#bd8651;
+  --party:#ff91bd;
+  --danger:#ffada0;
+  --ok:#b3caa3;
+  --font-display:'Black Han Sans','Noto Sans KR',system-ui,sans-serif;
+}
+body {
+  background-image:radial-gradient(ellipse 65% 60% at 76% -10%, var(--glow-1), transparent 70%),
+    radial-gradient(ellipse 54% 65% at 5% 100%, var(--glow-2), transparent 70%);
+  word-break:keep-all;
+  overflow-wrap:anywhere;
+}
+.night-masthead {
+  min-height:54px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  border-bottom:1px solid var(--line);
+  color:var(--fg-muted);
+  font:700 13px/1.35 var(--font-body);
+  letter-spacing:.025em;
+}
+.night-mode {display:flex;align-items:center;gap:8px}
+.night-mode::before {content:'';width:7px;height:7px;border-radius:50%;background:var(--party)}
+.demo-label {border:1px solid var(--line);border-radius:99px;color:var(--fg-muted);padding:4px 10px;font-size:11px;letter-spacing:.02em;white-space:nowrap}
+.night-eyebrow {
+  margin:0;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  color:var(--gold);
+  font:700 clamp(12px,1.1vw,16px)/1.4 var(--font-body);
+  letter-spacing:.13em;
+}
+.night-eyebrow::before {content:'';width:17px;height:1px;background:currentColor}
+.night-title {
+  margin:0;
+  font-family:var(--font-display);
+  font-weight:400;
+  line-height:1.1;
+  letter-spacing:-.07em;
+  color:var(--fg);
+}
+.night-title em {color:var(--gold);font-style:normal}
+.night-title .event-title-line {display:block;white-space:nowrap;line-height:1.18}
+.night-hero {
+  margin:0;
+  position:relative;
+  overflow:hidden;
+  background:#393044;
+  border:1px solid #ff91bd85;
+  border-radius:14px;
+  box-shadow:0 13px 52px #0d071877;
+}
+.night-hero img {width:100%;height:100%;display:block;object-fit:cover;object-position:58% center}
+.night-hero::after {content:'';position:absolute;inset:55% 0 0;pointer-events:none;background:linear-gradient(transparent,#140a18a3)}
+.night-hero figcaption {
+  position:absolute;
+  z-index:1;
+  left:5%;
+  bottom:6%;
+  max-width:86%;
+  padding:7px 11px;
+  border:1px solid #362739;
+  border-radius:99px;
+  background:var(--fg);
+  color:#201725;
+  font-size:clamp(12px,1vw,15px);
+  font-weight:800;
+  line-height:1.45;
+  transform:rotate(-3deg);
+}
+.night-hero figcaption::after {content:'';position:absolute;right:1px;bottom:-4px;width:9px;height:9px;border-right:1px solid #362739;border-bottom:1px solid #362739;background:var(--fg);transform:skew(15deg,15deg) rotate(16deg)}
+.btn {
+  border-radius:8px;
+  color:var(--fg);
+  min-height:46px;
+  box-shadow:none;
+  font-family:var(--font-body);
+}
+.btn-primary,.btn-primary:hover {
+  background:var(--party);
+  border-color:transparent;
+  color:#271724;
+  box-shadow:none;
+}
+.btn-primary:hover:not(:disabled){filter:brightness(1.07)}
+.night-action {display:flex;align-items:center;justify-content:space-between;gap:20px}
+.night-action span {font-size:1.25em;line-height:1}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+/* One participant component, shared by voting and the live reveal. */
+:root {--card-radius:14px;--grid-gap:10px;--page-width:1760px}
+button,a {touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.btn {min-height:48px;border-radius:12px;line-height:1.4;transition:background .18s,transform .18s,box-shadow .18s}
+.btn-primary {font-weight:900}
+.btn:disabled {opacity:.4;cursor:not-allowed}
+.people-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--grid-gap);align-content:start}
+.people-grid .person-card {
+  position:relative;display:flex;flex-direction:column;align-items:stretch;gap:0;min-width:0;min-height:0;
+  padding:5px;overflow:hidden;border:1px solid var(--line);border-radius:var(--card-radius);
+  background:var(--surface);color:var(--fg);text-align:left;
+  transition:border-color .18s,background .18s,box-shadow .18s,transform .18s;
+}
+.people-grid .person-photo {
+  display:grid;place-items:center;position:relative;width:100%;height:auto;max-width:none;
+  aspect-ratio:1;border-radius:9px;overflow:hidden;background:#d4d0d6;flex:none;
+}
+.people-grid .person-photo img {position:static;display:block;width:100%;height:100%;object-fit:contain;object-position:center;transform:none}
+.person-meta {display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:9px 2px 6px;min-width:0}
+.person-name {display:block;width:100%;text-align:center;font-size:14px;font-weight:700;line-height:1.4;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}
+.person-status {display:flex;align-items:center;justify-content:center;gap:3px;height:22px;min-height:22px;font-size:11px;line-height:22px;color:var(--fg-muted);font-weight:500;white-space:nowrap}
+.person-status .count {font:900 16px/22px var(--font-body);color:var(--fg);font-variant-numeric:tabular-nums}
+.person-card .bar {height:3px;flex:none;margin:0 4px 2px;background:#ffffff12}
+.person-card .bar i {background:var(--party)}
+.person-card.is-sel {border-color:var(--party);background:#493046;box-shadow:0 0 0 1px var(--party);transform:none}
+.person-card.is-sel .person-status {color:var(--party);font-weight:900}
+.person-card.is-sel::after {content:'✓';position:absolute;top:10px;right:10px;display:grid;place-items:center;width:23px;height:23px;border:2px solid var(--bg);border-radius:50%;background:var(--party);color:var(--bg);font:900 13px/1 var(--font-body);animation:check-in .22s ease-out}
+.person-card.is-hit {border-color:var(--party);background:#493046;box-shadow:0 0 18px #ff91bd25;transform:none}
+.person-card.is-win {border-color:var(--gold);background:#49392e;box-shadow:0 0 0 1px var(--gold),0 6px 24px #ffe1a01a;transform:none;animation:winner-in .5s ease-out}
+.person-card.is-win::after {content:'1위';position:absolute;top:10px;left:10px;display:grid;place-items:center;padding:4px 7px;border-radius:6px;background:var(--gold);color:var(--bg);font:900 11px/1.3 var(--font-body);transform:none;filter:none}
+.person-card.is-win .person-status,.person-card.is-win .count {color:var(--gold)}
+.person-card.is-lose .person-photo {opacity:1;filter:none}
+.question-label {display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--gold);font-size:12px;font-weight:700;letter-spacing:.06em}
+.question-label .quiet {color:var(--fg-muted);letter-spacing:0;font-weight:400}
+.question-heading {margin:0;font:900 clamp(22px,5.5vw,30px)/1.48 var(--font-body);letter-spacing:-.04em;word-break:keep-all;overflow-wrap:anywhere;text-wrap:pretty}
+.question-heading.is-long {font-size:clamp(19px,4.8vw,25px)}
+.question-help {margin:0;color:var(--fg-muted);font-size:12px;line-height:1.6}
+.action-dock {position:fixed;inset:auto 0 0;z-index:20;border-top:1px solid var(--line);background:#1d1726f5;backdrop-filter:blur(20px);padding:11px max(16px,env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom));box-shadow:0 -10px 40px #100b181f}
+.dock-inner {width:100%;max-width:var(--page-width);margin:0 auto;display:grid;gap:9px}
+.dock-note {margin:0;min-height:20px;font-size:12px;color:var(--fg-muted);line-height:1.6}
+.dock-note strong {color:var(--party);font-weight:700}
+.dock-actions {display:grid;grid-template-columns:1fr 2fr;gap:10px}
+.dock-actions .btn {width:100%;padding:12px 10px;font-size:14px}
+.sample-switch {color:var(--fg-muted);text-underline-offset:4px;font-size:12px;min-height:44px;display:inline-flex;align-items:center;gap:6px;text-decoration-color:#d1c4d760}
+.sample-switch:hover {color:var(--fg)}
+.sr-only {position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.view.is-active,.screen.is-active {animation:screen-in .25s ease-out}
+@keyframes screen-in {from{opacity:0}to{opacity:1}}
+@keyframes check-in {from{opacity:0;scale:.6}to{opacity:1;scale:1}}
+@keyframes winner-in {from{box-shadow:0 0 0 4px #ffe1a077}to{box-shadow:0 0 0 1px var(--gold),0 6px 24px #ffe1a01a}}
+@media (hover:hover) {button.person-card:hover {border-color:#ff9bc980;background:#30253d;transform:translateY(-2px)}.btn-primary:hover:not(:disabled){box-shadow:0 4px 20px #ff91bd22}.btn:active{transform:scale(.98)}}
+@media (min-width:600px) {.people-grid {grid-template-columns:repeat(5,minmax(0,1fr));--grid-gap:12px}}
+@media (min-width:1200px) {.people-grid {grid-template-columns:repeat(10,minmax(0,1fr))}.person-name {font-size:clamp(14px,1.1vw,20px)}.person-status{font-size:12px}.person-status .count{font-size:18px}.person-meta{padding-block:10px 8px}}
+@media (max-width:350px) {:root{--grid-gap:7px}.person-name{font-size:13px}.people-grid .person-card{padding:4px}.person-meta{padding-block:7px 4px}.person-status{font-size:10px}}
+@media (prefers-reduced-motion:reduce) {*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+html,body {min-height:100%;height:auto}
+body {overflow:auto;background-attachment:fixed;padding:0 max(16px,env(safe-area-inset-left))}
+.screen {position:static;inset:auto;width:100%;max-width:var(--page-width);margin:0 auto;padding:0;gap:16px}
+.night-masthead {max-width:var(--page-width);margin:0 auto;padding-top:env(safe-area-inset-top)}
+body:has(#s-show.is-active) .night-masthead {display:none}
+#s-intro,#s-end {min-height:calc(100svh - 54px);padding-top:24px;padding-bottom:88px;overflow:visible}
+.night-stage {width:100%;display:grid;grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);align-items:center;gap:clamp(25px,5vw,82px);text-align:left}
+.stage-copy {display:grid;justify-items:start;gap:clamp(12px,2.3vh,22px);align-content:center}
+.stage-copy .night-title {font-size:clamp(42px,5.7vw,96px)}
+.stage-copy .night-title em {display:inline-block;margin-top:.055em;padding:.02em .09em .06em;color:#221727;background:var(--gold);transform:rotate(-3deg)}
+.stage-copy .lede {max-width:25em;color:var(--fg-muted);text-wrap:pretty}
+.stage-copy .btn {min-width:175px}
+.stage-copy .keys {margin:0;font-size:12px;letter-spacing:0;line-height:1.9}
+.data-status {letter-spacing:.03em}
+.night-stage .night-hero {height:clamp(270px,64vh,706px)}
+.night-stage .night-hero img {object-position:62% center}
+#s-end .title {color:var(--gold);background:none;font-weight:900;line-height:1.13;font-size:clamp(50px,8vw,110px)}
+#s-show {padding-top:calc(16px + env(safe-area-inset-top));padding-bottom:200px;gap:16px}
+.hud {display:flex;justify-content:space-between;gap:12px;font-size:12px;letter-spacing:0}
+.hud-brand {color:var(--fg-muted);font-size:12px;white-space:normal;min-width:0;line-height:1.4}
+.hud-prog {color:var(--gold);flex-shrink:0}
+.reveal-question {display:grid;gap:12px;max-width:1000px}
+.q-head {display:block;margin:0}
+.q-badge {display:none}
+.q-text,.q-text.is-medium {font-size:clamp(22px,5.5vw,30px);line-height:1.48;font-family:var(--font-body);font-weight:900;letter-spacing:-.04em}
+.q-text.is-long {font-size:clamp(19px,4.8vw,25px)}
+#qtext[tabindex="-1"]:focus {outline:none}
+.grid.people-grid {flex:none;min-height:0;grid-auto-rows:auto;overflow:visible;padding:0}
+.result {min-height:0;display:none;place-items:normal}
+.result.is-on {display:block}
+.result-inner {padding:8px 12px;gap:5px 12px;justify-content:center;align-items:center;flex-wrap:wrap;border-radius:10px;border:1px solid #ffe1a05c;background:#ffe1a00b;box-shadow:none;backdrop-filter:none}
+.result-label {font-size:11px;letter-spacing:.04em}
+.result-names {font:900 20px/1.5 var(--font-body);color:var(--gold);background:none}
+.result.is-many .result-names {font-size:15px}
+.reveal-dock .dock-inner {gap:8px}
+.reveal-dock .dock-note {text-align:center}
+.reveal-actions {display:grid;grid-template-columns:48px 48px minmax(0,1fr) 48px;gap:8px}
+.reveal-actions .btn {padding:10px 6px;min-width:0;font-size:14px}
+.icon-button {font-size:20px!important}
+.replay-button {font-size:22px!important}
+.ctrl {right:16px;bottom:calc(16px + env(safe-area-inset-bottom));gap:8px}
+.ctrl-btn {width:44px;height:44px;border-radius:12px;opacity:1;background:var(--surface);border-color:var(--line)}
+body:has(#s-show.is-active) .ctrl {position:static;display:none}
+.panel {background:var(--surface)}
+.panel-head strong {font-family:var(--font-body);font-weight:900}
+.plus {top:40%;right:12px;font-size:26px;text-shadow:0 2px 6px #000;z-index:3}
+@media (min-width:600px) {body{padding-inline:24px}.reveal-dock .dock-inner{grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px 24px}.reveal-dock .dock-note{text-align:left;grid-column:1;grid-row:2}.reveal-actions{grid-column:2;grid-row:1 / 3;min-width:380px}.result-inner{justify-content:flex-start}.reveal-dock:has(.result:not(.is-on)) .dock-note{grid-row:1 / 3}#s-show{padding-bottom:125px}}
+@media (min-width:1200px) and (min-height:650px) {#s-show{min-height:100svh;justify-content:center;padding-bottom:120px;padding-top:28px}.reveal-question {max-width:1120px}.grid.people-grid {margin-top:6px}}
+@media (max-width:700px){
+  #s-intro {justify-content:flex-start;padding-top:20px}
+  .night-stage {grid-template-columns:1fr;gap:22px;max-width:520px}
+  .night-stage .night-hero {grid-row:1;height:auto;aspect-ratio:1.46}
+  .stage-copy {gap:12px}
+  .stage-copy .night-title {font-size:clamp(36px,10vw,56px)}
+  .stage-copy .night-title br {display:none}
+  .stage-copy .night-title em {padding:0;background:none;transform:none;color:var(--gold)}
+  .stage-copy .row,.stage-copy .btn {width:100%}
+  .stage-copy .keys {display:none}
+  .stage-copy .lede {font-size:14px;line-height:1.65}
+}
+
+/* A roulette chase leads to a sustained, readable vote award. */
+#s-show {padding-bottom:calc(var(--dock-height,160px) + 24px)}
+.grid .person-card .person-meta {gap:5px;padding:8px 2px 7px;border-radius:6px;transition:background .18s,color .18s}
+.grid .person-card .person-status {height:clamp(32px,2.8vw,48px);min-height:32px;gap:4px;font-size:14px;font-weight:700;color:#bcb1c7}
+.grid .person-card .count {font-size:clamp(28px,2.5vw,44px);line-height:1;color:#ada1ba}
+.grid .person-card.has-votes .count {color:#fff0bf}
+.grid .person-card .bar {height:12px;min-height:12px;margin:2px 3px 4px;background:#6d5b7f;border:1px solid #a08bb666;border-radius:4px}
+.grid .person-card .bar i {background:linear-gradient(90deg,#ff5fab,#ffb4d5);border-radius:3px;box-shadow:0 0 12px #ff74b6aa;transition:width .28s ease-out}
+.grid .person-card.is-spinning {border-color:var(--party);box-shadow:inset 0 0 0 2px var(--party),0 0 20px #ff91bd44;background:#3b294b}
+.grid .person-card.is-spinning .person-name {color:var(--party)}
+.grid .person-card.is-hit {border-color:var(--gold);box-shadow:inset 0 0 0 2px var(--gold),0 0 28px #ffe1a066;background:#57432f;transform:none}
+.grid .person-card.is-hit .person-meta {background:var(--gold)}
+.grid .person-card.is-hit .person-name,.grid .person-card.is-hit .person-status,.grid .person-card.is-hit .count {color:#291a24}
+.grid .person-card.is-hit .bar i,.grid .person-card.is-win .bar i {background:linear-gradient(90deg,#e6a943,#fff0aa);box-shadow:0 0 14px #ffe1a0aa}
+.grid .person-card.is-win {border-color:var(--gold);box-shadow:inset 0 0 0 2px var(--gold),0 0 24px #ffe1a033}
+.grid .person-card.is-win::after {display:none;content:none}
+.grid .person-card.is-win .person-name::before {content:'★ ';color:var(--gold)}
+.grid .person-card.is-win .count {color:var(--gold)}
+.grid.is-fast .count {animation:none!important}
+.reveal-dock {border-top:2px solid #b78b6b;background:#211829fa;box-shadow:0 -12px 40px #08040e66}
+.reveal-dock .dock-inner {gap:9px}
+.reveal-actions .btn {border-color:#b59dbe88;background:#3d2e49;color:#fff7ed}
+.reveal-actions .btn-primary {background:var(--gold);border-color:var(--gold);color:#281a21;font-weight:900}
+.reveal-actions .btn:disabled {opacity:.55}
+@media (min-width:600px){
+  .reveal-dock .dock-inner {grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto;gap:20px}
+  .count-status {grid-column:1;grid-row:1}
+  .reveal-actions {grid-column:2;grid-row:1;min-width:360px}
+}
+@media (min-width:1200px){
+  #s-show {gap:12px;padding-top:24px;padding-bottom:calc(var(--dock-height,110px) + 16px)}
+  .reveal-question {max-width:100%}
+  .reveal-question>.question-label,.reveal-question>.question-help {display:none}
+  .q-text,.q-text.is-medium {font-size:clamp(26px,2.3vw,40px);line-height:1.35}
+  .q-text.is-long {font-size:clamp(21px,1.8vw,30px);line-height:1.4}
+}
+@media (max-width:599px){
+  .grid .person-card .bar {height:10px;min-height:10px}
+}
+
+/* Final winners take the stage; controls stay within thumb reach. */
+.count-status {display:grid;gap:7px;align-content:center;min-width:0}
+.reveal-dock #hint {display:block;margin:0;text-align:left;font-size:13px;color:var(--fg-muted)}
+#count-meter {display:block;appearance:none;width:min(100%,480px);height:5px;border:0;border-radius:99px;overflow:hidden;background:#6d5b7f;accent-color:var(--gold)}
+#count-meter::-webkit-progress-bar {background:#6d5b7f;border-radius:99px}
+#count-meter::-webkit-progress-value {background:var(--gold);border-radius:99px;transition:width .2s}
+#count-meter::-moz-progress-bar {background:var(--gold);border-radius:99px}
+#winner-return {justify-self:start;padding:10px 15px;font-size:13px}
+.count-status:has(#winner-return:not([hidden])) #hint {display:none}
+.winner-stage {--winner-photo-size:clamp(220px,min(43vh,34vw),480px);position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);align-items:center;gap:clamp(24px,5vw,70px);width:100%;max-width:1180px;margin:12px auto 20px;padding:20px 24px}
+.winner-stage::before {content:'';position:absolute;inset:-5% 0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 75% 50%,#ffe1a026,transparent 60%),radial-gradient(ellipse at 20% 80%,#d9559b20,transparent 55%);animation:winner-light .7s ease-out both}
+.winner-copy {display:flex;flex-direction:column;align-items:flex-start;gap:17px;min-width:0}
+.winner-kicker {margin:0;color:var(--gold);font-size:12px;font-weight:700;letter-spacing:.14em}
+#winner-heading {margin:0;font:900 clamp(38px,5.4vw,82px)/1.15 var(--font-body);letter-spacing:-.06em;color:var(--gold);word-break:keep-all;animation:winner-copy-in .45s ease-out both}
+#winner-heading:focus {outline:none}
+.winner-stage .result {margin:0;min-height:0;width:100%}
+.winner-stage .result-inner {display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:12px;margin:0;padding:0;border:0;border-radius:0;background:none;backdrop-filter:none;box-shadow:none}
+.winner-stage .result-label {padding:6px 13px;border:1px solid #ffe1a061;border-radius:99px;font-size:clamp(14px,1.4vw,20px);letter-spacing:.015em;background:#ffe1a00d;color:var(--gold)}
+.winner-stage .result-names {font:900 clamp(32px,4vw,62px)/1.2 var(--font-body);letter-spacing:-.04em;color:var(--fg);text-align:left;animation:winner-copy-in .5s .1s ease-out both}
+.winner-stage:not([data-winners="1"]) .result-names {display:none}
+.winner-message {margin:0;font-size:15px;line-height:1.7;color:var(--fg-muted);word-break:keep-all}
+.winner-details {margin-top:4px;font-size:13px;padding:12px 18px;border-color:#e7cbe660}
+.winner-portraits {display:grid;grid-template-columns:repeat(var(--winner-cols,1),minmax(0,1fr));gap:18px;align-items:start;width:100%;justify-self:center;min-width:0}
+.winner-stage[data-winners="1"] .winner-portraits {max-width:var(--winner-photo-size)}
+.winner-person {margin:0;min-width:0;animation:winner-photo-in .55s var(--winner-delay,0ms) cubic-bezier(.2,.85,.25,1.12) both}
+.winner-photo {display:grid;place-items:center;aspect-ratio:1;width:100%;border:3px solid var(--gold);border-radius:20px;overflow:hidden;background:var(--surface);box-shadow:0 0 0 7px #ffe1a00b,0 12px 55px #ffe1a02b}
+.winner-photo img {width:100%;height:100%;display:block;object-fit:contain}
+.winner-person figcaption {display:flex;align-items:baseline;justify-content:center;gap:10px;margin-top:14px;font-weight:900;font-size:clamp(18px,2vw,28px);line-height:1.5;color:var(--fg)}
+.winner-person figcaption span {color:var(--gold);font-size:14px;white-space:nowrap}
+.winner-stage[data-winners="1"] figcaption {display:none}
+.winner-stage.is-many {grid-template-columns:1fr;gap:24px}
+.winner-stage.is-many .winner-copy {align-items:center;text-align:center}
+.winner-stage.is-many .result-inner {align-items:center}
+.winner-stage.is-many .winner-photo {border-width:2px;border-radius:12px}
+.winner-stage.is-many .winner-person figcaption {font-size:16px;gap:6px;margin-top:8px}
+.winner-stage.is-many .winner-person figcaption span {font-size:12px}
+@keyframes winner-photo-in {from{opacity:0;transform:translateY(20px) scale(.9)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes winner-copy-in {from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes winner-light {from{opacity:0}to{opacity:1}}
+@media(min-width:1200px){
+  #s-show.is-celebrating .q-text {font-size:clamp(23px,2vw,32px)}
+  #s-show.is-celebrating .q-text.is-long {font-size:clamp(20px,1.65vw,26px)}
+}
+@media(max-width:700px){
+  #s-show.is-celebrating .reveal-question>.question-label,#s-show.is-celebrating .reveal-question>.question-help {display:none}
+  .winner-stage {display:flex;flex-direction:column;gap:15px;padding:6px 0 16px;margin:0 auto;--winner-photo-size:min(70vw,34svh,300px)}
+  .winner-copy {display:contents}
+  .winner-kicker {display:none}
+  #winner-heading {order:0;font-size:clamp(34px,9vw,48px);text-align:center}
+  .winner-portraits {order:1;gap:12px}
+  .winner-stage .result {order:2}
+  .winner-stage .result-inner {flex-direction:row;justify-content:center;align-items:center;flex-wrap:wrap;gap:8px 12px}
+  .winner-stage .result-names {font-size:32px;text-align:center}
+  .winner-message {order:3;font-size:13px;text-align:center}
+  .winner-details {order:4;margin:0;min-height:46px}
+  .winner-person figcaption {font-size:18px;gap:6px;margin-top:10px}
+  .winner-person figcaption span {font-size:12px}
+  .winner-stage.is-many .winner-portraits {grid-template-columns:repeat(3,minmax(0,1fr))}
+  .winner-stage.is-many .winner-person figcaption {flex-direction:column;align-items:center;gap:0;font-size:13px}
+}
+
 </style>
 </head>
 <body>
-<!-- INTRO -->
+<header class="night-masthead">
+    <span class="night-mode">결과 발표</span>
+
+
+  </header>
 <section class="screen is-active" id="s-intro">
-  <div class="intro">
-    <p class="eyebrow">사전투표 결과 발표</p>
-    <h1 class="title" id="title-main">우리끼리<br>어워즈</h1>
-    <p class="lede" id="lede">여러분이 미리 보내 주신 표를 지금부터 한 표씩 공개합니다.</p>
-    <div class="row">
-      <button class="btn btn-primary" id="btn-start" type="button">발표 시작</button>
+  <div class="night-stage">
+    <div class="stage-copy">
+      <p class="night-eyebrow">목장 뒤풀이</p>
+      <h1 class="night-title"><span class="event-title-line">사Sheep 2th</span> <span class="event-title-line">중운위 <em>어워즈</em></span></h1>
+      <p class="lede" id="lede">시트 결과를 불러온 뒤 발표를 시작하세요.</p>
+      <div class="row">
+        <button class="btn btn-primary night-action" id="btn-start" type="button" disabled>발표 시작 <span aria-hidden="true">→</span></button>
+        <button class="btn" id="intro-settings" type="button">결과 불러오기</button>
+      </div>
+      <p class="data-status" id="data-status"><i></i><span id="data-status-text">결과 데이터 없음</span></p>
+      <p class="keys" id="keys"><kbd>Space</kbd> 진행 · <kbd>←</kbd> 이전 · <kbd>F</kbd> 전체화면 · <kbd>S</kbd> 설정</p>
     </div>
-    <p class="keys" id="keys"><kbd>Space</kbd> 진행 · <kbd>←</kbd> 이전 · <kbd>R</kbd> 다시 · <kbd>F</kbd> 전체화면 · <kbd>M</kbd> 소리 · <kbd>H</kbd> 안내 숨김 · <kbd>S</kbd> 설정</p>
-    <p class="data-status" id="data-status"><i></i><span id="data-status-text">결과 데이터 없음</span></p>
+    <figure class="night-hero">
+    <img src="party-sheep.webp" alt="턱시도와 선글라스를 착용하고 와인잔을 든 양들" width="1400" height="933" fetchpriority="high">
+    <figcaption>잔 내려놓고 박수 치라양!</figcaption>
+  </figure>
   </div>
 </section>
 
 <!-- SHOW -->
 <section class="screen" id="s-show">
-  <div class="hud">
-    <span class="hud-brand" id="hud-brand">우리끼리 어워즈</span>
-    <span class="hud-hint" id="hint">Space 또는 클릭으로 개표 시작</span>
-    <span class="hud-prog" id="qprog">Q1 / 4</span>
-  </div>
-  <div class="q-head">
-    <span class="q-badge" id="qbadge">Q1</span>
-    <h2 class="q-text" id="qtext"></h2>
-  </div>
-  <div class="grid" id="grid"></div>
-  <div class="result" id="result">
-    <div class="result-inner">
-      <span class="result-label" id="rlabel">WINNER</span>
-      <span class="result-names" id="rnames"></span>
+  <div class="hud"><span class="hud-brand" id="hud-brand"></span><span class="hud-prog" id="qprog"></span></div><div class="reveal-question"><div class="question-label"><span>사Sheep 2th 중운위 어워즈</span><span class="quiet" id="round-source"></span></div><div class="q-head"><span class="q-badge" id="qbadge"></span><h2 class="q-text question-heading" id="qtext" tabindex="-1"></h2></div></div><div class="grid people-grid" id="grid"></div>
+<section class="winner-stage" id="winner-stage" aria-labelledby="winner-heading" hidden>
+    <div class="winner-copy"><p class="winner-kicker">사Sheep 2th 중운위 어워즈</p><h2 id="winner-heading" tabindex="-1" aria-describedby="rlabel rnames">축하합니다!</h2>
+      <div class="result" id="result" role="status" aria-live="polite"><div class="result-inner"><span class="result-label" id="rlabel"></span><span class="result-names" id="rnames"></span></div></div>
+      <p class="winner-message" id="winner-message">이번 질문의 주인공입니다.</p>
+      <button class="btn winner-details" id="winner-details" type="button">전체 득표 보기 ↗</button>
     </div>
-  </div>
+    <div class="winner-portraits" id="winner-portraits"></div>
+  </section>
+  <div class="action-dock reveal-dock"><div class="dock-inner">
+    <div class="count-status"><p class="dock-note" id="hint" role="status" aria-live="polite"></p><progress id="count-meter" value="0" max="1" aria-label="개표 진행"></progress><button class="btn" id="winner-return" type="button" hidden>축하 화면 다시 보기 ✦</button></div>
+    <span class="sr-only" id="ballot-announcement" role="status" aria-live="polite"></span>
+    <div class="reveal-actions"><button class="btn icon-button" id="stage-back" type="button" aria-label="이전 질문" title="이전 질문">←</button><button class="btn replay-button" id="stage-replay" type="button" aria-label="현재 질문 다시 개표" title="다시 개표">↻</button><button class="btn btn-primary" id="stage-next" type="button">개표 시작</button><button class="btn icon-button" id="stage-tools" type="button" aria-label="발표 설정" title="발표 설정">⚙</button></div>
+  </div></div>
 </section>
 
 <!-- FINALE -->
@@ -199,24 +530,24 @@ kbd{font-family:var(--font-body);font-weight:700;color:var(--fg);background:var(
 </section>
 
 <div class="ctrl">
-  <button class="ctrl-btn" id="btn-sound" type="button" aria-label="소리 켜기/끄기">🔊</button>
+  <button class="ctrl-btn" id="btn-sound" type="button" aria-label="소리 켜기/끄기">🔇</button>
   <button class="ctrl-btn" id="btn-fs" type="button" aria-label="전체화면">⛶</button>
   <button class="ctrl-btn" id="btn-settings" type="button" aria-label="설정">⚙</button>
 </div>
 
 <!-- SETTINGS (operator only) -->
 <div class="overlay" id="settings" hidden>
-  <div class="panel" role="dialog" aria-labelledby="settings-title">
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="settings-title">
     <div class="panel-head">
       <strong id="settings-title">결과 데이터</strong>
       <button class="btn btn-sm" id="st-close" type="button">닫기 (Esc)</button>
     </div>
-    <p class="st-status" id="st-status"></p>
+    <p class="st-status" id="st-status"></p><div class="st-row"><button class="btn btn-sm" id="panel-sound" type="button">소리 켜기</button><button class="btn btn-sm" id="panel-fullscreen" type="button">전체화면</button></div>
 
     <div class="st-block">
       <label for="st-key">시트에서 불러오기</label>
       <div class="st-row">
-        <input id="st-key" type="password" autocomplete="off" placeholder="Code.gs의 ADMIN_KEY">
+        <input id="st-key" type="password" autocomplete="off" placeholder="발표 관리키">
         <button class="btn btn-primary btn-sm" id="st-fetch" type="button">불러오기</button>
       </div>
       <p class="st-note" id="st-endpoint-note"></p>
@@ -238,8 +569,23 @@ kbd{font-family:var(--font-body);font-weight:700;color:var(--fg);background:var(
 
 <canvas id="fx" aria-hidden="true"></canvas>
 
-<script src="config.js"></script>
+<script src="config.js?v=night-pasture-1"></script>
 <script>
+(() => {
+  const esc = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const avatar = p => '<span class="pavatar person-photo">' + (p.photo ? '<img src="' + esc(p.photo) + '" alt="" decoding="async">' : esc(p.name)) + '</span>';
+  function card(p, mode, selected = false) {
+    const reveal = mode === 'reveal';
+    const tag = reveal ? 'article' : 'button';
+    const attributes = reveal ? '' : ' type="button" aria-pressed="' + selected + '"';
+    const status = reveal ? '<span class="count">0</span>표' : (mode === 'who' ? '본인 선택' : selected ? '선택했어요' : '선택하기');
+    return '<' + tag + attributes + ' class="person-card ' + (reveal ? 'card' : 'pcard') + (selected ? ' is-sel' : '') + '" data-id="' + p.id + '">' + avatar(p) +
+      '<span class="person-meta"><span class="person-name">' + esc(p.name) + '</span><span class="person-status' + (reveal ? ' votes' : '') + '">' + status + '</span></span>' +
+      '<span class="bar"' + (reveal ? '' : ' style="visibility:hidden"') + ' aria-hidden="true"><i></i></span></' + tag + '>';
+  }
+  window.PartyUI = { esc, avatar, card };
+})();
+
 (function(){
   'use strict';
   const $ = s => document.querySelector(s);
@@ -254,12 +600,12 @@ kbd{font-family:var(--font-body);font-weight:700;color:var(--fg);background:var(
     return;
   }
   const PEOPLE = CONFIG.people.map((p, i) => Object.assign({ hue: Math.round((i * 137.508) % 360) }, p));
-  const Q = CONFIG.questions;
+  const Q = CONFIG.questionOrder.map(id => CONFIG.questions[id - 1]);
   const N = Q.length;
-  const TITLE = CONFIG.title || '우리끼리 어워즈';
+  const TITLE = CONFIG.title || '사Sheep 2th 중운위 어워즈';
   $('#hud-brand').textContent = TITLE;
-  $('#title-main').innerHTML = esc(TITLE).replace(/\s+/, '<br>');
-  const STORE_RESULTS = 'awards_results_v2', STORE_KEY = 'awards_admin_key', STORE_HINTS = 'awards_hints';
+  const STORE_RESULTS = 'awards_live_results_v1_' + CONFIG.questionOrder.join('-');
+  const STORE_HINTS = 'awards_hints';
   const lsGet = k => { try { return localStorage.getItem(k); } catch (e) { return null; } };
   const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
 
@@ -283,7 +629,10 @@ kbd{font-family:var(--font-body);font-weight:700;color:var(--fg);background:var(
     if (!data || !Array.isArray(data.questions)) throw new Error('questions 배열이 없습니다');
     const counts = [];
     for (let i = 0; i < N; i++) {
-      const q = data.questions.find(x => Number(x.index) === i + 1) || data.questions[i];
+      const questionId = CONFIG.questionOrder[i];
+      const q = data.questions.some(x => x && x.index != null)
+        ? data.questions.find(x => x && Number(x.index) === questionId)
+        : data.questions[questionId - 1];
       const c = {}; if (q && q.counts) for (const k in q.counts) { const n = Number(q.counts[k]); if (n > 0) c[+k] = n; }
       counts.push(c);
     }
@@ -306,24 +655,23 @@ kbd{font-family:var(--font-body);font-weight:700;color:var(--fg);background:var(
     el.classList.toggle('is-live', !!results && results.source !== 'sample');
     el.classList.toggle('is-sample', !!results && results.source === 'sample');
     $('#data-status-text').textContent = statusText();
+    $('#round-source').textContent = results?.source === 'sample' ? '리허설' : '';
+    $('#lede').textContent = results ? '' : '시트 결과를 불러온 뒤 발표를 시작하세요.';
     $('#st-status').textContent = statusText();
     $('#btn-start').disabled = !results;
   }
   (function restore(){
-    try { const saved = JSON.parse(lsGet(STORE_RESULTS) || 'null'); if (saved && Array.isArray(saved.counts)) { results = saved; } } catch (e) {}
-    // 저장된 결과가 없으면 샘플로 시작 (저장하지 않음). 첫 화면의 노란 점 = 샘플 데이터라는 표시.
-    if (!results) results = { source: 'sample', total: PEOPLE.length, loadedAt: new Date().toISOString(), counts: sampleCounts() };
-    const k = lsGet(STORE_KEY); if (k) $('#st-key').value = k;
-    $('#st-endpoint-note').textContent = CONFIG.endpoint ? 'config.js의 endpoint로 요청합니다.' : 'config.js의 endpoint가 비어 있어 시트에서 불러올 수 없습니다. JSON 붙여넣기나 샘플을 쓰세요.';
+    try { const saved = JSON.parse(lsGet(STORE_RESULTS) || 'null'); if (saved && saved.source !== 'sample' && Array.isArray(saved.counts) && saved.counts.length === N) { results = saved; } } catch (e) {}
+    $('#st-endpoint-note').textContent = CONFIG.endpoint ? 'config.js의 endpoint로 요청합니다.' : '시트 주소가 비어 있습니다. 집계 JSON을 붙여넣거나 리허설을 실행하세요.';
     $('#st-fetch').disabled = !CONFIG.endpoint;
     renderStatus();
   })();
 
   /* ---------- 설정 패널 ---------- */
   const settings = $('#settings');
-  let settingsOpen = false;
-  function openSettings(){ settingsOpen = true; settings.hidden = false; $('#st-msg').hidden = true; setTimeout(() => $('#st-key').focus(), 0); }
-  function closeSettings(){ settingsOpen = false; settings.hidden = true; }
+  let settingsOpen = false, settingsFocus = null;
+  function openSettings(){ settingsFocus = document.activeElement; settingsOpen = true; settings.hidden = false; $('#st-msg').hidden = true; $('#st-close').focus(); }
+  function closeSettings(){ settingsOpen = false; settings.hidden = true; settingsFocus?.focus({preventScroll:true}); }
   function stMsg(text, isErr){ const m = $('#st-msg'); m.textContent = text; m.hidden = false; m.classList.toggle('is-err', !!isErr); }
   $('#st-close').addEventListener('click', closeSettings);
   settings.addEventListener('click', e => { if (e.target === settings) closeSettings(); });
@@ -336,7 +684,7 @@ kbd{font-family:var(--font-body);font-weight:700;color:var(--fg);background:var(
       const r = await fetch(CONFIG.endpoint + sep + 'key=' + encodeURIComponent(key));
       const data = await r.json();
       if (!data.ok) throw new Error(data.error === 'forbidden' ? 'ADMIN_KEY가 틀렸습니다' : (data.error || '응답 오류'));
-      lsSet(STORE_KEY, key);
+      $('#st-key').value = '';
       setResults(normalize(data, 'sheet'), true);
       stMsg(data.total + '명의 제출을 불러왔습니다.' + (data.total < PEOPLE.length ? ' (미제출 ' + (PEOPLE.length - data.total) + '명)' : ''));
     } catch (e) {
@@ -348,12 +696,12 @@ kbd{font-family:var(--font-body);font-weight:700;color:var(--fg);background:var(
     catch (e) { stMsg('JSON을 읽지 못했습니다: ' + e.message, true); }
   });
   $('#st-sample').addEventListener('click', () => {
-    setResults({ source: 'sample', total: PEOPLE.length, loadedAt: new Date().toISOString(), counts: sampleCounts() }, true);
+    setResults({ source: 'sample', total: PEOPLE.length, loadedAt: new Date().toISOString(), counts: sampleCounts() }, false);
     stMsg('샘플 데이터로 전환했습니다. 실제 발표 전에 시트 결과를 다시 불러오세요.');
   });
 
   /* ---------- 소리 ---------- */
-  let AC = null, soundOn = true;
+  let AC = null, soundOn = false;
   function audio(){
     if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { AC = null; } }
     if (AC && AC.state === 'suspended') AC.resume();
@@ -375,8 +723,8 @@ kbd{font-family:var(--font-body);font-weight:700;color:var(--fg);background:var(
 
   /* ---------- 폭죽 ---------- */
   const fx = $('#fx'), fc = fx.getContext('2d');
-  const COLORS = ['#ff4f9a', '#7c5cff', '#ffd166', '#4de1c1', '#ffffff', '#ff8a5c'];
-  let parts = [], raf = null;
+  const COLORS = ['#ffe1a0', '#ff91bd', '#e7c2ff', '#ffefda', '#cb8bdf'];
+  let parts = [], raf = null, fxTimers = [];
   function resize(){ const dpr = window.devicePixelRatio || 1; fx.width = innerWidth * dpr; fx.height = innerHeight * dpr; fc.setTransform(dpr, 0, 0, dpr, 0, 0); }
   addEventListener('resize', resize); resize();
   function push(x, y, vx, vy){
@@ -401,9 +749,10 @@ kbd{font-family:var(--font-body);font-weight:700;color:var(--fg);background:var(
     else { raf = null; fc.clearRect(0, 0, innerWidth, innerHeight); }
   }
   function celebrate(big){
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const W = innerWidth, H = innerHeight, n = big ? 150 : 100;
     cannon(0, H, -Math.PI / 4, n); cannon(W, H, -3 * Math.PI / 4, n);
-    [0, 350, 750, 1150].forEach(t => setTimeout(() => burst(W * (.2 + Math.random() * .6), H * (.15 + Math.random() * .35), big ? 90 : 60, 9), t));
+    [0, 350, 750, 1150].forEach(t => fxTimers.push(setTimeout(() => burst(W * (.2 + Math.random() * .6), H * (.15 + Math.random() * .35), big ? 90 : 60, 9), t)));
   }
 
   /* ---------- 발표 흐름 ---------- */
@@ -411,19 +760,15 @@ kbd{font-family:var(--font-body);font-weight:700;color:var(--fg);background:var(
   const grid = $('#grid'), result = $('#result'), hint = $('#hint');
   // 인원수에 맞춰 열 수 결정: 빈 칸이 가장 적은 열 수 (18명→6×3, 20명→5×4, 16명→4×4)
   (function(){ let best = 6, bestEmpty = Infinity; for (const c of [7, 6, 5, 4]) { const empty = Math.ceil(PEOPLE.length / c) * c - PEOPLE.length; if (empty < bestEmpty) { bestEmpty = empty; best = c; } } grid.style.setProperty('--cols', best); })();
-  function showScreen(id){ document.querySelectorAll('.screen').forEach(s => s.classList.toggle('is-active', s.id === id)); }
+  function showScreen(id){ document.querySelectorAll('.screen').forEach(s => s.classList.toggle('is-active', s.id === id)); window.scrollTo(0,0); }
   function shuffle(a){ for (let i = a.length - 1; i > 0; i--) { const j = (Math.random() * (i + 1)) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; }
   function avatarHTML(p){
     const inner = p.photo ? '<img src="' + esc(p.photo) + '" alt="">' : pad2(p.id);
     return '<div class="photo-slot"><div class="avatar" style="--h:' + p.hue + '">' + inner + '</div></div>';
   }
-  function cardHTML(p){
-    return '<div class="card" data-id="' + p.id + '">' + avatarHTML(p) +
-      '<div class="card-meta"><span class="name">' + esc(p.name) + '</span>' +
-      '<span class="votes"><span class="count">0</span>표</span></div><div class="bar"><i></i></div></div>';
-  }
+  function cardHTML(p){ return PartyUI.card(p, 'reveal'); }
   function loadQuestion(){
-    clearTimeout(timer);
+    clearTimeout(timer); resetRoulette();
     counts = {}; PEOPLE.forEach(p => counts[p.id] = 0);
     $('#qbadge').textContent = 'Q' + (qi + 1);
     $('#qprog').textContent = 'Q' + (qi + 1) + ' / ' + N;
@@ -434,9 +779,9 @@ kbd{font-family:var(--font-body);font-weight:700;color:var(--fg);background:var(
     heading.classList.toggle('is-long', question.length > 50);
     grid.innerHTML = PEOPLE.map(cardHTML).join('');
     result.classList.remove('is-on', 'is-empty', 'is-many');
-    hint.textContent = 'Space 또는 클릭으로 개표 시작';
+    hint.textContent = '준비되면 개표 시작을 눌러 주세요.';
     phase = 'ready'; fast = false;
-    showScreen('s-show');
+    showScreen('s-show'); syncStage(); $('#qtext').focus({preventScroll:true});
   }
   function startCount(){
     const src = (results && results.counts[qi]) || {};
@@ -444,57 +789,177 @@ kbd{font-family:var(--font-body);font-weight:700;color:var(--fg);background:var(
     for (const id in src) for (let i = 0; i < src[id]; i++) ballots.push(+id);
     shuffle(ballots);
     phase = 'counting'; fast = false;
-    hint.textContent = ballots.length ? '개표 중 · Space로 빨리 감기' : '';
-    step();
+    hint.textContent = ballots.length ? '한 표씩 공개하는 중이에요.' : '집계된 표가 없어요.';
+    syncStage(); step();
   }
-  function step(){
-    if (!ballots.length) { timer = setTimeout(finish, 850); return; }
-    const id = ballots.shift();
+  // The spin only reveals the next existing ballot; it never chooses a vote.
+  let spinTimer = null, rollSerial = 0, activeBallot = null, roundTotal = 0;
+  const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+  new ResizeObserver(() => {
+    const height = Math.ceil($('.reveal-dock').getBoundingClientRect().height);
+    if (height) $('#s-show').style.setProperty('--dock-height', height + 'px');
+  }).observe($('.reveal-dock'));
+
+  function resetRoulette() {
+    clearTimeout(spinTimer); rollSerial++;
+    activeBallot = null;
+    hideWinner(); clearWinnerEffects();
+    grid.classList.remove('is-rolling', 'is-fast');
+    grid.querySelectorAll('.is-spinning,.is-hit').forEach(c => c.classList.remove('is-spinning', 'is-hit'));
+    roundTotal = Object.values((results && results.counts[qi]) || {}).reduce((sum,n) => sum + n, 0);
+    $('#count-meter').max = Math.max(1, roundTotal);
+    $('#count-meter').value = 0;
+    $('#ballot-announcement').textContent = '';
+  }
+  function landBallot(id, serial) {
+    if (serial !== rollSerial || phase !== 'counting' || activeBallot !== id) return;
+    clearTimeout(spinTimer); activeBallot = null;
+    grid.classList.remove('is-rolling');
+    grid.querySelectorAll('.is-spinning,.is-hit').forEach(c => c.classList.remove('is-spinning', 'is-hit'));
     counts[id] = (counts[id] || 0) + 1;
-    const max = Math.max(1, ...Object.values(counts));
-    grid.querySelectorAll('.card').forEach(c => { c.querySelector('.bar i').style.width = ((counts[c.dataset.id] || 0) / max * 100) + '%'; });
+    grid.querySelectorAll('.card').forEach(c => {
+      const votes = counts[c.dataset.id] || 0;
+      c.classList.toggle('has-votes', votes > 0);
+      c.querySelector('.bar i').style.width = (roundTotal ? votes / roundTotal * 100 : 0) + '%';
+      c.querySelector('.bar i').style.minWidth = votes > 0 ? '8px' : '0';
+    });
+    const recipient = PEOPLE.find(p => p.id === id);
     const card = grid.querySelector('.card[data-id="' + id + '"]');
     if (card) {
-      const cnt = card.querySelector('.count');
-      cnt.textContent = counts[id];
-      cnt.classList.remove('is-pop'); void cnt.offsetWidth; cnt.classList.add('is-pop');
-      card.classList.add('is-hit'); setTimeout(() => card.classList.remove('is-hit'), 320);
-      const plus = document.createElement('span'); plus.className = 'plus'; plus.textContent = '+1';
-      card.appendChild(plus); setTimeout(() => plus.remove(), 850);
+      const count = card.querySelector('.count');
+      count.textContent = counts[id];
+      count.classList.remove('is-pop');
+      if (!fast) {
+        void count.offsetWidth; count.classList.add('is-pop');
+        card.classList.add('is-hit');
+        $('#ballot-announcement').textContent = recipient.name + ' 님 1표 추가, 현재 ' + counts[id] + '표';
+        tone(880, .11, 'triangle', .065);
+      }
     }
-    const left = ballots.length;
-    if (left < 4 && !fast) thump(); else tick(counts[id]);
-    timer = setTimeout(step, fast ? 45 : (left < 4 ? 700 : 240));
+    syncStage();
+    timer = setTimeout(step, fast ? 35 : reduceMotion() ? 300 : 580);
   }
+  function step() {
+    if (phase !== 'counting') return;
+    if (!ballots.length) { timer = setTimeout(finish, 500); return; }
+    const id = ballots.shift();
+    activeBallot = id;
+    const serial = ++rollSerial;
+    if (fast || reduceMotion()) { landBallot(id, serial); return; }
+    const target = PEOPLE.findIndex(p => p.id === id);
+    if (target < 0) { landBallot(id, serial); return; }
+    const opened = Object.values(counts).reduce((sum,n) => sum + n, 0);
+    const ticks = opened === 0 ? PEOPLE.length + 6 : 10 + opened % 5;
+    let cursor = 0;
+    grid.querySelectorAll('.is-hit').forEach(c => c.classList.remove('is-hit'));
+    grid.classList.add('is-rolling');
+    function frame() {
+      if (serial !== rollSerial || phase !== 'counting') return;
+      if (fast) { landBallot(id, serial); return; }
+      const index = (target - ticks + 1 + cursor + PEOPLE.length * 4) % PEOPLE.length;
+      grid.querySelectorAll('.is-spinning').forEach(c => c.classList.remove('is-spinning'));
+      grid.querySelector('.card[data-id="' + PEOPLE[index].id + '"]').classList.add('is-spinning');
+      if (cursor % 2 === 0) tone(480 + index * 12, .025, 'triangle', .018);
+      cursor++;
+      if (cursor >= ticks) {
+        spinTimer = setTimeout(() => landBallot(id, serial), 150);
+      } else {
+        spinTimer = setTimeout(frame, 38 + 112 * Math.pow(cursor / ticks, 3));
+      }
+    }
+    frame();
+  }
+  function speedThrough() {
+    clearTimeout(timer); clearTimeout(spinTimer);
+    grid.classList.add('is-fast');
+    if (activeBallot !== null) landBallot(activeBallot, rollSerial);
+    else step();
+  }
+
+  let lastWinners = [], lastWinningCount = 0;
+  function clearWinnerEffects() {
+    fxTimers.forEach(clearTimeout); fxTimers = [];
+    if (raf) cancelAnimationFrame(raf);
+    raf = null; parts = [];
+    fc.clearRect(0, 0, innerWidth, innerHeight);
+  }
+  function hideWinner() {
+    $('#winner-stage').hidden = true;
+    $('#winner-return').hidden = true;
+    $('#s-show').classList.remove('is-celebrating');
+    grid.hidden = false;
+    lastWinners = []; lastWinningCount = 0;
+  }
+  function renderWinner(winners, max) {
+    lastWinners = winners; lastWinningCount = max;
+    const stage = $('#winner-stage');
+    stage.dataset.winners = winners.length;
+    stage.classList.toggle('is-many', winners.length > 4);
+    $('#winner-portraits').style.setProperty('--winner-cols', winners.length === 1 ? 1 : winners.length <= 4 ? 2 : 4);
+    $('#winner-portraits').innerHTML = winners.map((p,i) =>
+      '<figure class="winner-person" data-id="' + p.id + '" style="--winner-delay:' + Math.min(i * 70, 280) + 'ms">' +
+      '<div class="winner-photo">' + (p.photo ? '<img src="' + esc(p.photo) + '" alt="' + esc(p.name) + '" decoding="async">' : '<span>' + esc(p.name) + '</span>') + '</div>' +
+      '<figcaption>' + esc(p.name) + '<span>' + max + '표</span></figcaption></figure>'
+    ).join('');
+    $('#winner-message').textContent = winners.length === 1 ? '이번 질문의 주인공입니다. 박수 주세요!' : '같은 표를 받은 공동 1위입니다. 함께 축하해요!';
+    stage.hidden = false;
+    grid.hidden = true;
+    $('#winner-return').hidden = true;
+    $('#s-show').classList.add('is-celebrating');
+    window.scrollTo(0, 0);
+    $('#winner-heading').focus({preventScroll:true});
+  }
+  function showAllResults() {
+    if (!lastWinners.length || phase !== 'done') return;
+    $('#winner-stage').hidden = true;
+    $('#s-show').classList.remove('is-celebrating');
+    grid.hidden = false;
+    $('#winner-return').hidden = false;
+    clearWinnerEffects();
+    window.scrollTo(0, 0);
+    $('#qtext').focus({preventScroll:true});
+  }
+  $('#winner-details').addEventListener('click', showAllResults);
+  $('#winner-return').addEventListener('click', () => {
+    if (phase !== 'done' || !lastWinners.length) return;
+    renderWinner(lastWinners, lastWinningCount);
+    celebrate(false);
+  });
+
   function finish(){
     const max = Math.max(0, ...Object.values(counts));
     phase = 'done';
-    hint.textContent = qi < N - 1 ? 'Space로 다음 질문 · R 다시 보기' : 'Space로 마무리';
+    grid.classList.remove('is-rolling', 'is-fast');
+    grid.querySelectorAll('.is-hit,.is-spinning').forEach(c => c.classList.remove('is-hit', 'is-spinning'));
+    syncStage();
+    hint.textContent = qi < N - 1 ? '개표 완료 · 다음 질문으로 넘어갈까요?' : '모든 질문의 개표를 마쳤어요.';
     if (max === 0) {
       $('#rlabel').textContent = '집계된 표 없음';
       $('#rnames').textContent = '이 질문은 아직 표가 없어요';
       result.classList.add('is-on', 'is-empty');
+      hint.textContent = '집계된 표가 없어요. 다음 질문으로 이동할 수 있어요.';
       return;
     }
     const winners = PEOPLE.filter(p => counts[p.id] === max);
     grid.querySelectorAll('.card').forEach(c => c.classList.add(counts[c.dataset.id] === max ? 'is-win' : 'is-lose'));
-    $('#rlabel').textContent = (winners.length > 1 ? '공동 1위 · ' : 'WINNER · ') + max + '표';
+    $('#rlabel').textContent = (winners.length > 1 ? '공동 1위 · ' : '1위 · ') + max + '표';
     $('#rnames').textContent = winners.map(w => w.name).join(' & ');
     result.classList.toggle('is-many', winners.length > 4);
     result.classList.add('is-on');
+    renderWinner(winners, max);
     fanfare(); celebrate(winners.length > 1);
   }
   function advance(){
     if (phase === 'intro') { if (!results) { openSettings(); return; } qi = 0; loadQuestion(); }
     else if (phase === 'ready') startCount();
-    else if (phase === 'counting') fast = true;
+    else if (phase === 'counting') { fast = true; speedThrough(); syncStage(); }
     else if (phase === 'done') {
       if (qi < N - 1) { qi++; loadQuestion(); }
-      else { phase = 'end'; showScreen('s-end'); celebrate(true); setTimeout(() => celebrate(true), 900); }
+      else { phase = 'end'; showScreen('s-end'); celebrate(true); fxTimers.push(setTimeout(() => celebrate(true), 900)); }
     }
     else if (phase === 'end') goHome();
   }
-  function goHome(){ clearTimeout(timer); phase = 'intro'; showScreen('s-intro'); }
+  function goHome(){ clearTimeout(timer); resetRoulette(); phase = 'intro'; showScreen('s-intro'); }
   function back(){
     if (phase === 'intro') return;
     if (phase === 'end') { qi = N - 1; loadQuestion(); return; }
@@ -515,17 +980,48 @@ kbd{font-family:var(--font-body);font-weight:700;color:var(--fg);background:var(
   applyHints();
 
   /* ---------- 입력 ---------- */
+  $('#panel-sound').addEventListener('click', () => { audio(); toggleSound(); $('#panel-sound').textContent = soundOn ? '소리 끄기' : '소리 켜기'; });
+  $('#panel-fullscreen').addEventListener('click', toggleFS);
+  settings.addEventListener('keydown', e => {
+    if (e.key !== 'Tab') return;
+    const controls = [...settings.querySelectorAll('button:not(:disabled),input:not(:disabled),textarea')];
+    const first = controls[0], last = controls.at(-1);
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+  $('#intro-settings').addEventListener('click', openSettings);
   $('#btn-start').addEventListener('click', e => { e.stopPropagation(); audio(); advance(); });
   $('#btn-home').addEventListener('click', e => { e.stopPropagation(); goHome(); });
   $('#btn-sound').addEventListener('click', e => { e.stopPropagation(); toggleSound(); });
   $('#btn-fs').addEventListener('click', e => { e.stopPropagation(); toggleFS(); });
   $('#btn-settings').addEventListener('click', e => { e.stopPropagation(); settingsOpen ? closeSettings() : openSettings(); });
-  $('#s-show').addEventListener('click', () => { audio(); advance(); });
+  function syncStage(){
+    $('#s-show').dataset.phase = phase;
+    const next = $('#stage-next');
+    next.textContent = phase === 'ready' ? '개표 시작 →' : phase === 'counting' ? (fast ? '공개하는 중…' : '빠르게 공개 →') : qi < N - 1 ? '다음 질문 →' : '시상식 마치기';
+    next.disabled = phase === 'counting' && fast;
+    $('#count-meter').hidden = phase === 'done';
+    hint.setAttribute('aria-live', phase === 'counting' ? 'off' : 'polite');
+    $('#stage-back').setAttribute('aria-label', qi === 0 ? '첫 화면으로' : '이전 질문');
+    $('#stage-replay').disabled = phase === 'ready';
+    if (phase === 'counting') {
+      const opened = Object.values(counts).reduce((a,b) => a+b, 0);
+      hint.textContent = opened + ' / ' + roundTotal + '표 공개 중';
+      $('#count-meter').value = opened;
+    }
+  }
+  $('#stage-next').addEventListener('click', () => { audio(); advance(); });
+  $('#stage-back').addEventListener('click', back);
+  $('#stage-replay').addEventListener('click', loadQuestion);
+  $('#stage-tools').addEventListener('click', openSettings);
   $('#s-end').addEventListener('click', () => advance());
   addEventListener('keydown', e => {
     if (settingsOpen) { if (e.key === 'Escape') closeSettings(); return; }
+    if (e.key === 'Escape' && !$('#winner-stage').hidden) { showAllResults(); return; }
+    if (e.target.closest('input,textarea,select')) return;
+    if (e.code === 'Space' && e.target.closest('button,a')) return;
     if (e.code === 'Space' || e.key === 'ArrowRight') { e.preventDefault(); audio(); advance(); }
-    else if (e.key === 'ArrowLeft') back();
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); back(); }
     else if (e.key === 'r' || e.key === 'R') { if (phase === 'counting' || phase === 'done') loadQuestion(); }
     else if (e.key === 'f' || e.key === 'F') toggleFS();
     else if (e.key === 'm' || e.key === 'M') toggleSound();
